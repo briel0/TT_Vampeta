@@ -35,7 +35,7 @@ void setup()
 	digitalWrite(stby, 1);
 
 	Serial.begin(115200);
-	PS4.begin("08:D1:F9:C8:13:98");
+	PS4.begin("08:d1:f9:c8:f5:3c");
 	Serial.println("Ready.");
 }
 
@@ -88,8 +88,8 @@ void loop()
 	SentidoE = 'F';
 	SentidoD = 'F';
 	// VELOCIDADES PARA RODAR NO PROPRIO EIXO
-	VelocidadeE = 180;
-	VelocidadeD = 180;
+	VelocidadeE = 120;
+	VelocidadeD = 120;
 
 	if (PS4.Cross() > 0)
 	{ // atacar
@@ -126,22 +126,30 @@ void loop()
 
 		if (R2)
 		{
-			VelocidadeE = map(PS4.R2Value(), 0, 255, 0, 200);
-			VelocidadeD = map(PS4.R2Value(), 0, 230, 0, 200);
+			VelocidadeE = map(PS4.R2Value(), 0, 255, 0, 140);
+			VelocidadeD = map(PS4.R2Value(), 0, 230, 0, 140);
 
 			if (PS4.LStickX() <= -50)
 			{
 				VelocidadeE *= 2;
-				VelocidadeD *= 0.5;
+				VelocidadeD *= 0.25;
 				if (VelocidadeD > 255)
 				{
 					VelocidadeD = 255;
 				}
+				if (VelocidadeE > 255)
+				{
+					VelocidadeE = 255;
+				}
 			}
 			else if (PS4.LStickX() > 50)
 			{
-				VelocidadeE *= 0.5;
+				VelocidadeE *= 0.25;
 				VelocidadeD *= 2;
+				if (VelocidadeD > 255)
+				{
+					VelocidadeD = 255;
+				}
 				if (VelocidadeE > 255)
 				{
 					VelocidadeE = 255;
@@ -152,21 +160,29 @@ void loop()
 		{
 			SentidoE = 'T';
 			SentidoD = 'T';
-			VelocidadeE = map(PS4.L2Value(), 0, 255, 0, 200);
-			VelocidadeD = map(PS4.L2Value(), 0, 230, 0, 200);
+			VelocidadeE = map(PS4.L2Value(), 0, 255, 0, 140);
+			VelocidadeD = map(PS4.L2Value(), 0, 230, 0, 140);
 			if (PS4.LStickX() <= -50)
 			{
 				VelocidadeE *= 2;
-				VelocidadeD *= 0.5;
+				VelocidadeD *= 0.25;
 				if (VelocidadeD > 255)
 				{
 					VelocidadeD = 255;
 				}
+				if (VelocidadeE > 255)
+				{
+					VelocidadeE = 255;
+				}
 			}
 			else if (PS4.LStickX() > 50)
 			{
-				VelocidadeE *= 0.5;
+				VelocidadeE *= 0.25;
 				VelocidadeD *= 2;
+				if (VelocidadeD > 255)
+				{
+					VelocidadeD = 255;
+				}
 				if (VelocidadeE > 255)
 				{
 					VelocidadeE = 255;
