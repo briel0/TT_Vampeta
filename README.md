@@ -5,12 +5,12 @@
 ```
 Autonomo
 |--lib
-   |--core
-      |- core.cpp
-      |- core.hpp
-   |--robo
-      |- robo.cpp
-      |- robo.hpp
+|  |--core
+|     |- core.cpp
+|     |- core.hpp
+|  |--robo
+|     |- robo.cpp
+|     |- robo.hpp
 |--src
    |- main.cpp
 ```
