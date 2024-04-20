@@ -1,14 +1,18 @@
-# TT_MiniSumo_Arruela (v0.9)
+# TT_MiniSumo_Arruela (v1.0)
  Mini Sumo da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
 ```
 Autonomo
+|--lib
+   |--core
+      |- core.cpp
+      |- core.hpp
+   |--robo
+      |- robo.cpp
+      |- robo.hpp
 |--src
-   |- core.cpp
-   |- core.hpp
-   |- robo.cpp
-   |- robo.hpp
+   |- main.cpp
 ```
 
 ## Codigo
