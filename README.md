@@ -3,7 +3,7 @@
 
 ## Pastas e Arquivos
 ```
-Project
+Autonomo
 |--src
 |  |- core.cpp
 |  |- core.hpp
