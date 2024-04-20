@@ -10,3 +10,6 @@ Autonomo
    |- robo.cpp
    |- robo.hpp
 ```
+
+## Codigo
+ O codigo é igual ou muito parecido com os dos demais robos de sumo da TT
