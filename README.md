@@ -1,8 +1,15 @@
-# TT_MiniSumo_Arruela (Main)
+# TT_MiniSumo_Arruela (v0.9)
  Mini Sumo da Tamandutech - ARRUELA!
 
-  # TT_MiniSumo_Arruela (v1.0)
-  Mini Sumo da Tamandutech - ARRUELA!
+## Pastas e Arquivos
+```
+Autonomo
+|--src
+   |- core.cpp
+   |- core.hpp
+   |- robo.cpp
+   |- robo.hpp
+```
 
- # TT_MiniSumo_Arruela (v0.9)
-  Mini Sumo da Tamandutech - ARRUELA!
+## Codigo
+ O codigo é igual ou muito parecido com os dos demais robos de sumo da TT
