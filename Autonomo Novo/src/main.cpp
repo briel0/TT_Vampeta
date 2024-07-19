@@ -1,14 +1,14 @@
-/* ###### INCLUDE ######*/
+/* ###### INCLUDE ###### */
 #include <robo.hpp>
 /* ###### INCLUDE ###### */
 
 
-/* ###### DATA ######*/
+/* ###### DATA ###### */
 Robo robo;
-/* ###### DATA ######*/
+/* ###### DATA ###### */
 
 
-/* ###### CALL ######*/
+/* ###### CALL ###### */
 void setup()
 {
 	robo.setup();
@@ -18,4 +18,4 @@ void loop()
 {
 	robo.loop();
 }
-/* ###### CALL ######*/
+/* ###### CALL ###### */
