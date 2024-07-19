@@ -16,4 +16,4 @@ Autonomo
 ```
 
 ## Codigo
- O codigo é igual ou muito parecido com os dos demais robos de sumo da TT
+ Esse código é uma experiência de criar uma nova organização que tem como principio facilitar a manutenção.
