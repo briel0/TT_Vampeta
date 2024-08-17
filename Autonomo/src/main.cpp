@@ -1,10 +1,20 @@
-#include <core.hpp>
+/* ###### INCLUDE ###### */
 #include <robo.hpp>
+/* ###### INCLUDE ###### */
 
+/* ###### DATA ###### */
+Robo robo;
+/* ###### DATA ###### */
+
+/* ###### CALL ###### */
 void setup()
 {
+	robo.begin();
+	robo.setup();
 }
 
 void loop()
 {
+	robo.loop();
 }
+/* ###### CALL ###### */
