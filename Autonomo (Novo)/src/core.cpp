@@ -4,7 +4,6 @@
 
 #include <BluetoothSerial.h>
 #include <IRremote.hpp>
-#include <definitions.hpp>
 #include "core.hpp"
 #include "robo.hpp"
 
