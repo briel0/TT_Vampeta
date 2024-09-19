@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 #define pwmA 23
 #define a1 16
 #define a2 17
@@ -15,3 +13,4 @@
 
 void engine_begin();
 void engine_move(byte sentido_esquerda, byte velocidade_esquerda, byte sentido_direita, byte velocidade_direita);
+void engine_stop();

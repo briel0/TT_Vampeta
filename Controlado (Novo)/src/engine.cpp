@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "engine.hpp"
 
 void engine_begin()
@@ -39,4 +40,9 @@ void engine_move(byte sentido_esquerda, byte velocidade_esquerda, byte sentido_d
 		digitalWrite(b2, 1);
 		analogWrite(pwmB, velocidade_direita);
 	}
+}
+
+void engine_stop()
+{
+	engine_move(FRENTE, 0, FRENTE, 0);
 }

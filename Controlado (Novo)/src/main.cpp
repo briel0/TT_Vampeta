@@ -1,5 +1,10 @@
+#include <Arduino.h>
 #include "engine.hpp"
 #include "controller.hpp"
+
+#include <ps4.h>
+#include <PS4Controller.h>
+#include <ps4_int.h>
 
 byte SentidoE = FRENTE;
 byte SentidoD = FRENTE;
@@ -24,7 +29,7 @@ void loop()
 	if (!PS4.isConnected())
 	{
 		digitalWrite(2, LOW);
-		engine_move(FRENTE, 0, FRENTE, 0);
+		engine_stop();
 		return;
 	}
 
