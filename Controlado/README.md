@@ -7,7 +7,6 @@
  |--include
     |- controller.hpp
     |- engine.hpp
-    |- definition.hpp
  |--src
     |- controller.cpp
     |- engine.cpp
