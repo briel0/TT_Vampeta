@@ -13,36 +13,36 @@ void engine_begin()
 	digitalWrite(stby, 1);
 }
 
-void engine_move(byte sentido_esquerda, byte velocidade_esquerda, byte sentido_direita, byte velocidade_direita)
+void engine_move(engine_t engine_left, engine_t engine_right)
 {
-	if (sentido_esquerda == TRAS)
+	if (engine_left.direction == BACK)
 	{
 		digitalWrite(a1, 1);
 		digitalWrite(a2, 0);
-		analogWrite(pwmA, velocidade_esquerda);
+		analogWrite(pwmA, engine_left.speed);
 	}
 	else
 	{
 		digitalWrite(a1, 0);
 		digitalWrite(a2, 1);
-		analogWrite(pwmA, velocidade_esquerda);
+		analogWrite(pwmA, engine_left.speed);
 	}
 
-	if (sentido_direita == TRAS)
+	if (engine_right.direction == BACK)
 	{
 		digitalWrite(b1, 1);
 		digitalWrite(b2, 0);
-		analogWrite(pwmB, velocidade_direita);
+		analogWrite(pwmB, engine_right.speed);
 	}
 	else
 	{
 		digitalWrite(b1, 0);
 		digitalWrite(b2, 1);
-		analogWrite(pwmB, velocidade_direita);
+		analogWrite(pwmB, engine_right.speed);
 	}
 }
 
 void engine_stop()
 {
-	engine_move(FRENTE, 0, FRENTE, 0);
+	engine_move(FRONT_STOP, FRONT_STOP);
 }

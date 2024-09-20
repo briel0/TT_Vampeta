@@ -1,1 +1,0 @@
-void controller_begin(const char *mac);
