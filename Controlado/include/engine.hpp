@@ -1,21 +1,19 @@
-#define pwmA 23
-#define a1 16
-#define a2 17
-#define pwmB 4
-#define b1 18
-#define b2 19
-#define stby 5
-#define led 2
-#define IR 15
+#pragma region "Engine Direction Macros"
+#define ENGINE_DIRECTION_FRONT 0
+#define ENGINE_DIRECTION_BACK 1
+#pragma endregion "Engine Direction Macros"
 
-#define FRONT 1
-#define BACK 2
+#pragma region "Engine Speed Macros"
+#define ENGINE_SPEED_FULL UINT8_MAX
+#define ENGINE_SPEED_STOP 0
+#pragma endregion "Engine Speed Macros"
 
-#define FRONT_FULL {FRONT, UINT8_MAX}
-#define BACK_FULL {BACK, UINT8_MAX}
-
-#define FRONT_STOP {FRONT, 0}
-#define BACK_STOP {BACK, 0}
+#pragma region "Engine Macros"
+#define ENGINE_FRONT_FULL {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_FULL}
+#define ENGINE_BACK_FULL {ENGINE_DIRECTION_BACK, ENGINE_SPEED_FULL}
+#define ENGINE_FRONT_STOP {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_STOP}
+#define ENGINE_BACK_STOP {ENGINE_DIRECTION_BACK, ENGINE_SPEED_STOP}
+#pragma endregion "Engine Macros"
 
 struct engine_t
 {

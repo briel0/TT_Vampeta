@@ -1,6 +1,18 @@
 #include <Arduino.h>
 #include "engine.hpp"
 
+#pragma region "Engine Arrela Pinning Macros"
+#define pwmA 23
+#define a1 16
+#define a2 17
+#define pwmB 4
+#define b1 18
+#define b2 19
+#define stby 5
+#define led 2
+#define IR 15
+#pragma endregion "Engine Arrela Pinning Macros"
+
 void engine_begin()
 {
 	pinMode(pwmB, OUTPUT);
@@ -15,7 +27,7 @@ void engine_begin()
 
 void engine_move(engine_t engine_left, engine_t engine_right)
 {
-	if (engine_left.direction == BACK)
+	if (engine_left.direction == ENGINE_DIRECTION_BACK)
 	{
 		digitalWrite(a1, 1);
 		digitalWrite(a2, 0);
@@ -28,7 +40,7 @@ void engine_move(engine_t engine_left, engine_t engine_right)
 		analogWrite(pwmA, engine_left.speed);
 	}
 
-	if (engine_right.direction == BACK)
+	if (engine_right.direction == ENGINE_DIRECTION_BACK)
 	{
 		digitalWrite(b1, 1);
 		digitalWrite(b2, 0);
@@ -44,5 +56,5 @@ void engine_move(engine_t engine_left, engine_t engine_right)
 
 void engine_stop()
 {
-	engine_move(FRONT_STOP, FRONT_STOP);
+	engine_move(ENGINE_FRONT_STOP, ENGINE_FRONT_STOP);
 }
