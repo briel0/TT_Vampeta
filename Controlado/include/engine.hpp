@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #pragma region "Engine Direction Macros"
 #define ENGINE_DIRECTION_FRONT 0
 #define ENGINE_DIRECTION_BACK 1
@@ -22,5 +24,7 @@ struct engine_t
 };
 
 void engine_begin();
+void engine_alive();
+void engine_kill();
 void engine_move(engine_t engine_left, engine_t engine_right);
 void engine_stop();

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "engine.hpp"
 #include "controller.hpp"
+#include "macro.hpp"
 
 engine_t engine_left = ENGINE_FRONT_STOP;
 engine_t engine_right = ENGINE_FRONT_STOP;
@@ -11,28 +12,26 @@ void setup()
 	Serial.begin(115200);
 	engine_begin();
 	controller_begin("08:d1:f9:c8:f5:3c");
+	macro_load();
 	Serial.println("Ready.");
 }
 
 void loop()
 {
-	digitalWrite(2, HIGH);
-	if (!controller_is_connected())
+	if (controller_is_connected())
 	{
-		digitalWrite(2, LOW);
-		engine_stop();
+		engine_alive();
+	}
+	else
+	{
+		engine_kill();
 		return;
 	}
 
+	macro_call();
 	engine_left = ENGINE_FRONT_STOP;
 	engine_right = ENGINE_FRONT_STOP;
 	controller = controller_create_snapshot();
-
-	while (controller.cross)
-	{
-		engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
-		controller = controller_create_snapshot();
-	}
 
 	if (controller.l2)
 	{

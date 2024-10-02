@@ -52,7 +52,6 @@ void backward(uint32_t pa, uint32_t pb)
 }
 void forward(uint32_t pa, uint32_t pb)
 {
-
 	digitalWrite(b1, 1);
 	digitalWrite(b2, 0);
 	digitalWrite(a1, 0);

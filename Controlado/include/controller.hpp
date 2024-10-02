@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 struct controller_t
 {
 	bool right, down, up, left;

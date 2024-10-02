@@ -7,14 +7,16 @@
  |--include
     |- controller.hpp
     |- engine.hpp
+    |- macro.hpp
  |--src
     |- controller.cpp
     |- engine.cpp
+    |- macro.cpp
     |- main.cpp
  ```
 
-## Codigo
- Esse código é uma experiência de criar uma nova organização que tem como principio facilitar a manutenção.
+## Sobre a Estrutura do Código
+ Esse código é uma experiência de criar uma nova organização que tem como objetivo facilitar a manutenção.
 
 # Emparelhando o controlador PS4 com o ESP32:
 [Controller Pairing Guide](https://github.com/darthcloud/BlueRetro/wiki/Controller-pairing-guide)
@@ -47,3 +49,33 @@
  ```
  python -m esptool --chip esp32 get_security_info
  ```
+
+# Código
+ O código é separado em 4 principais áreas:
+ 1. `controller`
+ 2. `engine`
+ 3. `macro`
+ 4. `main`
+
+## Controller
+ 1. `controller_t`: É uma estrutura que representa o controle de PS4
+ 2. `void controller_begin(const char *mac)`: Inicializa o pareamento com o controle
+ 3. `bool controller_is_connected()`: Verifica se o controle está conectado
+ 4. `controller_t controller_create_snapshot()`: Captura todos os inputs do controle
+
+## Engine
+ 1. `engine_t`: É uma estrutura que representa um motor (velocidade e direção)
+ 2. `void engine_alive()`: É uma indicação visual que o motor não foi parado por `engine_kill` (led apagado)
+ 3. `void engine_kill()`: É uma indicação visual que o motor foi parado por essa função (led acesa)
+ 4. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
+ 5. `void engine_move(engine_t engine_left, engine_t engine_right)`: Altera o movimento dos motores
+ 6. `void engine_stop()`: Para todos os motores imediatamente
+
+## Macro
+ 1. `macro_t` É uma estrutura que representa uma macro
+ 2. `void macro_load()` Carrega as macros
+ 3. `void macro_call()` Chama as macros
+
+## Main
+ 1. `setup`: Primeira parte do código que roda ao ligar o robô
+ 2. `loop`: É o loop default do robô

@@ -1,9 +1,8 @@
 #include <Arduino.h>
-#include "controller.hpp"
-
 #include <ps4.h>
 #include <PS4Controller.h>
 #include <ps4_int.h>
+#include "controller.hpp"
 
 void controller_begin(const char *mac)
 {
