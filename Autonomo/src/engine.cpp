@@ -9,7 +9,6 @@
 #define b1 18
 #define b2 19
 #define stby 5
-#define led 2
 #pragma endregion "Engine Arrela Pinning Macros"
 
 void engine_begin()
@@ -21,20 +20,11 @@ void engine_begin()
 	pinMode(b1, OUTPUT);
 	pinMode(b2, OUTPUT);
 	pinMode(stby, OUTPUT);
-	pinMode(led, OUTPUT);
-
-	digitalWrite(stby, HIGH);
 }
 
-void engine_alive()
+void engine_standby(bool mode)
 {
-	digitalWrite(led, HIGH);
-}
-
-void engine_kill()
-{
-	digitalWrite(led, LOW);
-	engine_stop();
+	digitalWrite(stby, static_cast<uint8_t>(!mode));
 }
 
 void engine_move(engine_t engine_left, engine_t engine_right)

@@ -3,7 +3,7 @@
 
 ## Pastas e Arquivos
  ```
- Controlado (RC)
+ Autonomo
  |--include
     |- controller.hpp
     |- engine.hpp
@@ -54,9 +54,8 @@
  O código é separado em 4 principais áreas:
  1. `controller`
  2. `engine`
- 3. `internal`
- 4. `macro`
- 5. `main`
+ 3. `macro`
+ 4. `main`
 
 ## Controller
  1. `controller_t`: É uma estrutura que representa o controle de PS4
@@ -66,14 +65,11 @@
 
 ## Engine
  1. `engine_t`: É uma estrutura que representa um motor (velocidade e direção)
- 2. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
- 3. `void engine_standby(bool mode)`: Liga / Desliga a corrente elétrica dos motores
- 4. `void engine_move(engine_t engine_left, engine_t engine_right)`: Altera o movimento dos motores
- 5. `void engine_stop()`: Para todos os motores imediatamente
-
-## Internal
- 1. `void internal_begin()` Inicializa os recursos internos
- 2. `void internal_led(bool mode)` Liga / Desliga o led interno
+ 2. `void engine_alive()`: É uma indicação visual que o motor não foi parado por `engine_kill` (led apagado)
+ 3. `void engine_kill()`: É uma indicação visual que o motor foi parado por essa função (led acesa)
+ 4. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
+ 5. `void engine_move(engine_t engine_left, engine_t engine_right)`: Altera o movimento dos motores
+ 6. `void engine_stop()`: Para todos os motores imediatamente
 
 ## Macro
  1. `macro_t` É uma estrutura que representa uma macro

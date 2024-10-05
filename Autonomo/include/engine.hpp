@@ -24,7 +24,6 @@ struct engine_t
 };
 
 void engine_begin();
-void engine_alive();
-void engine_kill();
+void engine_standby(bool mode);
 void engine_move(engine_t engine_left, engine_t engine_right);
 void engine_stop();

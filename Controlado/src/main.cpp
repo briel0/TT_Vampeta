@@ -1,6 +1,7 @@
 #include <Arduino.h>
-#include "engine.hpp"
 #include "controller.hpp"
+#include "engine.hpp"
+#include "internal.hpp"
 #include "macro.hpp"
 
 engine_t engine_left = ENGINE_FRONT_STOP;
@@ -10,21 +11,29 @@ controller_t controller;
 void setup()
 {
 	Serial.begin(115200);
-	engine_begin();
+	Serial.println("Serial 115200!");
+
 	controller_begin("08:d1:f9:c8:f5:3c");
+	engine_begin();
+	internal_begin();
 	macro_load();
-	Serial.println("Ready.");
+	Serial.println("Begin and Load Complete!");
+
+	engine_standby(false);
+	internal_led(false);
+	Serial.println("Setup Complete!");
 }
 
 void loop()
 {
 	if (controller_is_connected())
 	{
-		engine_alive();
+		internal_led(false);
 	}
 	else
 	{
-		engine_kill();
+		internal_led(true);
+		engine_stop();
 		return;
 	}
 
