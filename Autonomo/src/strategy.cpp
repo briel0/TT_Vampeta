@@ -1,61 +1,110 @@
-#include "core.hpp"
-#include "robo.hpp"
+#include <Arduino.h>
+#include "strategy.hpp"
+#include "engine.hpp"
+#include "internal.hpp"
+#include "sensor.hpp"
+
+engine_t engine_left = ENGINE_FRONT_STOP;
+engine_t engine_right = ENGINE_FRONT_STOP;
 
 void inicio_frentao()
 {
-	forward(255, 255);
+	engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
 	delay(325);
 }
 
-void inicio_curvao(Direction init_direc)
+void inicio_curvao(direction init_direc)
 {
-	if (init_direc == dir)
+	if (init_direc == right)
 	{
-		right(255, 255);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
 		delay(96);
-		forward(255, 170);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT(170));
 		delay(620);
-		left(255, 255);
+		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
 		delay(100);
-		init_direc = esq;
+		init_direc = left;
 	}
 	else
 	{
-		left(255, 255);
+		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
 		delay(80);
-		forward(170, 255);
+		engine_move(ENGINE_FRONT(170), ENGINE_FRONT_FULL);
 		delay(600);
-		right(255, 255);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
 		delay(100);
-		init_direc = dir;
+		init_direc = right;
 	}
 }
 
-void inicio_curvinha(Direction init_direc)
+void inicio_curvinha(direction init_direc)
 {
-	if (init_direc == dir)
+	if (init_direc == right)
 	{
-		right(255, 255);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
 		delay(96);
-		forward(255, 170);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT(170));
 		delay(320);
-		left(255, 255);
+		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
 		delay(100);
-		init_direc = esq;
+		init_direc = left;
 	}
 	else
 	{
-		left(255, 255);
+		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
 		delay(80);
-		forward(170, 255);
+		engine_move(ENGINE_FRONT(170), ENGINE_FRONT_FULL);
 		delay(300);
-		right(255, 255);
+		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
 		delay(100);
-		init_direc = dir;
+		init_direc = right;
 	}
 }
 
-void inicio_defesa(Direction init_direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
+void inicio_costas(direction init_direc)
+{
+	if (init_direc == right)
+	{
+		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
+		delay(190);
+	}
+	else
+	{
+		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
+		delay(190);
+	}
+}
+
+void procurar_padrao(uint8_t velocidade_giro)
+{
+	sensor_t sensor = sensor_create_snapshot();
+	if (sensor.front)
+	{
+		while (sensor.front)
+		{
+			engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
+		}
+	}
+	else if (sensor.left)
+	{
+		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
+	}
+	else if (sensor.right)
+	{
+		engine_move(ENGINE_FRONT(velocidade_giro), ENGINE_BACK(velocidade_giro));
+	}
+	else
+	{
+		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
+		// if (direc == esq)
+		//	left(velocidade_giro, velocidade_giro);
+		// else
+		//	right(velocidade_giro, velocidade_giro);
+	}
+}
+
+/*
+void inicio_defesa(direction init_direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
 {
 	int estrategia_defesa_count = 0;
 	int estrategia_defesa_timer = 0;
@@ -64,7 +113,7 @@ void inicio_defesa(Direction init_direc, bool &valueSharpF, bool &valueSharpE, b
 	const uint32_t VELOCIDADE_DEFESA_MAX = 70, VELOCIDADE_DEFESA_MIN = 24;
 	uint32_t velocidade_esquerda, velocidade_direita;
 
-	if (init_direc == dir)
+	if (init_direc == right)
 	{
 		velocidade_esquerda = VELOCIDADE_DEFESA_MAX;
 		velocidade_direita = VELOCIDADE_DEFESA_MIN;
@@ -93,21 +142,7 @@ void inicio_defesa(Direction init_direc, bool &valueSharpF, bool &valueSharpE, b
 	}
 }
 
-void inicio_costas(Direction init_direc)
-{
-	if (init_direc == dir)
-	{ // prestar atenção na init_direc, pq os robôs estarão de costas
-		right(255, 255);
-		delay(190);
-	}
-	else
-	{
-		left(255, 255);
-		delay(190);
-	}
-}
-
-void inicio_defesa_fake(Direction init_direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
+void inicio_defesa_fake(direction init_direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
 {
 	int estrategia_defesa_count = 0;
 	int estrategia_defesa_timer = 0;
@@ -116,7 +151,7 @@ void inicio_defesa_fake(Direction init_direc, bool &valueSharpF, bool &valueShar
 	const uint32_t VELOCIDADE_DEFESA_MAX = 70, VELOCIDADE_DEFESA_MIN = 24;
 	uint32_t velocidade_esquerda, velocidade_direita;
 
-	if (init_direc == dir)
+	if (init_direc == right)
 	{
 		velocidade_esquerda = VELOCIDADE_DEFESA_MAX;
 		velocidade_direita = VELOCIDADE_DEFESA_MIN;
@@ -144,7 +179,7 @@ void inicio_defesa_fake(Direction init_direc, bool &valueSharpF, bool &valueShar
 		delay(10);
 	}
 
-	if (init_direc == dir)
+	if (init_direc == right)
 	{
 		right(255, 255);
 		delay(90);
@@ -160,7 +195,7 @@ void inicio_defesa_fake(Direction init_direc, bool &valueSharpF, bool &valueShar
 	}
 }
 
-void inicio_estrategi(Direction init_direc, Direction &direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
+void inicio_estrategi(direction init_direc, direction &direc, bool &valueSharpF, bool &valueSharpE, bool &valueSharpD)
 {
 	forward(255, 255);
 	delay(125);
@@ -185,7 +220,7 @@ void inicio_estrategi(Direction init_direc, Direction &direc, bool &valueSharpF,
 	}
 	else if (valueSharpF)
 	{
-		if (init_direc == dir)
+		if (init_direc == right)
 		{
 			right(255, 255);
 			delay(90);
@@ -215,3 +250,4 @@ void inicio_estrategi(Direction init_direc, Direction &direc, bool &valueSharpF,
 		return;
 	}
 }
+*/

@@ -1,6 +1,8 @@
-#include <array>
+#include <Arduino.h>
 #include <functional>
+#include <array>
 #include "macro.hpp"
+
 #include "engine.hpp"
 #include "controller.hpp"
 

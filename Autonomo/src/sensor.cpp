@@ -1,53 +1,31 @@
 #include <Arduino.h>
 #include "sensor.hpp"
+#include "engine.hpp"
+#include "internal.hpp"
 
 #pragma region "Sensor Arrela Pinning Macros"
-#define sensorF 39
-#define sensorD 36
-#define sensorE 34
+#define sensor_front 39
+#define sensor_right 36
+#define sensor_left 34
 #pragma endregion "Sensor Arrela Pinning Macros"
 
 void sensor_begin()
 {
-	pinMode(sensorF, INPUT);
-	pinMode(sensorD, INPUT);
-	pinMode(sensorE, INPUT);
+	pinMode(sensor_left, INPUT);
+	pinMode(sensor_front, INPUT);
+	pinMode(sensor_right, INPUT);
 }
 
-void sensor_task(void *pvParameters)
+sensor_t sensor_create_snapshot()
 {
-	while (true)
-	{
-		if (running)
-		{
-			if (IrReceiver.decode())
-			{
-				IrReceiver.resume();
-				if (IrReceiver.decodedIRData.command == 0x2)
-				{
-					digitalWrite(led, 1);
-					stop();
-					ESP.restart();
-				}
-			}
-
-			valueSharpF = digitalRead(sensorF);
-			valueSharpD = digitalRead(sensorD);
-			valueSharpE = digitalRead(sensorE);
-
-			if (valueSharpE)
-			{
-				direc = esq;
-			}
-			else if (valueSharpD)
-			{
-				direc = dir;
-			}
-		}
-		vTaskDelay(1);
-	}
+	sensor_t sensor;
+	sensor.left = digitalRead(sensor_left);
+	sensor.left = digitalRead(sensor_front);
+	sensor.left = digitalRead(sensor_right);
+	return sensor;
 }
 
+/*
 void sensor_test()
 {
 	SerialBT.println("Test Sensors");
@@ -78,3 +56,4 @@ void sensor_test_motor()
 			stop();
 	}
 }
+*/

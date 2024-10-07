@@ -8,6 +8,7 @@
 #pragma region "Engine Speed Macros"
 #define ENGINE_SPEED_FULL UINT8_MAX
 #define ENGINE_SPEED_STOP 0
+#define ENGINE_SPEED(x) x
 #pragma endregion "Engine Speed Macros"
 
 #pragma region "Engine Macros"
@@ -15,6 +16,8 @@
 #define ENGINE_BACK_FULL {ENGINE_DIRECTION_BACK, ENGINE_SPEED_FULL}
 #define ENGINE_FRONT_STOP {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_STOP}
 #define ENGINE_BACK_STOP {ENGINE_DIRECTION_BACK, ENGINE_SPEED_STOP}
+#define ENGINE_FRONT(x) {ENGINE_DIRECTION_FRONT, ENGINE_SPEED(x)}
+#define ENGINE_BACK(x) {ENGINE_DIRECTION_BACK, ENGINE_SPEED(x)}
 #pragma endregion "Engine Macros"
 
 struct engine_t
