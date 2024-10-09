@@ -22,12 +22,12 @@ void engine_begin()
 	pinMode(stby, OUTPUT);
 }
 
-void engine_standby(bool mode)
+void engine_standby(const bool mode)
 {
 	digitalWrite(stby, static_cast<uint8_t>(!mode));
 }
 
-void engine_move(engine_t engine_left, engine_t engine_right)
+void engine_move(const engine_t engine_left, const engine_t engine_right)
 {
 	if (engine_left.direction == ENGINE_DIRECTION_BACK)
 	{
@@ -62,4 +62,9 @@ void engine_stop()
 	digitalWrite(a2, HIGH);
 	digitalWrite(b1, HIGH);
 	digitalWrite(b2, HIGH);
+}
+
+void engine_debug(const engine_t engine, const char *msg)
+{
+	Serial.printf("\"%s\" = { direction:%i; speed:%i }\n", msg, engine.direction, engine.speed);
 }

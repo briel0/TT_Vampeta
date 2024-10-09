@@ -4,14 +4,21 @@
 #include <ps4_int.h>
 #include "controller.hpp"
 
+bool controller_begin_connected = false;
+
 void controller_begin(const char *mac)
 {
-	PS4.begin(mac);
+	controller_begin_connected = PS4.begin(mac);
 }
 
 bool controller_is_connected()
 {
 	return PS4.isConnected();
+}
+
+bool controller_disconnected()
+{
+	return controller_begin_connected && !controller_is_connected();
 }
 
 controller_t controller_create_snapshot()
@@ -45,4 +52,11 @@ controller_t controller_create_snapshot()
 	controller.l_stick_y = PS4.LStickY();
 
 	return controller;
+}
+
+void controller_debug(const controller_t controller, const char *msg)
+{
+	Serial.printf("\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i  }\n",
+				  msg, controller.r2, controller.r2_value, controller.l2, controller.l2_value,
+				  controller.square, controller.cross, controller.circle, controller.triangle);
 }

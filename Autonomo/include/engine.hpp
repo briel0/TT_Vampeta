@@ -8,7 +8,7 @@
 #pragma region "Engine Speed Macros"
 #define ENGINE_SPEED_FULL UINT8_MAX
 #define ENGINE_SPEED_STOP 0
-#define ENGINE_SPEED(x) x
+#define ENGINE_SPEED(x) ((x >= ENGINE_SPEED_STOP && x <= ENGINE_SPEED_FULL) * (x) + (ENGINE_SPEED_FULL) * (x > ENGINE_SPEED_FULL))
 #pragma endregion "Engine Speed Macros"
 
 #pragma region "Engine Macros"
