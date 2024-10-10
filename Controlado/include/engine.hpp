@@ -6,10 +6,10 @@
 #pragma endregion "Engine Direction Macros"
 
 #pragma region "Engine Speed Macros"
-#define ENGINE_SPEED_FULL UINT8_MAX
-#define ENGINE_SPEED_SLOW(x) (ENGINE_SPEED_FULL >> x)
-#define ENGINE_SPEED_STOP 0
-#define ENGINE_SPEED(x) ((x >= ENGINE_SPEED_STOP && x <= ENGINE_SPEED_FULL) * (x) + (ENGINE_SPEED_FULL) * (x > ENGINE_SPEED_FULL))
+#define ENGINE_SPEED_FULL static_cast<uint8_t>(UINT8_MAX)
+#define ENGINE_SPEED_SLOW(x) static_cast<uint8_t>(ENGINE_SPEED_FULL >> x)
+#define ENGINE_SPEED_STOP static_cast<uint8_t>(0)
+#define ENGINE_SPEED(x) static_cast<uint8_t>((x >= ENGINE_SPEED_STOP && x <= ENGINE_SPEED_FULL) * (x) + (ENGINE_SPEED_FULL) * (x > ENGINE_SPEED_FULL))
 #pragma endregion "Engine Speed Macros"
 
 #pragma region "Engine Macros"

@@ -3,15 +3,15 @@
 
 ## Pastas e Arquivos
  ```
- Autonomo
+ Controlado (RC)
  |--include
     |- controller.hpp
     |- engine.hpp
-    |- macro.hpp
+    |- internal.hpp
  |--src
     |- controller.cpp
     |- engine.cpp
-    |- macro.cpp
+    |- internal.cpp
     |- main.cpp
  ```
 
@@ -54,27 +54,33 @@
  O código é separado em 4 principais áreas:
  1. `controller`
  2. `engine`
- 3. `macro`
+ 3. `internal`
  4. `main`
 
 ## Controller
  1. `controller_t`: É uma estrutura que representa o controle de PS4
  2. `void controller_begin(const char *mac)`: Inicializa o pareamento com o controle
  3. `bool controller_is_connected()`: Verifica se o controle está conectado
- 4. `controller_t controller_create_snapshot()`: Captura todos os inputs do controle
+ 4. `bool controller_disconnected()`: Verifica se o controle foi desconectado após ter sido inicializado com sucesso
+ 5. `controller_t controller_create_snapshot()`: Captura todos os inputs do controle
+ 6. `void controller_debug(const controller_t controller, const char *msg)`:  Mostra as informações do controle
 
 ## Engine
  1. `engine_t`: É uma estrutura que representa um motor (velocidade e direção)
- 2. `void engine_alive()`: É uma indicação visual que o motor não foi parado por `engine_kill` (led apagado)
- 3. `void engine_kill()`: É uma indicação visual que o motor foi parado por essa função (led acesa)
- 4. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
- 5. `void engine_move(engine_t engine_left, engine_t engine_right)`: Altera o movimento dos motores
- 6. `void engine_stop()`: Para todos os motores imediatamente
+ 2. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
+ 3. `void engine_standby(const bool mode)`: Liga / Desliga a corrente elétrica dos motores
+ 4. `void engine_move(const engine_t engine_left, const engine_t engine_right)`: Altera o movimento dos motores
+ 5. `void engine_stop()`: Para todos os motores imediatamente
+ 6. `void engine_debug(const engine_t engine, const char *msg)`: Mostra as informações do motor
 
-## Macro
- 1. `macro_t` É uma estrutura que representa uma macro
- 2. `void macro_load()` Carrega as macros
- 3. `void macro_call()` Chama as macros
+## Internal
+ 1. `void internal_begin()`: Inicializa os recursos internos
+ 2. `void internal_led(const bool mode)`: Liga / Desliga o led internos
+ 3. `void internal_setup_millis()`: Salva o novo tempo inicial
+ 4. `uint64_t internal_begin_millis()`: Retorna o tempo inicial
+ 5. `uint64_t internal_end_millis()`: Retorna o tempo final (o tempo atual)
+ 6. `uint64_t internal_delta_millis()`: Retorna a diferença entre o tempo final e o inicial
+ 7. `void engine_debug(const engine_t engine, const char *msg)`: Mostra as informações dos recursos internos
 
 ## Main
  1. `setup`: Primeira parte do código que roda ao ligar o robô

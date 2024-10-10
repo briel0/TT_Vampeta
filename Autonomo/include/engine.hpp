@@ -6,9 +6,10 @@
 #pragma endregion "Engine Direction Macros"
 
 #pragma region "Engine Speed Macros"
-#define ENGINE_SPEED_FULL UINT8_MAX
-#define ENGINE_SPEED_STOP 0
-#define ENGINE_SPEED(x) ((x >= ENGINE_SPEED_STOP && x <= ENGINE_SPEED_FULL) * (x) + (ENGINE_SPEED_FULL) * (x > ENGINE_SPEED_FULL))
+#define ENGINE_SPEED_FULL static_cast<uint8_t>(UINT8_MAX)
+#define ENGINE_SPEED_SLOW(x) static_cast<uint8_t>(ENGINE_SPEED_FULL >> x)
+#define ENGINE_SPEED_STOP static_cast<uint8_t>(0)
+#define ENGINE_SPEED(x) static_cast<uint8_t>((x >= ENGINE_SPEED_STOP && x <= ENGINE_SPEED_FULL) * (x) + (ENGINE_SPEED_FULL) * (x > ENGINE_SPEED_FULL))
 #pragma endregion "Engine Speed Macros"
 
 #pragma region "Engine Macros"
@@ -27,6 +28,7 @@ struct engine_t
 };
 
 void engine_begin();
-void engine_standby(bool mode);
-void engine_move(engine_t engine_left, engine_t engine_right);
+void engine_standby(const bool mode);
+void engine_move(const engine_t engine_left, const engine_t engine_right);
 void engine_stop();
+void engine_debug(const engine_t engine, const char *msg);

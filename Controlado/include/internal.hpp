@@ -1,6 +1,8 @@
 #include <stdint.h>
 
+#pragma region "Internal Macros"
 #define INTERNAL_BETWEEN(x, min, max) ((x >= min && x <= max) * (x) + (min) * (x < min) + (max) * (x > max))
+#pragma endregion "Internal Macros"
 
 void internal_begin();
 void internal_led(const bool mode);

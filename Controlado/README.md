@@ -7,11 +7,11 @@
  |--include
     |- controller.hpp
     |- engine.hpp
-    |- macro.hpp
+    |- internal.hpp
  |--src
     |- controller.cpp
     |- engine.cpp
-    |- macro.cpp
+    |- internal.cpp
     |- main.cpp
  ```
 
