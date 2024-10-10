@@ -37,7 +37,6 @@ void setup()
 #pragma region "Arrela Main Loop"
 void loop()
 {
-	delay(128);
 	internal_led(true);
 	if (controller_disconnected())
 	{
@@ -106,6 +105,7 @@ void update_engine()
 	engine_debug(engine_left, "engine_left");
 	engine_debug(engine_right, "engine_right");
 	controller_debug(controller, "controller");
+	internal_debug("internal");
 	engine_move(engine_left, engine_right);
 }
 
