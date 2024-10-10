@@ -3,13 +3,14 @@
 #include "engine.hpp"
 #include "internal.hpp"
 
-float base_left_speed = 128, base_right_speed = 128;
 engine_t engine_left = ENGINE_FRONT_STOP;
 engine_t engine_right = ENGINE_FRONT_STOP;
 controller_t controller;
 
 #pragma region "Arrela Main Signatures"
 void update_engine();
+void reset_engine();
+void macro_normal();
 void macro_careful();
 void macro_just_go();
 void macro_forward(const uint8_t direction, const uint8_t speed_modifier);
@@ -36,59 +37,62 @@ void setup()
 #pragma region "Arrela Main Loop"
 void loop()
 {
-	internal_led(false);
+	delay(128);
+	internal_led(true);
 	if (controller_disconnected())
 	{
-		internal_led(true);
-		engine_stop();
-		return;
+		internal_led(false);
+		goto loop_reset_engine;
 	}
 
-	engine_left = ENGINE_FRONT_STOP;
-	engine_right = ENGINE_FRONT_STOP;
+	macro_normal();
 	controller = controller_create_snapshot();
-
-	base_left_speed = 128 + map(static_cast<float>(internal_delta_millis()) / static_cast<float>(1000), 0, 127, 0, 127);
-	base_left_speed = 128 + map(static_cast<float>(internal_delta_millis()) / static_cast<float>(1000), 0, 127, 0, 127);
-	engine_left.speed = base_left_speed;
-	engine_right.speed = base_right_speed;
 
 	if (controller.triangle)
 	{
+		Serial.println("(controller.triangle)");
 		macro_careful();
 	}
 
 	if (controller.cross)
 	{
+		Serial.println("(controller.cross)");
 		macro_just_go();
 		goto loop_update_engine;
 	}
 
 	if (controller.l2)
 	{
+		Serial.println("(controller.l2)");
 		macro_forward(ENGINE_DIRECTION_BACK, controller.l2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.r2)
 	{
+		Serial.println("(controller.r2)");
 		macro_forward(ENGINE_DIRECTION_FRONT, controller.r2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.l_stick_x <= -50)
 	{
+		Serial.println("(controller.l_stick_x <= -50)");
 		macro_curve(ENGINE_DIRECTION_BACK, ENGINE_DIRECTION_FRONT);
+		internal_setup_millis();
 		goto loop_update_engine;
 	}
 
 	if (controller.l_stick_x >= 50)
 	{
+		Serial.println("(controller.l_stick_x >= 50)");
 		macro_curve(ENGINE_DIRECTION_FRONT, ENGINE_DIRECTION_BACK);
+		internal_setup_millis();
 		goto loop_update_engine;
 	}
 
-	internal_setup_millis();
+loop_reset_engine:
+	reset_engine();
 
 loop_update_engine:
 	update_engine();
@@ -105,10 +109,27 @@ void update_engine()
 	engine_move(engine_left, engine_right);
 }
 
+void reset_engine()
+{
+	engine_stop();
+	engine_left = ENGINE_FRONT_STOP;
+	engine_right = ENGINE_FRONT_STOP;
+	internal_setup_millis();
+}
+
+void macro_normal()
+{
+	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 4, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
+	engine_left.speed = base_speed;
+	engine_right.speed = base_speed;
+}
+
 void macro_careful()
 {
-	engine_left.speed = ENGINE_SPEED(64);
-	engine_right.speed = ENGINE_SPEED(64);
+	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 2, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
+	const uint8_t slow_base_speed = map(base_speed, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL, ENGINE_SPEED_SLOW(3), ENGINE_SPEED_SLOW(2));
+	engine_left.speed = slow_base_speed;
+	engine_right.speed = slow_base_speed;
 }
 
 void macro_just_go()
@@ -119,8 +140,12 @@ void macro_just_go()
 
 void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
 {
-	engine_left = {direction, speed_modifier};
-	engine_right = {direction, speed_modifier};
+	const uint8_t left_speed = map(speed_modifier, ENGINE_SPEED_STOP, ENGINE_SPEED_FULL,
+								   ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_left.speed));
+	const uint8_t right_speed = map(speed_modifier, ENGINE_SPEED_STOP, ENGINE_SPEED_FULL,
+									ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_right.speed));
+	engine_left = {direction, left_speed};
+	engine_right = {direction, right_speed};
 	if (controller.l_stick_x <= -50)
 	{
 		engine_right.speed >>= 3;
@@ -133,8 +158,6 @@ void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
 
 void macro_curve(const uint8_t left_direction, const uint8_t righ_direction)
 {
-	engine_left.speed >>= 1;
-	engine_right.speed >>= 1;
 	engine_left.direction = left_direction;
 	engine_right.direction = righ_direction;
 }

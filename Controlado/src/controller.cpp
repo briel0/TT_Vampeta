@@ -56,7 +56,8 @@ controller_t controller_create_snapshot()
 
 void controller_debug(const controller_t controller, const char *msg)
 {
-	Serial.printf("\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i  }\n",
+	Serial.printf("\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i; RStickX:%i; RStickY:%i; LStickX:%i; LStickY:%i }\n",
 				  msg, controller.r2, controller.r2_value, controller.l2, controller.l2_value,
-				  controller.square, controller.cross, controller.circle, controller.triangle);
+				  controller.square, controller.cross, controller.circle, controller.triangle,
+				  controller.r_stick_x, controller.r_stick_y, controller.l_stick_x, controller.l_stick_y);
 }

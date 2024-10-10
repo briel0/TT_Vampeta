@@ -74,8 +74,12 @@
  6. `void engine_debug(const engine_t engine, const char *msg)`: Mostra as informações do motor
 
 ## Internal
- 1. `void internal_begin()` Inicializa os recursos internos
- 2. `void internal_led(const bool mode)` Liga / Desliga o led internos
+ 1. `void internal_begin()`: Inicializa os recursos internos
+ 2. `void internal_led(const bool mode)`: Liga / Desliga o led internos
+ 3. `void internal_setup_millis()`: Salva o novo tempo inicial
+ 4. `uint64_t internal_begin_millis()`: Retorna o tempo inicial
+ 5. `uint64_t internal_end_millis()`: Retorna o tempo final (o tempo atual)
+ 6. `uint64_t internal_delta_millis()`: Retorna a diferença entre o tempo final e o inicial
 
 ## Main
  1. `setup`: Primeira parte do código que roda ao ligar o robô

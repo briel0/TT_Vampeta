@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+#define INTERNAL_BETWEEN(x, min, max) ((x >= min && x <= max) * (x) + (min) * (x < min) + (max) * (x > max))
+
 void internal_begin();
 void internal_led(const bool mode);
 void internal_setup_millis();
