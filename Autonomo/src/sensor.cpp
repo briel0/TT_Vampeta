@@ -20,9 +20,14 @@ sensor_t sensor_create_snapshot()
 {
 	sensor_t sensor;
 	sensor.left = digitalRead(sensor_left);
-	sensor.left = digitalRead(sensor_front);
-	sensor.left = digitalRead(sensor_right);
+	sensor.front = digitalRead(sensor_front);
+	sensor.right = digitalRead(sensor_right);
 	return sensor;
+}
+
+void sensor_debug(sensor_t sensor, const char *msg)
+{
+	Serial.printf("\"%s\" = { left:%i; front:%i; right:%i }\n", msg, sensor.left, sensor.front, sensor.right);
 }
 
 /*

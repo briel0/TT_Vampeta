@@ -9,4 +9,5 @@ struct sensor_t
 
 void sensor_begin();
 sensor_t sensor_create_snapshot();
+void sensor_debug(sensor_t sensor, const char *msg);
 // void sensor_task(void *pvParameters);

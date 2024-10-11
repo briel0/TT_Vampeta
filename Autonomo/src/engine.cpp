@@ -2,12 +2,12 @@
 #include "engine.hpp"
 
 #pragma region "Engine Arrela Pinning Macros"
-#define pwmA 23
-#define a1 16
-#define a2 17
-#define pwmB 4
-#define b1 18
-#define b2 19
+#define pwmA 4
+#define a1 18
+#define a2 19
+#define pwmB 23
+#define b1 16
+#define b2 17
 #define stby 5
 #pragma endregion "Engine Arrela Pinning Macros"
 

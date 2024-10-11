@@ -119,7 +119,7 @@ void reset_engine()
 
 void macro_normal()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 4, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
+	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 3, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;
 }

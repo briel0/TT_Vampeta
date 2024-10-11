@@ -27,7 +27,7 @@ char BT = 'f';		   // char que é recebida pelo bluetooth
 char estrategia = 'f'; // estratégio de início da luta (qualquer caracter)
 bool sensor_running = false;
 
-direction direc = left;
+direction direc = right;
 
 sensor_t sensor;
 engine_t engine_left = ENGINE_FRONT_STOP;
@@ -35,8 +35,11 @@ engine_t engine_right = ENGINE_FRONT_STOP;
 
 void inicio_frentao()
 {
-	engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
-	delay(325);
+	for (uint8_t i = ENGINE_SPEED_SLOW(2) + ENGINE_SPEED_SLOW(3) + ENGINE_SPEED_SLOW(4); i < ENGINE_SPEED_FULL; i++) {
+		engine_move(ENGINE_FRONT(i), ENGINE_FRONT(i));
+		delay(1);
+	}
+	delay(128);
 }
 
 void inicio_curvao(direction init_direc)
@@ -105,12 +108,19 @@ void procurar_padrao(uint8_t velocidade_giro)
 {
 	if (sensor.front)
 	{
+		engine_stop();
+		engine_move({ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(1)}, {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(1)});
+		delay(32);
+		for (uint8_t i = ENGINE_SPEED_SLOW(1); i <= ENGINE_SPEED_FULL && sensor.front; i++) {
+			engine_move(ENGINE_FRONT(i), ENGINE_FRONT(i));
+			delay(1);
+		}
 		while (sensor.front)
 		{
 			engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
 		}
 	}
-	else if (sensor.left)
+	if (sensor.left)
 	{
 		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
 	}
@@ -120,11 +130,14 @@ void procurar_padrao(uint8_t velocidade_giro)
 	}
 	else
 	{
-		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
-		// if (direc == esq)
-		//	left(velocidade_giro, velocidade_giro);
-		// else
-		//	right(velocidade_giro, velocidade_giro);
+		if (direc == right) 
+		{
+			engine_move(ENGINE_FRONT(velocidade_giro), ENGINE_BACK(velocidade_giro));
+		}
+		else 
+		{
+			engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
+		}
 	}
 }
 
@@ -145,7 +158,7 @@ void sensor_task(void *pvParameters)
 				}
 			}
 
-			sensor_t sensor = sensor_create_snapshot();
+			sensor = sensor_create_snapshot();
 			if (sensor.left)
 			{
 				direc = left;
@@ -176,6 +189,7 @@ void setup()
 	// #######################################################
 
 	engine_standby(true);
+	receiver_begin();
 	serial_begin(ROBO_NAME);
 
 	serial_println("LIGOUUUU");
@@ -248,7 +262,6 @@ void setup()
 			}
 		}
 	}
-
 	serial_end();
 
 	bool ready = false;
@@ -293,50 +306,27 @@ void setup()
 
 	switch (estrategia)
 	{
-	case ESTRATEGIA_FRENTAO: // frentao
+	case ESTRATEGIA_FRENTAO:
 		serial_println("FRENTAAO");
 		inicio_frentao();
 		break;
 
-	case ESTRATEGIA_CURVAO: // curvao
+	case ESTRATEGIA_CURVAO:
 		serial_println("CURVÃOO");
 		inicio_curvao(direc);
 		break;
 
-	case ESTRATEGIA_CURVINHA: // curvinha
+	case ESTRATEGIA_CURVINHA:
 		serial_println("CURVINHAA");
 		inicio_curvinha(direc);
 		break;
 
-		/*
-		case ESTRATEGIA_DEFESA: // defesa hehehe
-			serial_println("DEFESA");
-			inicio_defesa(direc, valueSharpF, valueSharpE, valueSharpD);
-			break;
-		*/
-
-	case ESTRATEGIA_COSTAS: // costas   - só gira 180º
+	case ESTRATEGIA_COSTAS:
 		serial_println("COSTAS");
 		inicio_costas(direc);
 		break;
 
-		/*
-		case ESTRATEGIA_DEFESA_FAKE: // defesa hehehe
-			serial_println("DEFESA FAKE");
-			inicio_defesa_fake(direc, valueSharpF, valueSharpE, valueSharpD);
-			break;
-
-		case ESTRATEGIA_ESTRATEGI: // vem do latim estrategi
-			serial_println("ESTRATEGI");
-			inicio_estrategi(direc, direc, valueSharpF, valueSharpE, valueSharpD);
-			break;
-
-		case ESTRATEGIA_LOOP: // vai direto pro loop "procurar_padrao"
-			serial_println("LOOP");
-			break;
-		*/
-
-	default: // CÓPIA DO FRENTÃO
+	default:
 		serial_println("default");
 		inicio_frentao();
 		break;
@@ -347,20 +337,9 @@ void loop()
 {
 	switch (estrategia)
 	{
-		/*
-	case ESTRATEGIA_DEFESA:
-		procurar_defesa();
-		serial_println("loop: procurar_defesa!!");
-		break;
-
-	case ESTRATEGIA_COSTAS:
-		procurar_padrao(VELOCIDADE_GIRO_DESEMPATE);
-		serial_println("loop: procurar_padrao!!");
-		break;
-		*/
 	default:
-		procurar_padrao(120);
-		serial_println("loop: procurar_padrao!!");
+		procurar_padrao(ENGINE_SPEED_SLOW(2) + ENGINE_SPEED_SLOW(4));
 		break;
 	}
+	delay(1);
 }

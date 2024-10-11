@@ -1,12 +1,14 @@
 #include <stdint.h>
 
 void serial_begin(const char *name);
-void serial_printf(const char *fmt, ...);
-int serial_read();
 int serial_available();
 void serial_end();
 
-void serial_println(const char *val);
-void serial_println(char val);
-void serial_print(const char *val);
-void serial_print(char val);
+int serial_read();
+
+void serial_write(uint8_t c);
+void serial_printf(const char *fmt, ...);
+template <typename T>
+void serial_println(T val);
+template <typename T>
+void serial_print(T val);
