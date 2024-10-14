@@ -64,7 +64,15 @@ void engine_stop()
 	digitalWrite(b2, HIGH);
 }
 
-void engine_debug(const engine_t engine, const char *msg)
+void engine_debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg)
 {
-	Serial.printf("\"%s\" = { direction:%i; speed:%i }\n", msg, engine.direction, engine.speed);
+	snprintf(out_buffer, out_size - 1, "\"%s\" = { direction:%i; speed:%i }\n", msg, engine.direction, engine.speed);
+}
+
+void engine_debug(engine_t engine, const char *msg)
+{
+	const size_t buffer_len = 512;
+	char buffer[buffer_len];
+	engine_debug(buffer, buffer_len, engine, msg);
+	Serial.print(buffer);
 }

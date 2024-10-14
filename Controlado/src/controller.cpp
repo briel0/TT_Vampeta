@@ -54,10 +54,18 @@ controller_t controller_create_snapshot()
 	return controller;
 }
 
-void controller_debug(const controller_t controller, const char *msg)
+void controller_debug(char *out_buffer, const size_t out_size, const controller_t controller, const char *msg)
 {
-	Serial.printf("\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i; RStickX:%i; RStickY:%i; LStickX:%i; LStickY:%i }\n",
+	snprintf(out_buffer, out_size, "\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i; RStickX:%i; RStickY:%i; LStickX:%i; LStickY:%i }\n",
 				  msg, controller.r2, controller.r2_value, controller.l2, controller.l2_value,
 				  controller.square, controller.cross, controller.circle, controller.triangle,
 				  controller.r_stick_x, controller.r_stick_y, controller.l_stick_x, controller.l_stick_y);
+}
+
+void controller_debug(const controller_t controller, const char *msg)
+{
+	const size_t buffer_len = 512;
+	char buffer[buffer_len];
+	controller_debug(buffer, buffer_len, controller, msg);
+	Serial.print(buffer);
 }

@@ -10,4 +10,5 @@ void internal_setup_millis();
 uint64_t internal_begin_millis();
 uint64_t internal_end_millis();
 uint64_t internal_delta_millis();
+void internal_debug(char *out_buffer, const size_t out_size, const char *msg);
 void internal_debug(const char *msg);

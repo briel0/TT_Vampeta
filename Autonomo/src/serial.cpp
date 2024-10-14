@@ -41,7 +41,7 @@ void serial_printf(const char *fmt, ...)
 
 	va_start(args, fmt);
 	vsnprintf(buffer, buffer_len - 1, fmt, args);
-	SerialBT.print(fmt);
+	SerialBT.print(buffer);
 	va_end(args);
 }
 

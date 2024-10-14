@@ -15,6 +15,8 @@
 #pragma region "Engine Macros"
 #define ENGINE_FRONT_FULL {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_FULL}
 #define ENGINE_BACK_FULL {ENGINE_DIRECTION_BACK, ENGINE_SPEED_FULL}
+#define ENGINE_FRONT_SLOW(x) {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(x)}
+#define ENGINE_BACK_SLOW(x) {ENGINE_DIRECTION_BACK, ENGINE_SPEED_SLOW(x)}
 #define ENGINE_FRONT_STOP {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_STOP}
 #define ENGINE_BACK_STOP {ENGINE_DIRECTION_BACK, ENGINE_SPEED_STOP}
 #define ENGINE_FRONT(x) {ENGINE_DIRECTION_FRONT, ENGINE_SPEED(x)}
@@ -31,4 +33,5 @@ void engine_begin();
 void engine_standby(const bool mode);
 void engine_move(const engine_t engine_left, const engine_t engine_right);
 void engine_stop();
-void engine_debug(const engine_t engine, const char *msg);
+void engine_debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg);
+void engine_debug(engine_t engine, const char *msg);

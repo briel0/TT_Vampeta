@@ -8,139 +8,208 @@
 #define ROBO_NAME "Arruela"
 #define STRLN(x) x "\n"
 
+#define CHARACTER_IS_LOWER_CASE(x) (x >= 'a' && x <= 'z')
+#define CHARACTER_IS_UPPER_CASE(x) (x >= 'A' && x <= 'Z')
+#define CHARACTER_IS_NUMBER(x) (x >= '0' && x <= '9')
 #define COMMAND_HELP 'H'
+#define COMMAND_CHECK 'C'
+#define COMMAND_SETUP '0'
+#define COMMAND_LEFT '<'
+#define COMMAND_RIGHT '>'
 #define ESTRATEGIA_FRENTAO 'a'
-#define ESTRATEGIA_CURVAO 'b'
-#define ESTRATEGIA_CURVINHA 'c'
-#define ESTRATEGIA_COSTAS 'd'
+#define ESTRATEGIA_FRENTINHA 'b'
+#define ESTRATEGIA_CURVAO 'c'
+#define ESTRATEGIA_CURVINHA 'd'
+#define ESTRATEGIA_COSTAS 'e'
 #define ESTRATEGIA_LOOP 'z'
 
-enum direction
+#define PROCURAR_PADRAO_MOV_DEFAULT 0
+#define PROCURAR_PADRAO_MOV_FRONT 1
+#define PROCURAR_PADRAO_MOV_LEFT 2
+#define PROCURAR_PADRAO_MOV_RIGHT 3
+
+#define LOOP_STATE_INIT 0
+#define LOOP_STATE_UPDATE 1
+
+enum direction_t
 {
 	left,
 	right,
 };
 
-TaskHandle_t SensorTask;
+uint8_t loop_state = LOOP_STATE_INIT;
 
-char BT = 'f';		   // char que é recebida pelo bluetooth
-char estrategia = 'f'; // estratégio de início da luta (qualquer caracter)
+char bluetooth_input_char = ESTRATEGIA_LOOP;
+char estrategia = bluetooth_input_char;
 bool sensor_running = false;
 
-direction direc = right;
-
+uint8_t procurar_padrao_mov = PROCURAR_PADRAO_MOV_DEFAULT;
+direction_t direction = right;
 sensor_t sensor;
-engine_t engine_left = ENGINE_FRONT_STOP;
-engine_t engine_right = ENGINE_FRONT_STOP;
 
+#pragma region "Arrela Main Signatures"
+void inicio_frentao();
+void inicio_frentinha();
+void inicio_curvao();
+void inicio_curvinha();
+void inicio_costas();
+void procurar_padrao(uint8_t velocidade_giro);
+void sensor_task(void *pvParameters);
+void setup_task();
+void setup_estrategia();
+void setup_luta();
+void loop_init();
+void loop_update();
+#pragma endregion "Arrela Main Signatures"
+
+#pragma region "Arrela Main Estratégias"
 void inicio_frentao()
 {
-	for (uint8_t i = ENGINE_SPEED_SLOW(2) + ENGINE_SPEED_SLOW(3) + ENGINE_SPEED_SLOW(4); i < ENGINE_SPEED_FULL; i++) {
-		engine_move(ENGINE_FRONT(i), ENGINE_FRONT(i));
-		delay(1);
-	}
-	delay(128);
+	engine_move(ENGINE_FRONT(72), ENGINE_FRONT(72));
+	vTaskDelay(8);
+
+	engine_move(ENGINE_FRONT(84), ENGINE_FRONT(84));
+	vTaskDelay(8);
+
+	engine_move(ENGINE_FRONT(96), ENGINE_FRONT(96));
+	vTaskDelay(8);
+
+	engine_move(ENGINE_FRONT(128), ENGINE_FRONT(128));
+	vTaskDelay(16);
+
+	engine_move(ENGINE_FRONT(160), ENGINE_FRONT(160));
+	vTaskDelay(16);
+
+	engine_move(ENGINE_FRONT(196), ENGINE_FRONT(196));
+	vTaskDelay(24);
+
+	engine_move(ENGINE_FRONT(228), ENGINE_FRONT(228));
+	vTaskDelay(24);
+
+	engine_move(ENGINE_FRONT(255), ENGINE_FRONT(255));
+	vTaskDelay(48);
 }
 
-void inicio_curvao(direction init_direc)
+void inicio_frentinha()
 {
-	if (init_direc == right)
+	engine_move(ENGINE_FRONT(72), ENGINE_FRONT(72));
+	vTaskDelay(4);
+
+	engine_move(ENGINE_FRONT(84), ENGINE_FRONT(84));
+	vTaskDelay(4);
+
+	engine_move(ENGINE_FRONT(96), ENGINE_FRONT(96));
+	vTaskDelay(4);
+
+	engine_move(ENGINE_FRONT(128), ENGINE_FRONT(128));
+	vTaskDelay(8);
+
+	engine_move(ENGINE_FRONT(160), ENGINE_FRONT(160));
+	vTaskDelay(8);
+
+	engine_move(ENGINE_FRONT(196), ENGINE_FRONT(196));
+	vTaskDelay(12);
+
+	engine_move(ENGINE_FRONT(228), ENGINE_FRONT(228));
+	vTaskDelay(12);
+
+	engine_move(ENGINE_FRONT(255), ENGINE_FRONT(255));
+	vTaskDelay(48);
+}
+
+void inicio_curvao()
+{
+	if (direction == right)
 	{
 		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
-		delay(70);
-		engine_move(ENGINE_FRONT(200), ENGINE_FRONT(80));
-		delay(300);
+		vTaskDelay(70);
+		engine_move(ENGINE_FRONT(255), ENGINE_FRONT(64));
+		vTaskDelay(392);
 		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
-		delay(70);
-		init_direc = left;
+		vTaskDelay(70);
+		direction = left;
 	}
 	else
 	{
 		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
-		delay(70);
-		engine_move(ENGINE_FRONT(80), ENGINE_FRONT(200));
-		delay(300);
+		vTaskDelay(70);
+		engine_move(ENGINE_FRONT(64), ENGINE_FRONT(255));
+		vTaskDelay(392);
 		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
-		delay(70);
-		init_direc = right;
+		vTaskDelay(70);
+		direction = right;
 	}
 }
 
-void inicio_curvinha(direction init_direc)
+void inicio_curvinha()
 {
-	if (init_direc == right)
+	if (direction == right)
 	{
 		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
-		delay(70);
-		engine_move(ENGINE_FRONT(200), ENGINE_FRONT(80));
-		delay(150);
+		vTaskDelay(70);
+		engine_move(ENGINE_FRONT(255), ENGINE_FRONT(64));
+		vTaskDelay(196);
 		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
-		delay(70);
-		init_direc = left;
+		vTaskDelay(70);
+		direction = left;
 	}
 	else
 	{
 		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
-		delay(70);
-		engine_move(ENGINE_FRONT(80), ENGINE_FRONT(200));
-		delay(150);
+		vTaskDelay(70);
+		engine_move(ENGINE_FRONT(64), ENGINE_FRONT(255));
+		vTaskDelay(196);
 		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
-		delay(70);
-		init_direc = right;
+		vTaskDelay(70);
+		direction = right;
 	}
 }
 
-void inicio_costas(direction init_direc)
+void inicio_costas()
 {
-	if (init_direc == right)
+	if (direction == right)
 	{
 		engine_move(ENGINE_FRONT_FULL, ENGINE_BACK_FULL);
-		delay(190);
+		vTaskDelay(104);
 	}
 	else
 	{
 		engine_move(ENGINE_BACK_FULL, ENGINE_FRONT_FULL);
-		delay(190);
+		vTaskDelay(104);
 	}
 }
 
 void procurar_padrao(uint8_t velocidade_giro)
 {
-	if (sensor.front)
+	if (sensor.front && procurar_padrao_mov != PROCURAR_PADRAO_MOV_FRONT)
 	{
+		procurar_padrao_mov = PROCURAR_PADRAO_MOV_FRONT;
 		engine_stop();
-		engine_move({ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(1)}, {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(1)});
-		delay(32);
-		for (uint8_t i = ENGINE_SPEED_SLOW(1); i <= ENGINE_SPEED_FULL && sensor.front; i++) {
+		engine_move(ENGINE_FRONT_SLOW(1), ENGINE_FRONT_SLOW(1));
+		vTaskDelay(16);
+		for (uint8_t i = ENGINE_SPEED_SLOW(1); i < ENGINE_SPEED_FULL && sensor.front; i += 16) {
 			engine_move(ENGINE_FRONT(i), ENGINE_FRONT(i));
-			delay(1);
+			vTaskDelay(8);
 		}
 		while (sensor.front)
 		{
 			engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
 		}
 	}
-	if (sensor.left)
+	if ((sensor.left || direction == left) && procurar_padrao_mov != PROCURAR_PADRAO_MOV_LEFT)
 	{
+		procurar_padrao_mov = PROCURAR_PADRAO_MOV_LEFT;
 		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
 	}
-	else if (sensor.right)
+	else if ((sensor.right || direction == right) && procurar_padrao_mov != PROCURAR_PADRAO_MOV_RIGHT)
 	{
+		procurar_padrao_mov = PROCURAR_PADRAO_MOV_RIGHT;
 		engine_move(ENGINE_FRONT(velocidade_giro), ENGINE_BACK(velocidade_giro));
 	}
-	else
-	{
-		if (direc == right) 
-		{
-			engine_move(ENGINE_FRONT(velocidade_giro), ENGINE_BACK(velocidade_giro));
-		}
-		else 
-		{
-			engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
-		}
-	}
 }
+#pragma endregion "Arrela Main Estratégias"
 
+#pragma region "Arrela Main Task"
 void sensor_task(void *pvParameters)
 {
 	while (true)
@@ -161,109 +230,98 @@ void sensor_task(void *pvParameters)
 			sensor = sensor_create_snapshot();
 			if (sensor.left)
 			{
-				direc = left;
+				direction = left;
 			}
 			else if (sensor.right)
 			{
-				direc = right;
+				direction = right;
 			}
 		}
 		vTaskDelay(1);
 	}
 }
+#pragma endregion "Arrela Main Task"
 
-void setup()
+#pragma region "Arrela Main Setup"
+void setup_task()
 {
-	Serial.begin(115200);
-	Serial.println("Serial 115200!");
+	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 2048, nullptr, 16, nullptr, PRO_CPU_NUM);
+	vTaskDelay(500);
+}
 
-	engine_begin();
-	internal_begin();
-	sensor_begin();
-	Serial.println("Begin and Load Complete!");
-
-	engine_standby(false);
-	internal_led(false);
-	Serial.println("Setup Complete!");
-
-	// #######################################################
-
-	engine_standby(true);
-	receiver_begin();
-	serial_begin(ROBO_NAME);
-
+void setup_estrategia()
+{
 	serial_println("LIGOUUUU");
 	serial_printf("Digite '%c' para Mostrar os Comandos Disponíveis!!\n", COMMAND_HELP);
 
-	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 10000, NULL, 1, &SensorTask, 0);
-	delay(500);
-
-	while (BT != '0')
-	{ // Inicio quando bluetooth recebe o char '0'
+	while (bluetooth_input_char != COMMAND_SETUP)
+	{
 		if (serial_available())
 		{
-			BT = serial_read();
-			serial_println(BT);
+			bluetooth_input_char = serial_read();
+			serial_println(bluetooth_input_char);
 		}
 
-		if (BT == 'H')
+		switch (bluetooth_input_char)
 		{
+		case COMMAND_HELP:
 			serial_printf(STRLN("UM HELP PRA TU!"));
 			serial_printf(STRLN("Todos os Comandos (CARACTER MAIUSCULA):"));
 			serial_printf(STRLN("\"Catacter do Comando\" -> \"Nome do Comando\""));
 			serial_printf(STRLN("\"%c\" -> \"%s\""), COMMAND_HELP, "HELP");
+			serial_printf(STRLN("\"%c\" -> \"%s\""), COMMAND_CHECK, "CHECK");
+			serial_printf(STRLN("\"%c\" -> \"%s\""), COMMAND_LEFT, "LEFT");
+			serial_printf(STRLN("\"%c\" -> \"%s\""), COMMAND_RIGHT, "RIGHT");
 			serial_printf(STRLN("Todas as Estratégias: (CARACTER MINUSCULA):"));
 			serial_printf(STRLN("\"Caracter da Estrategia\" -> \"Nome da Estratégia\""));
 			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_FRENTAO, "FRENTÃO");
+			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_FRENTINHA, "FRENTINHA");
 			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVAO, "CURVÃO");
 			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVINHA, "CURVINHA");
-			// serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_DEFESA, "DEFESA");
 			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_COSTAS, "COSTAS");
-			// serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_DEFESA_FAKE, "DEFESA FAKE");
-			// serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_ESTRATEGI, "ESTRATEGI");
 			serial_printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_LOOP, "Sem estratégia, apenas um loop");
-		}
-		else if (BT == '<')
-		{ // definir para que lado será toda a progrmação
-			direc = left;
-		}
-		else if (BT == '>')
-		{
-			direc = right;
-		}
-		else if (BT == 'C')
-		{ // Char 'C' checa as estrategias
+			break;
+
+		case COMMAND_LEFT:
+			direction = left;
+			break;
+
+		case COMMAND_RIGHT:
+			direction = right;
+			break;
+
+		case COMMAND_CHECK:
 			serial_println("Check");
 			serial_print("Estrategia: ");
 			serial_println(estrategia);
 			serial_print("Direc: ");
-			if (direc == right)
+			if (direction == right)
+			{
 				serial_println("direita");
-			else
-				serial_println("esquerda");
-		}
-		else if (BT == 'S')
-		{ // Char 'S'teste sensor
-		  // testSensors();
-		}
-		else if (BT == 'M')
-		{ // Char 'M'teste motor com sensor
-		  // testMotorsWithSensors();
-		}
-		else if (BT == '0')
-		{
-			break;
-		}
-		else
-		{
-			if (!(BT == '\r' || BT == '\n' || (BT >= '1' && BT <= '9')))
-			{ // Se não for ENTER ou numero altera a estrategia inicial
-				estrategia = BT;
 			}
+			else
+			{
+				serial_println("esquerda");
+			}
+			break;
+		
+		case COMMAND_SETUP:
+			continue;
+			break;
+
+		default:
+			if (CHARACTER_IS_LOWER_CASE(bluetooth_input_char))
+			{
+				estrategia = bluetooth_input_char;
+			}
+			break;
 		}
 	}
 	serial_end();
+}
 
+void setup_luta()
+{
 	bool ready = false;
 	while (true)
 	{
@@ -276,9 +334,9 @@ void setup()
 				for (int i = 0; i < 3; i++)
 				{
 					internal_led(true);
-					delay(50);
+					vTaskDelay(50);
 					internal_led(false);
-					delay(50);
+					vTaskDelay(50);
 					if (receiver_decode())
 					{
 						receiver_resume();
@@ -300,30 +358,66 @@ void setup()
 			}
 		}
 	}
-
-	serial_println("COMECOUUUUU");
 	sensor_running = true;
+}
 
+void setup()
+{
+	Serial.begin(115200);
+	Serial.println("Serial 115200!");
+
+	engine_begin();
+	internal_begin();
+	sensor_begin();
+	Serial.println("Begin and Load Complete!");
+
+	engine_standby(false);
+	internal_led(false);
+	Serial.println("Setup Complete!");
+
+	engine_standby(true);
+	receiver_begin();
+	serial_begin(ROBO_NAME);
+
+	setup_task();
+	setup_estrategia();
+	setup_luta();
+	serial_println("COMEÇOOUU!!!");
+}
+#pragma endregion "Arrela Main Setup"
+
+#pragma region "Arrela Main Loop"
+void loop_init()
+{
 	switch (estrategia)
 	{
 	case ESTRATEGIA_FRENTAO:
-		serial_println("FRENTAAO");
+		serial_println("FRENTAO!!!");
 		inicio_frentao();
 		break;
 
+	case ESTRATEGIA_FRENTINHA:
+		serial_println("FRENTINHA!!!");
+		inicio_frentinha();
+		break;
+
 	case ESTRATEGIA_CURVAO:
-		serial_println("CURVÃOO");
-		inicio_curvao(direc);
+		serial_println("CURVÃOO!!!");
+		inicio_curvao();
 		break;
 
 	case ESTRATEGIA_CURVINHA:
-		serial_println("CURVINHAA");
-		inicio_curvinha(direc);
+		serial_println("CURVINHAA!!!");
+		inicio_curvinha();
 		break;
 
 	case ESTRATEGIA_COSTAS:
-		serial_println("COSTAS");
-		inicio_costas(direc);
+		serial_println("COSTAS!!!");
+		inicio_costas();
+		break;
+	
+	case ESTRATEGIA_LOOP:
+		serial_println("LOOP!!!");
 		break;
 
 	default:
@@ -333,13 +427,29 @@ void setup()
 	}
 }
 
-void loop()
+void loop_update()
 {
 	switch (estrategia)
 	{
 	default:
-		procurar_padrao(ENGINE_SPEED_SLOW(2) + ENGINE_SPEED_SLOW(4));
+		procurar_padrao(ENGINE_SPEED(88));
 		break;
 	}
-	delay(1);
 }
+
+void loop()
+{
+	switch (loop_state)
+	{
+	case LOOP_STATE_INIT:
+		loop_init();
+		loop_state = LOOP_STATE_UPDATE;
+		break;
+	case LOOP_STATE_UPDATE:
+		loop_update();
+		break;
+	default:
+		break;
+	}
+}
+#pragma endregion "Arrela Main Loop"

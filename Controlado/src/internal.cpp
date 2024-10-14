@@ -38,8 +38,16 @@ uint64_t internal_delta_millis()
 	return internal_end_millis() - internal_begin_millis();
 }
 
+void internal_debug(char *out_buffer, const size_t out_size, const char *msg)
+{
+	snprintf(out_buffer, out_size - 1, "\"%s\" = { begin:%lli; end:%lli; delta:%lli }\n", msg,
+				  internal_begin_millis(), internal_end_millis(), internal_delta_millis());
+}
+
 void internal_debug(const char *msg)
 {
-	Serial.printf("\"%s\" = { begin:%lli; end:%lli; delta:%lli }\n", msg,
-				  internal_begin_millis(), internal_end_millis(), internal_delta_millis());
+	const size_t buffer_len = 512;
+	char buffer[buffer_len];
+	internal_debug(buffer, buffer_len, msg);
+	Serial.print(buffer);
 }

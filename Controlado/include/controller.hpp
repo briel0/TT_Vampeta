@@ -15,4 +15,5 @@ void controller_begin(const char *mac);
 bool controller_is_connected();
 bool controller_disconnected();
 controller_t controller_create_snapshot();
+void controller_debug(char *out_buffer, const size_t out_size, const controller_t controller, const char *msg);
 void controller_debug(const controller_t controller, const char *msg);
