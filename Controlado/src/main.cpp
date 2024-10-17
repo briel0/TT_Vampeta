@@ -3,11 +3,17 @@
 #include "engine.hpp"
 #include "internal.hpp"
 
-engine_t engine_left = ENGINE_FRONT_STOP;
-engine_t engine_right = ENGINE_FRONT_STOP;
+#define LOOP_STATE_INIT 0
+#define LOOP_STATE_UPDATE 1
+
+uint8_t loop_state = LOOP_STATE_INIT;
+engine_t engine_left = ENGINE_DEFAULT;
+engine_t engine_right = ENGINE_DEFAULT;
 controller_t controller;
 
-#pragma region "Arrela Main Signatures"
+#pragma region "Main Signatures"
+void init();
+void update();
 void update_engine();
 void reset_engine();
 void macro_normal();
@@ -15,9 +21,9 @@ void macro_careful();
 void macro_just_go();
 void macro_forward(const uint8_t direction, const uint8_t speed_modifier);
 void macro_curve(const uint8_t left_direction, const uint8_t righ_direction);
-#pragma endregion "Arrela Main Signatures"
+#pragma endregion "Main Signatures"
 
-#pragma region "Arrela Main Setup"
+#pragma region "Main Setup"
 void setup()
 {
 	Serial.begin(115200);
@@ -32,10 +38,14 @@ void setup()
 	internal_led(false);
 	Serial.println("Setup Complete!");
 }
-#pragma endregion "Arrela Main Setup"
+#pragma endregion "Main Setup"
 
-#pragma region "Arrela Main Loop"
-void loop()
+#pragma region "Main Loop"
+void init()
+{
+}
+
+void update()
 {
 	internal_led(true);
 	if (controller_disconnected())
@@ -96,9 +106,25 @@ loop_reset_engine:
 loop_update_engine:
 	update_engine();
 }
-#pragma endregion "Arrela Main Loop"
 
-#pragma region "Arrela Main Functions"
+void loop()
+{
+	switch (loop_state)
+	{
+	case LOOP_STATE_INIT:
+		init();
+		loop_state = LOOP_STATE_UPDATE;
+		break;
+	case LOOP_STATE_UPDATE:
+		update();
+		break;
+	default:
+		break;
+	}
+}
+#pragma endregion "Main Loop"
+
+#pragma region "Main Functions"
 void update_engine()
 {
 	Serial.printf("################################################################################################################################\n");
@@ -161,4 +187,4 @@ void macro_curve(const uint8_t left_direction, const uint8_t righ_direction)
 	engine_left.direction = left_direction;
 	engine_right.direction = righ_direction;
 }
-#pragma endregion "Arrela Main Functions"
+#pragma endregion "Main Functions"

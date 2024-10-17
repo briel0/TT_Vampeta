@@ -86,5 +86,7 @@
  8. `void internal_debug(const char *msg)`: Mostra as informações dos recursos internos
 
 ## Main
- 1. `setup`: Primeira parte do código que roda ao ligar o robô
- 2. `loop`: É o loop default do robô
+ 1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
+ 2. `init()`: É o código que vai rodar antes do update
+ 3. `update()`: É o código que vai rodar em um loop
+ 4. `loop()`: É o loop geral do robô

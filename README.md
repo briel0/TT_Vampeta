@@ -3,19 +3,23 @@
 
 ## Pastas e Arquivos
  ```
- Autonomo
- |--lib
- |  |--core
- |     |- core.cpp
- |     |- core.hpp
- |  |--robo
- |     |- robo.cpp
- |     |- robo.hpp
+ Autonomo (AUTO)
+ |--include
+    |- engine.hpp
+    |- internal.hpp
+    |- receiver.hpp
+    |- sensor.hpp
+    |- serial.hpp
  |--src
+    |- engine.cpp
+    |- internal.cpp
+    |- receiver.cpp
+    |- sensor.cpp
+    |- serial.cpp
     |- main.cpp
  ```
 
-  ```
+ ```
  Controlado (RC)
  |--include
     |- controller.hpp

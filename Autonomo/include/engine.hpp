@@ -1,11 +1,13 @@
 #include <stdint.h>
 
 #pragma region "Engine Direction Macros"
+#define ENGINE_DIRECTION_DEFAULT 0
 #define ENGINE_DIRECTION_FRONT 0
 #define ENGINE_DIRECTION_BACK 1
 #pragma endregion "Engine Direction Macros"
 
 #pragma region "Engine Speed Macros"
+#define ENGINE_SPEED_DEFAULT static_cast<uint8_t>(0)
 #define ENGINE_SPEED_FULL static_cast<uint8_t>(UINT8_MAX)
 #define ENGINE_SPEED_SLOW(x) static_cast<uint8_t>(ENGINE_SPEED_FULL >> x)
 #define ENGINE_SPEED_STOP static_cast<uint8_t>(0)
@@ -13,6 +15,7 @@
 #pragma endregion "Engine Speed Macros"
 
 #pragma region "Engine Macros"
+#define ENGINE_DEFAULT {ENGINE_DIRECTION_DEFAULT, ENGINE_SPEED_DEFAULT}
 #define ENGINE_FRONT_FULL {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_FULL}
 #define ENGINE_BACK_FULL {ENGINE_DIRECTION_BACK, ENGINE_SPEED_FULL}
 #define ENGINE_FRONT_SLOW(x) {ENGINE_DIRECTION_FRONT, ENGINE_SPEED_SLOW(x)}
@@ -27,6 +30,11 @@ struct engine_t
 {
 	uint8_t direction;
 	uint8_t speed;
+
+	bool operator==(const engine_t &engine) const
+	{
+		return (direction == engine.direction && speed == engine.speed);
+	}
 };
 
 void engine_begin();

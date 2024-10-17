@@ -23,11 +23,6 @@
 #define ESTRATEGIA_COSTAS 'e'
 #define ESTRATEGIA_LOOP 'z'
 
-#define PROCURAR_PADRAO_MOV_DEFAULT 0
-#define PROCURAR_PADRAO_MOV_FRONT 1
-#define PROCURAR_PADRAO_MOV_LEFT 2
-#define PROCURAR_PADRAO_MOV_RIGHT 3
-
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
 
@@ -43,11 +38,10 @@ char bluetooth_input_char = ESTRATEGIA_LOOP;
 char estrategia = bluetooth_input_char;
 bool sensor_running = false;
 
-uint8_t procurar_padrao_mov = PROCURAR_PADRAO_MOV_DEFAULT;
 direction_t direction = right;
 sensor_t sensor;
 
-#pragma region "Arrela Main Signatures"
+#pragma region "Main Signatures"
 void inicio_frentao();
 void inicio_frentinha();
 void inicio_curvao();
@@ -60,9 +54,9 @@ void setup_estrategia();
 void setup_luta();
 void loop_init();
 void loop_update();
-#pragma endregion "Arrela Main Signatures"
+#pragma endregion "Main Signatures"
 
-#pragma region "Arrela Main Estratégias"
+#pragma region "Main Estratégias"
 void inicio_frentao()
 {
 	engine_move(ENGINE_FRONT(72), ENGINE_FRONT(72));
@@ -181,13 +175,13 @@ void inicio_costas()
 
 void procurar_padrao(uint8_t velocidade_giro)
 {
-	if (sensor.front && procurar_padrao_mov != PROCURAR_PADRAO_MOV_FRONT)
+	if (sensor.front)
 	{
-		procurar_padrao_mov = PROCURAR_PADRAO_MOV_FRONT;
 		engine_stop();
 		engine_move(ENGINE_FRONT_SLOW(1), ENGINE_FRONT_SLOW(1));
 		vTaskDelay(16);
-		for (uint8_t i = ENGINE_SPEED_SLOW(1); i < ENGINE_SPEED_FULL && sensor.front; i += 16) {
+		for (uint8_t i = ENGINE_SPEED_SLOW(1); i < ENGINE_SPEED_FULL && sensor.front; i += 16)
+		{
 			engine_move(ENGINE_FRONT(i), ENGINE_FRONT(i));
 			vTaskDelay(8);
 		}
@@ -196,20 +190,18 @@ void procurar_padrao(uint8_t velocidade_giro)
 			engine_move(ENGINE_FRONT_FULL, ENGINE_FRONT_FULL);
 		}
 	}
-	if ((sensor.left || direction == left) && procurar_padrao_mov != PROCURAR_PADRAO_MOV_LEFT)
+	if (sensor.left || direction == left)
 	{
-		procurar_padrao_mov = PROCURAR_PADRAO_MOV_LEFT;
 		engine_move(ENGINE_BACK(velocidade_giro), ENGINE_FRONT(velocidade_giro));
 	}
-	else if ((sensor.right || direction == right) && procurar_padrao_mov != PROCURAR_PADRAO_MOV_RIGHT)
+	else if (sensor.right || direction == right)
 	{
-		procurar_padrao_mov = PROCURAR_PADRAO_MOV_RIGHT;
 		engine_move(ENGINE_FRONT(velocidade_giro), ENGINE_BACK(velocidade_giro));
 	}
 }
-#pragma endregion "Arrela Main Estratégias"
+#pragma endregion "Main Estratégias"
 
-#pragma region "Arrela Main Task"
+#pragma region "Main Task"
 void sensor_task(void *pvParameters)
 {
 	while (true)
@@ -240,9 +232,9 @@ void sensor_task(void *pvParameters)
 		vTaskDelay(1);
 	}
 }
-#pragma endregion "Arrela Main Task"
+#pragma endregion "Main Task"
 
-#pragma region "Arrela Main Setup"
+#pragma region "Main Setup"
 void setup_task()
 {
 	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 2048, nullptr, 16, nullptr, PRO_CPU_NUM);
@@ -304,7 +296,7 @@ void setup_estrategia()
 				serial_println("esquerda");
 			}
 			break;
-		
+
 		case COMMAND_SETUP:
 			continue;
 			break;
@@ -384,11 +376,14 @@ void setup()
 	setup_luta();
 	serial_println("COMEÇOOUU!!!");
 }
-#pragma endregion "Arrela Main Setup"
+#pragma endregion "Main Setup"
 
-#pragma region "Arrela Main Loop"
+#pragma region "Main Loop"
 void loop_init()
 {
+	// setup_luta();
+	// setup_task();
+
 	switch (estrategia)
 	{
 	case ESTRATEGIA_FRENTAO:
@@ -415,7 +410,7 @@ void loop_init()
 		serial_println("COSTAS!!!");
 		inicio_costas();
 		break;
-	
+
 	case ESTRATEGIA_LOOP:
 		serial_println("LOOP!!!");
 		break;
@@ -452,4 +447,4 @@ void loop()
 		break;
 	}
 }
-#pragma endregion "Arrela Main Loop"
+#pragma endregion "Main Loop"

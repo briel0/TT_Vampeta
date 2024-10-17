@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "engine.hpp"
 
-#pragma region "Engine Arrela Pinning Macros"
+#pragma region "Engine Pinning Macros"
 #define pwmA 4
 #define a1 18
 #define a2 19
@@ -9,7 +9,14 @@
 #define b1 16
 #define b2 17
 #define stby 5
-#pragma endregion "Engine Arrela Pinning Macros"
+#pragma endregion "Engine Pinning Macros"
+
+#pragma region "Engine Macros"
+#define PIN_BOOL(x) ((HIGH) * (x) + (LOW) * !(x))
+#pragma endregion "Engine Macros"
+
+engine_t current_engine_left = ENGINE_DEFAULT;
+engine_t current_engine_right = ENGINE_DEFAULT;
 
 void engine_begin()
 {
@@ -29,30 +36,28 @@ void engine_standby(const bool mode)
 
 void engine_move(const engine_t engine_left, const engine_t engine_right)
 {
-	if (engine_left.direction == ENGINE_DIRECTION_BACK)
+	if (current_engine_left.direction != engine_left.direction)
 	{
-		digitalWrite(a1, HIGH);
-		digitalWrite(a2, LOW);
-		analogWrite(pwmA, engine_left.speed);
+		current_engine_left.direction = engine_left.direction;
+		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == ENGINE_DIRECTION_BACK));
+		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == ENGINE_DIRECTION_FRONT));
 	}
-	else
+	if (current_engine_left.speed != engine_left.speed)
 	{
-		digitalWrite(a1, LOW);
-		digitalWrite(a2, HIGH);
-		analogWrite(pwmA, engine_left.speed);
+		current_engine_left.speed = engine_left.speed;
+		analogWrite(pwmA, current_engine_left.speed);
 	}
 
-	if (engine_right.direction == ENGINE_DIRECTION_BACK)
+	if (current_engine_right.direction != engine_right.direction)
 	{
-		digitalWrite(b1, HIGH);
-		digitalWrite(b2, LOW);
-		analogWrite(pwmB, engine_right.speed);
+		current_engine_right.direction = engine_right.direction;
+		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == ENGINE_DIRECTION_BACK));
+		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == ENGINE_DIRECTION_FRONT));
 	}
-	else
+	if (current_engine_right.speed != engine_right.speed)
 	{
-		digitalWrite(b1, LOW);
-		digitalWrite(b2, HIGH);
-		analogWrite(pwmB, engine_right.speed);
+		current_engine_right.speed = engine_right.speed;
+		analogWrite(pwmB, current_engine_right.speed);
 	}
 }
 
@@ -62,6 +67,9 @@ void engine_stop()
 	digitalWrite(a2, HIGH);
 	digitalWrite(b1, HIGH);
 	digitalWrite(b2, HIGH);
+
+	current_engine_left = ENGINE_DEFAULT;
+	current_engine_right = ENGINE_DEFAULT;
 }
 
 void engine_debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg)

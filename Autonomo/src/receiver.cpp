@@ -6,9 +6,9 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
-#pragma region "Receiver Arrela Pinning Macros"
+#pragma region "Receiver Pinning Macros"
 #define IR 13
-#pragma endregion "Receiver Arrela Pinning Macros"
+#pragma endregion "Receiver Pinning Macros"
 
 void receiver_begin()
 {

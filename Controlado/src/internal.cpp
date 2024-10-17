@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include "internal.hpp"
 
-#pragma region "Internal Arrela Pinning Macros"
+#pragma region "Internal Pinning Macros"
 #define led 2
-#pragma endregion "Internal Arrela Pinning Macros"
+#pragma endregion "Internal Pinning Macros"
 
 uint64_t internal_millis = 0;
 
@@ -41,7 +41,7 @@ uint64_t internal_delta_millis()
 void internal_debug(char *out_buffer, const size_t out_size, const char *msg)
 {
 	snprintf(out_buffer, out_size - 1, "\"%s\" = { begin:%lli; end:%lli; delta:%lli }\n", msg,
-				  internal_begin_millis(), internal_end_millis(), internal_delta_millis());
+			 internal_begin_millis(), internal_end_millis(), internal_delta_millis());
 }
 
 void internal_debug(const char *msg)
