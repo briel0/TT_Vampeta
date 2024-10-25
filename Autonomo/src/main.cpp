@@ -1,30 +1,10 @@
 #include <Arduino.h>
-#include "engine.hpp"
-#include "internal.hpp"
-#include "receiver.hpp"
-#include "sensor.hpp"
-#include "serial.hpp"
-
-#define ROBO_NAME "Arruela"
-#define STRLN(x) x "\n"
-
-#define CHARACTER_IS_LOWER_CASE(x) (x >= 'a' && x <= 'z')
-#define CHARACTER_IS_UPPER_CASE(x) (x >= 'A' && x <= 'Z')
-#define CHARACTER_IS_NUMBER(x) (x >= '0' && x <= '9')
-#define COMMAND_HELP 'H'
-#define COMMAND_CHECK 'C'
-#define COMMAND_SETUP '0'
-#define COMMAND_LEFT '<'
-#define COMMAND_RIGHT '>'
-#define ESTRATEGIA_FRENTAO 'a'
-#define ESTRATEGIA_FRENTINHA 'b'
-#define ESTRATEGIA_CURVAO 'c'
-#define ESTRATEGIA_CURVINHA 'd'
-#define ESTRATEGIA_COSTAS 'e'
-#define ESTRATEGIA_LOOP 'z'
-
-#define LOOP_STATE_INIT 0
-#define LOOP_STATE_UPDATE 1
+#include <engine.hpp>
+#include <internal.hpp>
+#include <receiver.hpp>
+#include <sensor.hpp>
+#include <serial.hpp>
+#include "main.hpp"
 
 enum direction_t
 {
@@ -40,21 +20,6 @@ bool sensor_running = false;
 
 direction_t direction = right;
 sensor_t sensor;
-
-#pragma region "Main Signatures"
-void inicio_frentao();
-void inicio_frentinha();
-void inicio_curvao();
-void inicio_curvinha();
-void inicio_costas();
-void procurar_padrao(uint8_t velocidade_giro);
-void sensor_task(void *pvParameters);
-void setup_task();
-void setup_estrategia();
-void setup_luta();
-void loop_init();
-void loop_update();
-#pragma endregion "Main Signatures"
 
 #pragma region "Main Estratégias"
 void inicio_frentao()

@@ -1,27 +1,13 @@
 #include <Arduino.h>
-#include "controller.hpp"
-#include "engine.hpp"
-#include "internal.hpp"
-
-#define LOOP_STATE_INIT 0
-#define LOOP_STATE_UPDATE 1
+#include <controller.hpp>
+#include <engine.hpp>
+#include <internal.hpp>
+#include "main.hpp"
 
 uint8_t loop_state = LOOP_STATE_INIT;
 engine_t engine_left = ENGINE_DEFAULT;
 engine_t engine_right = ENGINE_DEFAULT;
 controller_t controller;
-
-#pragma region "Main Signatures"
-void init();
-void update();
-void update_engine();
-void reset_engine();
-void macro_normal();
-void macro_careful();
-void macro_just_go();
-void macro_forward(const uint8_t direction, const uint8_t speed_modifier);
-void macro_curve(const uint8_t left_direction, const uint8_t righ_direction);
-#pragma endregion "Main Signatures"
 
 #pragma region "Main Setup"
 void setup()

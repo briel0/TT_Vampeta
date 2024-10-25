@@ -5,30 +5,42 @@
  ```
  Autonomo (AUTO)
  |--include
-    |- engine.hpp
-    |- internal.hpp
-    |- receiver.hpp
-    |- sensor.hpp
-    |- serial.hpp
+    |- main.hpp
+ |--lib
+    |--engine
+       |- engine.cpp
+       |- engine.hpp
+    |--internal
+       |- internal.cpp
+       |- internal.hpp
+    |--receiver
+       |- receiver.cpp
+       |- receiver.hpp
+    |--sensor
+       |- sensor.cpp
+       |- sensor.hpp
+    |--serial
+       |- serial.cpp
+       |- serial.hpp
  |--src
-    |- engine.cpp
-    |- internal.cpp
-    |- receiver.cpp
-    |- sensor.cpp
-    |- serial.cpp
     |- main.cpp
  ```
 
  ```
  Controlado (RC)
  |--include
-    |- controller.hpp
-    |- engine.hpp
-    |- internal.hpp
+    |- main.hpp
+ |--lib
+    |--controller
+       |- controller.cpp
+       |- controller.hpp
+    |--engine
+       |- engine.cpp
+       |- engine.hpp
+    |--internal
+       |- internal.cpp
+       |- internal.hpp
  |--src
-    |- controller.cpp
-    |- engine.cpp
-    |- internal.cpp
     |- main.cpp
  ```
 

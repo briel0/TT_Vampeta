@@ -5,13 +5,18 @@
  ```
  Controlado (RC)
  |--include
-    |- controller.hpp
-    |- engine.hpp
-    |- internal.hpp
+    |- main.hpp
+ |--lib
+    |--controller
+       |- controller.cpp
+       |- controller.hpp
+    |--engine
+       |- engine.cpp
+       |- engine.hpp
+    |--internal
+       |- internal.cpp
+       |- internal.hpp
  |--src
-    |- controller.cpp
-    |- engine.cpp
-    |- internal.cpp
     |- main.cpp
  ```
 
