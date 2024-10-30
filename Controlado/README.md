@@ -64,31 +64,33 @@
 
 ## Controller
  1. `controller_t`: É uma estrutura que representa o controle de PS4
- 2. `void controller_begin(const char *mac)`: Inicializa o pareamento com o controle
- 3. `bool controller_is_connected()`: Verifica se o controle está conectado
- 4. `bool controller_disconnected()`: Verifica se o controle foi desconectado após ter sido inicializado com sucesso
- 5. `controller_t controller_create_snapshot()`: Captura todos os inputs do controle
- 6. `void controller_debug(char *out_buffer, const size_t out_size, const controller_t controller, const char *msg)`:  Mostra as informações do controle na string
- 7. `void controller_debug(const controller_t controller, const char *msg)`:  Mostra as informações do controle
+ 2. `void begin(const char *mac)`: Inicializa o pareamento com o controle
+ 3. `bool is_connected()`: Verifica se o controle está conectado
+ 4. `bool disconnected()`: Verifica se o controle foi desconectado após ter sido inicializado com sucesso
+ 5. `controller_t create_snapshot()`: Captura todos os inputs do controle
+ 6. `void debug(char *out_buffer, const size_t out_size, const controller_t controller, const char *msg)`:  Mostra as informações do controle na string
+ 7. `void debug(const controller_t controller, const char *msg)`:  Mostra as informações do controle
 
 ## Engine
  1. `engine_t`: É uma estrutura que representa um motor (velocidade e direção)
- 2. `void engine_begin()`: Inicializa os motores (os pinos em geral do robô)
- 3. `void engine_standby(const bool mode)`: Liga / Desliga a corrente elétrica dos motores
- 4. `void engine_move(const engine_t engine_left, const engine_t engine_right)`: Altera o movimento dos motores
- 5. `void engine_stop()`: Para todos os motores imediatamente
- 6. `void engine_debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg)`: Mostra as informações do motor na string
- 7. `void engine_debug(const engine_t engine, const char *msg)`: Mostra as informações do motor
+ 2. `void begin()`: Inicializa os motores (os pinos em geral do robô)
+ 3. `bool get_standby()`: Pega o estado (Ligado / Desligado) da corrente elétrica dos motores
+ 4. `void set_standby(const bool mode)`: Liga / Desliga a corrente elétrica dos motores
+ 5. `void move(const engine_t engine_left, const engine_t engine_right)`: Altera o movimento dos motores
+ 6. `void stop()`: Para todos os motores imediatamente
+ 7. `void debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg)`: Mostra as informações do motor na string
+ 8. `void debug(const engine_t engine, const char *msg)`: Mostra as informações do motor
 
 ## Internal
- 1. `void internal_begin()`: Inicializa os recursos internos
- 2. `void internal_led(const bool mode)`: Liga / Desliga o led internos
- 3. `void internal_setup_millis()`: Salva o novo tempo inicial
- 4. `uint64_t internal_begin_millis()`: Retorna o tempo inicial
- 5. `uint64_t internal_end_millis()`: Retorna o tempo final (o tempo atual)
- 6. `uint64_t internal_delta_millis()`: Retorna a diferença entre o tempo final e o inicial
- 7. `void internal_debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
- 8. `void internal_debug(const char *msg)`: Mostra as informações dos recursos internos
+ 1. `void begin()`: Inicializa os recursos internos
+ 2. `bool get_led()`: Pega o estado (Ligado / Desligado) do led interno
+ 3. `void set_led(const bool mode)`: Liga / Desliga o led interno
+ 4. `void setup_millis()`: Salva o novo tempo inicial
+ 5. `uint64_t begin_millis()`: Retorna o tempo inicial
+ 6. `uint64_t end_millis()`: Retorna o tempo final (o tempo atual)
+ 7. `uint64_t delta_millis()`: Retorna a diferença entre o tempo final e o inicial
+ 8. `void debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
+ 9. `void debug(const char *msg)`: Mostra as informações dos recursos internos
 
 ## Main
  1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar

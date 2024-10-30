@@ -1,4 +1,5 @@
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 
 #define ROBO_NAME "Arruela"
 #define STRLN(x) x "\n"
@@ -20,6 +21,12 @@
 
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
+
+enum direction_t
+{
+	left,
+	right,
+};
 
 #pragma region "Main Signatures"
 void inicio_frentao();

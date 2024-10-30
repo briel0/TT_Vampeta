@@ -10,23 +10,26 @@
 #define IR 13
 #pragma endregion "Receiver Pinning Macros"
 
-void receiver_begin()
+namespace tt::receiver
 {
-	IrReceiver.begin(IR, ENABLE_LED_FEEDBACK, USE_DEFAULT_FEEDBACK_LED_PIN);
-	printActiveIRProtocols(&Serial);
-}
+	void begin()
+	{
+		IrReceiver.begin(IR, ENABLE_LED_FEEDBACK, USE_DEFAULT_FEEDBACK_LED_PIN);
+		printActiveIRProtocols(&Serial);
+	}
 
-bool receiver_decode()
-{
-	return IrReceiver.decode();
-}
+	bool decode()
+	{
+		return IrReceiver.decode();
+	}
 
-void receiver_resume()
-{
-	IrReceiver.resume();
-}
+	void resume()
+	{
+		IrReceiver.resume();
+	}
 
-uint16_t receiver_command()
-{
-	return IrReceiver.decodedIRData.command;
+	uint16_t command()
+	{
+		return IrReceiver.decodedIRData.command;
+	}
 }

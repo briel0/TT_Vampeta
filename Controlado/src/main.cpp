@@ -5,9 +5,9 @@
 #include "main.hpp"
 
 uint8_t loop_state = LOOP_STATE_INIT;
-engine_t engine_left = ENGINE_DEFAULT;
-engine_t engine_right = ENGINE_DEFAULT;
-controller_t controller;
+tt::engine_t engine_left = TT_ENGINE_DEFAULT;
+tt::engine_t engine_right = TT_ENGINE_DEFAULT;
+tt::controller_t controller;
 
 #pragma region "Main Setup"
 void setup()
@@ -15,13 +15,13 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	controller_begin("F0:24:F9:44:F8:DE");
-	engine_begin();
-	internal_begin();
+	tt::controller::begin("F0:24:F9:44:F8:DE");
+	tt::engine::begin();
+	tt::internal::begin();
 	Serial.println("Begin and Load Complete!");
 
-	engine_standby(false);
-	internal_led(false);
+	tt::engine::set_standby(false);
+	tt::internal::set_led(false);
 	Serial.println("Setup Complete!");
 }
 #pragma endregion "Main Setup"
@@ -33,15 +33,15 @@ void init()
 
 void update()
 {
-	internal_led(true);
-	if (controller_disconnected())
+	tt::internal::set_led(true);
+	if (tt::controller::disconnected())
 	{
-		internal_led(false);
+		tt::internal::set_led(false);
 		goto loop_reset_engine;
 	}
 
 	macro_normal();
-	controller = controller_create_snapshot();
+	controller = tt::controller::create_snapshot();
 
 	if (controller.triangle)
 	{
@@ -59,30 +59,30 @@ void update()
 	if (controller.l2)
 	{
 		Serial.println("(controller.l2)");
-		macro_forward(ENGINE_DIRECTION_BACK, controller.l2_value);
+		macro_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.r2)
 	{
 		Serial.println("(controller.r2)");
-		macro_forward(ENGINE_DIRECTION_FRONT, controller.r2_value);
+		macro_forward(TT_ENGINE_DIRECTION_FRONT, controller.r2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.l_stick_x <= -50)
 	{
 		Serial.println("(controller.l_stick_x <= -50)");
-		macro_curve(ENGINE_DIRECTION_BACK, ENGINE_DIRECTION_FRONT);
-		internal_setup_millis();
+		macro_curve(TT_ENGINE_DIRECTION_BACK, TT_ENGINE_DIRECTION_FRONT);
+		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
 
 	if (controller.l_stick_x >= 50)
 	{
 		Serial.println("(controller.l_stick_x >= 50)");
-		macro_curve(ENGINE_DIRECTION_FRONT, ENGINE_DIRECTION_BACK);
-		internal_setup_millis();
+		macro_curve(TT_ENGINE_DIRECTION_FRONT, TT_ENGINE_DIRECTION_BACK);
+		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
 
@@ -114,48 +114,48 @@ void loop()
 void update_engine()
 {
 	Serial.printf("################################################################################################################################\n");
-	engine_debug(engine_left, "engine_left");
-	engine_debug(engine_right, "engine_right");
-	controller_debug(controller, "controller");
-	internal_debug("internal");
-	engine_move(engine_left, engine_right);
+	tt::engine::debug(engine_left, "engine_left");
+	tt::engine::debug(engine_right, "engine_right");
+	tt::controller::debug(controller, "controller");
+	tt::internal::debug("internal");
+	tt::engine::move(engine_left, engine_right);
 }
 
 void reset_engine()
 {
-	engine_stop();
-	engine_left = ENGINE_FRONT_STOP;
-	engine_right = ENGINE_FRONT_STOP;
-	internal_setup_millis();
+	tt::engine::stop();
+	engine_left = TT_ENGINE_FRONT_STOP;
+	engine_right = TT_ENGINE_FRONT_STOP;
+	tt::internal::setup_millis();
 }
 
 void macro_normal()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 3, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
+	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 3, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;
 }
 
 void macro_careful()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(INTERNAL_BETWEEN(internal_delta_millis() / 2, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL));
-	const uint8_t slow_base_speed = map(base_speed, ENGINE_SPEED_SLOW(2), ENGINE_SPEED_FULL, ENGINE_SPEED_SLOW(3), ENGINE_SPEED_SLOW(2));
+	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
+	const uint8_t slow_base_speed = map(base_speed, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL, TT_ENGINE_SPEED_SLOW(3), TT_ENGINE_SPEED_SLOW(2));
 	engine_left.speed = slow_base_speed;
 	engine_right.speed = slow_base_speed;
 }
 
 void macro_just_go()
 {
-	engine_left = ENGINE_FRONT_FULL;
-	engine_right = ENGINE_FRONT_FULL;
+	engine_left = TT_ENGINE_FRONT_FULL;
+	engine_right = TT_ENGINE_FRONT_FULL;
 }
 
 void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
 {
-	const uint8_t left_speed = map(speed_modifier, ENGINE_SPEED_STOP, ENGINE_SPEED_FULL,
-								   ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_left.speed));
-	const uint8_t right_speed = map(speed_modifier, ENGINE_SPEED_STOP, ENGINE_SPEED_FULL,
-									ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_right.speed));
+	const uint8_t left_speed = map(speed_modifier, TT_ENGINE_SPEED_STOP, TT_ENGINE_SPEED_FULL,
+								   TT_ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_left.speed));
+	const uint8_t right_speed = map(speed_modifier, TT_ENGINE_SPEED_STOP, TT_ENGINE_SPEED_FULL,
+									TT_ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_right.speed));
 	engine_left = {direction, left_speed};
 	engine_right = {direction, right_speed};
 	if (controller.l_stick_x <= -50)

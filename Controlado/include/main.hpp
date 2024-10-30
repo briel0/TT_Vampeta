@@ -1,4 +1,5 @@
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
