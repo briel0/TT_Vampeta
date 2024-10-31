@@ -160,7 +160,7 @@ void setup()
 #pragma endregion "Main Setup"
 
 #pragma region "Main Loop"
-void loop_init()
+void init()
 {
 	tt::engine::init();
 
@@ -202,7 +202,7 @@ void loop_init()
 	}
 }
 
-void loop_update()
+void update()
 {
 	switch (estrategia)
 	{
@@ -217,11 +217,11 @@ void loop()
 	switch (loop_state)
 	{
 	case LOOP_STATE_INIT:
-		loop_init();
+		init();
 		loop_state = LOOP_STATE_UPDATE;
 		break;
 	case LOOP_STATE_UPDATE:
-		loop_update();
+		update();
 		break;
 	default:
 		break;

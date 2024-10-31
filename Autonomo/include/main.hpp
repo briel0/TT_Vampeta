@@ -39,6 +39,6 @@ void sensor_task(void *pvParameters);
 void setup_task();
 void setup_estrategia();
 void setup_luta();
-void loop_init();
-void loop_update();
+void init();
+void update();
 #pragma endregion "Main Signatures"

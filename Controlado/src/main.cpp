@@ -29,6 +29,7 @@ void setup()
 #pragma region "Main Loop"
 void init()
 {
+	tt::engine::setup();
 }
 
 void update()
