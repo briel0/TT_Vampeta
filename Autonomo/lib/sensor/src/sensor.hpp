@@ -12,7 +12,7 @@ namespace tt
 			int right;
 		};
 
-		void begin();
+		void setup();
 		sensor_t create_snapshot();
 		void debug(sensor_t sensor, const char *msg);
 	}

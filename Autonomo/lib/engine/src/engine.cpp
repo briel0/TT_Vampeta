@@ -21,7 +21,7 @@ namespace tt::engine
 	engine_t current_engine_right = TT_ENGINE_DEFAULT;
 	bool standby_mode = false;
 
-	void begin()
+	void setup()
 	{
 		pinMode(pwmA, OUTPUT);
 		pinMode(a1, OUTPUT);
@@ -44,6 +44,17 @@ namespace tt::engine
 			standby_mode = mode;
 			digitalWrite(stby, static_cast<uint8_t>(!standby_mode));
 		}
+	}
+
+	void init()
+	{
+		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(pwmA, current_engine_left.speed);
+
+		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(pwmB, current_engine_right.speed);
 	}
 
 	void move(const engine_t engine_left, const engine_t engine_right)

@@ -10,7 +10,7 @@ namespace tt::serial
 {
 	BluetoothSerial SerialBT;
 
-	void begin(const char *name)
+	void setup(const char *name)
 	{
 		SerialBT.begin(name);
 	}

@@ -11,7 +11,7 @@
 
 namespace tt::sensor
 {
-	void begin()
+	void setup()
 	{
 		pinMode(sensor_left, INPUT);
 		pinMode(sensor_front, INPUT);

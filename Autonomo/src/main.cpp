@@ -139,9 +139,9 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	tt::engine::begin();
-	tt::internal::begin();
-	tt::sensor::begin();
+	tt::engine::setup();
+	tt::internal::setup();
+	tt::sensor::setup();
 	Serial.println("Begin and Load Complete!");
 
 	tt::engine::set_standby(false);
@@ -149,8 +149,8 @@ void setup()
 	Serial.println("Setup Complete!");
 
 	tt::engine::set_standby(true);
-	tt::receiver::begin();
-	tt::serial::begin(ROBO_NAME);
+	tt::receiver::setup();
+	tt::serial::setup(ROBO_NAME);
 
 	setup_task();
 	setup_estrategia();
@@ -162,8 +162,7 @@ void setup()
 #pragma region "Main Loop"
 void loop_init()
 {
-	// setup_luta();
-	// setup_task();
+	tt::engine::init();
 
 	switch (estrategia)
 	{

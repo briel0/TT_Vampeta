@@ -12,7 +12,7 @@
 
 namespace tt::receiver
 {
-	void begin()
+	void setup()
 	{
 		IrReceiver.begin(IR, ENABLE_LED_FEEDBACK, USE_DEFAULT_FEEDBACK_LED_PIN);
 		printActiveIRProtocols(&Serial);

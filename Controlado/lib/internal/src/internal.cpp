@@ -10,7 +10,7 @@ namespace tt::internal
 	uint64_t internal_millis = 0;
 	bool led_mode = false;
 
-	void begin()
+	void setup()
 	{
 		pinMode(led, OUTPUT);
 		internal_millis = end_millis();

@@ -15,9 +15,9 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	tt::controller::begin("F0:24:F9:44:F8:DE");
-	tt::engine::begin();
-	tt::internal::begin();
+	tt::controller::setup("F0:24:F9:44:F8:DE");
+	tt::engine::setup();
+	tt::internal::setup();
 	Serial.println("Begin and Load Complete!");
 
 	tt::engine::set_standby(false);

@@ -42,9 +42,10 @@ namespace tt
 			}
 		};
 
-		void begin();
+		void setup();
 		bool get_standby();
 		void set_standby(const bool mode);
+		void init();
 		void move(const engine_t engine_left, const engine_t engine_right);
 		void stop();
 		void debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg);

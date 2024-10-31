@@ -16,7 +16,7 @@ namespace tt
 			int8_t r_stick_x, r_stick_y;
 		};
 
-		void begin(const char *mac);
+		void setup(const char *mac);
 		bool is_connected();
 		bool disconnected();
 		controller_t create_snapshot();

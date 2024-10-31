@@ -5,7 +5,7 @@ namespace tt
 {
 	namespace serial
 	{
-		void begin(const char *name);
+		void setup(const char *name);
 		int available();
 		void end();
 

@@ -5,7 +5,7 @@ namespace tt
 {
 	namespace receiver
 	{
-		void begin();
+		void setup();
 		bool decode();
 		void resume();
 		uint16_t command();

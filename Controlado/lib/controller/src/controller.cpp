@@ -6,11 +6,11 @@
 
 namespace tt::controller
 {
-	bool begin_connected = false;
+	bool connected = false;
 
-	void begin(const char *mac)
+	void setup(const char *mac)
 	{
-		begin_connected = PS4.begin(mac);
+		connected = PS4.begin(mac);
 	}
 
 	bool is_connected()
@@ -20,7 +20,7 @@ namespace tt::controller
 
 	bool disconnected()
 	{
-		return begin_connected && !is_connected();
+		return connected && !is_connected();
 	}
 
 	controller_t create_snapshot()

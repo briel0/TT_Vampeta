@@ -9,7 +9,7 @@ namespace tt
 {
 	namespace internal
 	{
-		void begin();
+		void setup();
 		bool get_led();
 		void set_led(const bool mode);
 		void setup_millis();
