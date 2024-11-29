@@ -90,7 +90,7 @@ void setup_estrategia()
 			break;
 		}
 	}
-	tt::serial::end();
+	//tt::serial::end();
 }
 
 void setup_luta()
