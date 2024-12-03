@@ -9,5 +9,6 @@ namespace tt
 		bool decode();
 		void resume();
 		uint16_t command();
+		bool signal(uint16_t sig);
 	}
 }

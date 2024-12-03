@@ -90,7 +90,6 @@ void setup_estrategia()
 			break;
 		}
 	}
-	//tt::serial::end();
 }
 
 void setup_luta()
@@ -98,37 +97,29 @@ void setup_luta()
 	bool ready = false;
 	while (true)
 	{
-		if (tt::receiver::decode())
+		if (tt::receiver::signal(0x0))
 		{
-			tt::receiver::resume();
-			if (tt::receiver::command() == 0x0)
+			ready = true;
+			for (int i = 0; i < 3; i++)
 			{
-				ready = true;
-				for (int i = 0; i < 3; i++)
+				tt::internal::set_led(true);
+				vTaskDelay(50);
+				tt::internal::set_led(false);
+				vTaskDelay(50);
+				if (tt::receiver::signal(0x1))
 				{
-					tt::internal::set_led(true);
-					vTaskDelay(50);
 					tt::internal::set_led(false);
-					vTaskDelay(50);
-					if (tt::receiver::decode())
-					{
-						tt::receiver::resume();
-						if (tt::receiver::command() == 0x1 && ready)
-						{
-							tt::internal::set_led(false);
-							tt::engine::set_standby(false);
-							break;
-						}
-					}
+					tt::engine::set_standby(false);
+					break;
 				}
 			}
+		}
 
-			if (tt::receiver::command() == 0x1 && ready)
-			{
-				tt::internal::set_led(false);
-				tt::engine::set_standby(false);
-				break;
-			}
+		if (tt::receiver::signal(0x1) && ready)
+		{
+			tt::internal::set_led(false);
+			tt::engine::set_standby(false);
+			break;
 		}
 	}
 	sensor_running = true;
@@ -142,15 +133,13 @@ void setup()
 	tt::engine::setup();
 	tt::internal::setup();
 	tt::sensor::setup();
-	Serial.println("Begin and Load Complete!");
-
-	tt::engine::set_standby(false);
-	tt::internal::set_led(false);
-	Serial.println("Setup Complete!");
-
-	tt::engine::set_standby(true);
 	tt::receiver::setup();
 	tt::serial::setup(ROBO_NAME);
+	Serial.println("Setup Complete!");
+
+	tt::internal::set_led(false);
+	tt::engine::set_standby(true);
+	Serial.println("Set Complete!");
 
 	setup_task();
 	setup_estrategia();
@@ -234,28 +223,29 @@ void sensor_task(void *pvParameters)
 {
 	while (true)
 	{
-		if (sensor_running)
+		if (!sensor_running)
 		{
-			if (tt::receiver::decode())
-			{
-				tt::receiver::resume();
-				if (tt::receiver::command() == 0x2)
-				{
-					tt::internal::set_led(true);
-					tt::engine::stop();
-					ESP.restart();
-				}
-			}
+			continue;
+		}
 
-			sensor = tt::sensor::create_snapshot();
-			if (sensor.left)
-			{
-				direction = left;
-			}
-			else if (sensor.right)
-			{
-				direction = right;
-			}
+		if (tt::receiver::signal(0x2))
+		{
+			tt::internal::set_led(true);
+			tt::engine::set_standby(true);
+			tt::engine::stop();
+			tt::serial::end();
+			ESP.restart();
+			return;
+		}
+
+		sensor = tt::sensor::create_snapshot();
+		if (sensor.left)
+		{
+			direction = left;
+		}
+		else if (sensor.right)
+		{
+			direction = right;
 		}
 		vTaskDelay(1);
 	}

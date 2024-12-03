@@ -32,4 +32,13 @@ namespace tt::receiver
 	{
 		return IrReceiver.decodedIRData.command;
 	}
+
+	bool signal(uint16_t sig)
+	{
+		if (decode())
+		{
+			resume();
+		}
+		return command() == sig;
+	}
 }
