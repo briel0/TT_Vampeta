@@ -9,34 +9,77 @@
 namespace tt::serial
 {
 	BluetoothSerial SerialBT;
+	bool enable = false;
+
+	void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
+	{
+		switch (event)
+		{
+		case ESP_SPP_SRV_OPEN_EVT:
+			enable = true;
+			Serial.println("SmartPhone Connected!");
+			break;
+		case ESP_SPP_CLOSE_EVT:
+			enable = false;
+			Serial.println("SmartPhone Desconnected!");
+			break;
+		}
+	}
 
 	void setup(const char *name)
 	{
 		SerialBT.begin(name);
+		SerialBT.register_callback(callback);
+	}
+
+	bool is_enable()
+	{
+		return enable;
 	}
 
 	int available()
 	{
+		if (!is_enable())
+		{
+			return 0;
+		}
 		return SerialBT.available();
 	}
 
 	void end()
 	{
+		if (!is_enable())
+		{
+			return;
+		}
 		SerialBT.end();
 	}
 
 	int read()
 	{
+		if (!is_enable())
+		{
+			return -1;
+		}
 		return SerialBT.read();
 	}
 
 	void write(uint8_t c)
 	{
+		if (!is_enable())
+		{
+			return;
+		}
 		SerialBT.write(c);
 	}
 
 	void printf(const char *fmt, ...)
 	{
+		if (!is_enable())
+		{
+			return;
+		}
+
 		const size_t buffer_len = 512;
 		char buffer[buffer_len];
 		va_list args;
@@ -50,6 +93,10 @@ namespace tt::serial
 	template <typename T>
 	void println(T val)
 	{
+		if (!is_enable())
+		{
+			return;
+		}
 		SerialBT.println(val);
 	}
 	template void println(int16_t);
@@ -68,6 +115,10 @@ namespace tt::serial
 	template <typename T>
 	void print(T val)
 	{
+		if (!is_enable())
+		{
+			return;
+		}
 		SerialBT.print(val);
 	}
 	template void print(int8_t);

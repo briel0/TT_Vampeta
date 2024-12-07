@@ -59,6 +59,14 @@ namespace tt::engine
 
 	void move(const engine_t engine_left, const engine_t engine_right)
 	{
+		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(pwmA, current_engine_left.speed);
+
+		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(pwmB, current_engine_right.speed);
+		/*
 		if (current_engine_left.direction != engine_left.direction)
 		{
 			current_engine_left.direction = engine_left.direction;
@@ -82,6 +90,7 @@ namespace tt::engine
 			current_engine_right.speed = engine_right.speed;
 			analogWrite(pwmB, current_engine_right.speed);
 		}
+		*/
 	}
 
 	void stop()

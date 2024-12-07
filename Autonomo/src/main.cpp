@@ -16,14 +16,13 @@ direction_t direction = right;
 tt::sensor_t sensor;
 
 #pragma region "Main Setup"
-void setup_task()
-{
-	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 2048, nullptr, 16, nullptr, PRO_CPU_NUM);
-	vTaskDelay(500);
-}
-
 void setup_estrategia()
 {
+	while (!tt::serial::is_enable())
+	{
+		vTaskDelay(1);
+	}
+
 	tt::serial::println("LIGOUUUU");
 	tt::serial::printf("Digite '%c' para Mostrar os Comandos Disponíveis!!\n", COMMAND_HELP);
 
@@ -92,12 +91,19 @@ void setup_estrategia()
 	}
 }
 
+void setup_task()
+{
+	TaskHandle_t SensorTask;
+	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
+	vTaskDelay(500);
+}
+
 void setup_luta()
 {
 	bool ready = false;
 	while (true)
 	{
-		if (tt::receiver::signal(0x0))
+		if (tt::receiver::signal(tt::receiver_t::test))
 		{
 			ready = true;
 			for (int i = 0; i < 3; i++)
@@ -106,7 +112,7 @@ void setup_luta()
 				vTaskDelay(50);
 				tt::internal::set_led(false);
 				vTaskDelay(50);
-				if (tt::receiver::signal(0x1))
+				if (tt::receiver::signal(tt::receiver_t::begin))
 				{
 					tt::internal::set_led(false);
 					tt::engine::set_standby(false);
@@ -115,7 +121,7 @@ void setup_luta()
 			}
 		}
 
-		if (tt::receiver::signal(0x1) && ready)
+		if (tt::receiver::signal(tt::receiver_t::begin) && ready)
 		{
 			tt::internal::set_led(false);
 			tt::engine::set_standby(false);
@@ -130,21 +136,33 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	tt::engine::setup();
 	tt::internal::setup();
+	Serial.println("Setup Internal!");
+
+	tt::engine::setup();
+	Serial.println("Setup Engine!");
+
 	tt::sensor::setup();
+	Serial.println("Setup Sensor!");
+
 	tt::receiver::setup();
+	Serial.println("Setup Receiver!");
+
 	tt::serial::setup(ROBO_NAME);
-	Serial.println("Setup Complete!");
+	Serial.println("Setup Serial!");
 
 	tt::internal::set_led(false);
 	tt::engine::set_standby(true);
-	Serial.println("Set Complete!");
+	Serial.println("Setup Complete!");
 
-	setup_task();
 	setup_estrategia();
+	tt::serial::end();
+	Serial.println("Setup Estrategia!");
+	setup_task();
+	Serial.println("Setup Task!");
 	setup_luta();
-	tt::serial::println("COMEÇOOUU!!!");
+	Serial.println("Setup Luta!");
+	tt::serial::println("Começou!");
 }
 #pragma endregion "Main Setup"
 
@@ -225,10 +243,11 @@ void sensor_task(void *pvParameters)
 	{
 		if (!sensor_running)
 		{
+			vTaskDelay(1);
 			continue;
 		}
 
-		if (tt::receiver::signal(0x2))
+		if (tt::receiver::signal(tt::receiver_t::end))
 		{
 			tt::internal::set_led(true);
 			tt::engine::set_standby(true);

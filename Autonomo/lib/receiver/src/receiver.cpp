@@ -33,6 +33,25 @@ namespace tt::receiver
 		return IrReceiver.decodedIRData.command;
 	}
 
+	receiver_t receiver()
+	{
+		switch (command())
+		{
+		case static_cast<uint16_t>(receiver_t::test):
+			return receiver_t::begin;
+			break;
+		case static_cast<uint16_t>(receiver_t::begin):
+			return receiver_t::begin;
+			break;
+		case static_cast<uint16_t>(receiver_t::end):
+			return receiver_t::end;
+			break;
+		default:
+			return receiver_t::none;
+			break;
+		}
+	}
+
 	bool signal(uint16_t sig)
 	{
 		if (decode())
@@ -40,5 +59,14 @@ namespace tt::receiver
 			resume();
 		}
 		return command() == sig;
+	}
+
+	bool signal(receiver_t sig)
+	{
+		if (decode())
+		{
+			resume();
+		}
+		return receiver() == sig;
 	}
 }

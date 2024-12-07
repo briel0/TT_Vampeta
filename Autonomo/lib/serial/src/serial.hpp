@@ -6,6 +6,7 @@ namespace tt
 	namespace serial
 	{
 		void setup(const char *name);
+		bool is_enable();
 		int available();
 		void end();
 
