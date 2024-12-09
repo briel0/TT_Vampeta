@@ -10,7 +10,7 @@ uint8_t loop_state = LOOP_STATE_INIT;
 
 char bluetooth_input_char = ESTRATEGIA_LOOP;
 char estrategia = bluetooth_input_char;
-bool sensor_running = false;
+// bool sensor_running = false;
 
 direction_t direction = right;
 tt::sensor_t sensor;
@@ -91,13 +91,6 @@ void setup_estrategia()
 	}
 }
 
-void setup_task()
-{
-	TaskHandle_t SensorTask;
-	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
-	vTaskDelay(500);
-}
-
 void setup_luta()
 {
 	bool ready = false;
@@ -128,7 +121,14 @@ void setup_luta()
 			break;
 		}
 	}
-	sensor_running = true;
+	// sensor_running = true;
+}
+
+void setup_task()
+{
+	TaskHandle_t SensorTask;
+	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
+	vTaskDelay(500);
 }
 
 void setup()
@@ -156,12 +156,15 @@ void setup()
 	Serial.println("Setup Complete!");
 
 	setup_estrategia();
-	tt::serial::end();
+	// tt::serial::end();
 	Serial.println("Setup Estrategia!");
-	setup_task();
-	Serial.println("Setup Task!");
+
 	setup_luta();
 	Serial.println("Setup Luta!");
+
+	setup_task();
+	Serial.println("Setup Task!");
+
 	tt::serial::println("Começou!");
 }
 #pragma endregion "Main Setup"
@@ -241,10 +244,12 @@ void sensor_task(void *pvParameters)
 {
 	while (true)
 	{
-		if (!sensor_running)
+		// if (!sensor_running)
+		/
 		{
-			vTaskDelay(1);
-			continue;
+			//	vTaskDelay(1);
+			//	continue;
+			/
 		}
 
 		if (tt::receiver::signal(tt::receiver_t::end))

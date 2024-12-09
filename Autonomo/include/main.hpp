@@ -37,8 +37,8 @@ void inicio_costas();
 void procurar_padrao(uint8_t velocidade_giro);
 void sensor_task(void *pvParameters);
 void setup_estrategia();
-void setup_task();
 void setup_luta();
+void setup_task();
 void init();
 void update();
 #pragma endregion "Main Signatures"
