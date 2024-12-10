@@ -33,12 +33,14 @@ namespace tt::receiver
 		return IrReceiver.decodedIRData.command;
 	}
 
-	void update()
+	bool update()
 	{
 		if (decode())
 		{
 			resume();
+			return true;
 		}
+		return false;
 	}
 
 	receiver_t receiver()

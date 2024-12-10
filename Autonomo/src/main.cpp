@@ -102,11 +102,10 @@ void setup_estrategia()
 void setup_luta()
 {
 	bool ready = false;
-	tt::receiver::update();
-	while (tt::receiver::receiver() != tt::receiver_t::begin || !ready)
+	while (!(tt::receiver::update() && ready &&
+			 tt::receiver::receiver() == tt::receiver_t::begin))
 	{
 		vTaskDelay(1);
-		tt::receiver::update();
 		switch (tt::receiver::receiver())
 		{
 		case tt::receiver_t::test:
@@ -256,22 +255,12 @@ void loop()
 #pragma region "Main Task"
 void sensor_task(void *pvParameters)
 {
-	while (true)
+	while (!tt::receiver::signal(tt::receiver_t::end))
 	{
 		vTaskDelay(1);
 		if (!sensor_running)
 		{
 			continue;
-		}
-
-		if (tt::receiver::signal(tt::receiver_t::end))
-		{
-			tt::internal::set_led(true);
-			tt::engine::set_standby(true);
-			tt::engine::stop();
-			tt::serial::end();
-			ESP.restart();
-			return;
 		}
 
 		sensor = tt::sensor::create_snapshot();
@@ -284,6 +273,12 @@ void sensor_task(void *pvParameters)
 			direction = right;
 		}
 	}
+
+	tt::internal::set_led(true);
+	tt::engine::set_standby(true);
+	tt::engine::stop();
+	tt::serial::end();
+	ESP.restart();
 }
 #pragma endregion "Main Task"
 

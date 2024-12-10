@@ -16,7 +16,7 @@ namespace tt
 		bool decode();
 		void resume();
 		uint16_t command();
-		void update();
+		bool update();
 		receiver_t receiver();
 		bool signal(receiver_t sig);
 	}
