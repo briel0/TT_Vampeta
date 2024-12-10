@@ -10,12 +10,19 @@ uint8_t loop_state = LOOP_STATE_INIT;
 
 char bluetooth_input_char = ESTRATEGIA_LOOP;
 char estrategia = bluetooth_input_char;
-// bool sensor_running = false;
+bool sensor_running = false;
 
 direction_t direction = right;
 tt::sensor_t sensor;
 
 #pragma region "Main Setup"
+void setup_task()
+{
+	TaskHandle_t SensorTask;
+	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
+	vTaskDelay(500);
+}
+
 void setup_estrategia()
 {
 	while (!tt::serial::is_enable())
@@ -28,6 +35,7 @@ void setup_estrategia()
 
 	while (bluetooth_input_char != COMMAND_SETUP)
 	{
+		vTaskDelay(1);
 		if (tt::serial::available())
 		{
 			bluetooth_input_char = tt::serial::read();
@@ -94,10 +102,14 @@ void setup_estrategia()
 void setup_luta()
 {
 	bool ready = false;
-	while (true)
+	tt::receiver::update();
+	while (tt::receiver::receiver() != tt::receiver_t::begin || !ready)
 	{
-		if (tt::receiver::signal(tt::receiver_t::test))
+		vTaskDelay(1);
+		tt::receiver::update();
+		switch (tt::receiver::receiver())
 		{
+		case tt::receiver_t::test:
 			ready = true;
 			for (int i = 0; i < 3; i++)
 			{
@@ -105,30 +117,32 @@ void setup_luta()
 				vTaskDelay(50);
 				tt::internal::set_led(false);
 				vTaskDelay(50);
-				if (tt::receiver::signal(tt::receiver_t::begin))
-				{
-					tt::internal::set_led(false);
-					tt::engine::set_standby(false);
-					break;
-				}
 			}
-		}
-
-		if (tt::receiver::signal(tt::receiver_t::begin) && ready)
-		{
-			tt::internal::set_led(false);
-			tt::engine::set_standby(false);
+			break;
+		case tt::receiver_t::begin:
+			for (int i = 0; i < 2; i++)
+			{
+				tt::internal::set_led(true);
+				vTaskDelay(100);
+				tt::internal::set_led(false);
+				vTaskDelay(100);
+			}
+			break;
+		case tt::receiver_t::end:
+			for (int i = 0; i < 2; i++)
+			{
+				tt::internal::set_led(true);
+				vTaskDelay(150);
+				tt::internal::set_led(false);
+				vTaskDelay(150);
+			}
 			break;
 		}
 	}
-	// sensor_running = true;
-}
 
-void setup_task()
-{
-	TaskHandle_t SensorTask;
-	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
-	vTaskDelay(500);
+	tt::internal::set_led(false);
+	tt::engine::set_standby(false);
+	sensor_running = true;
 }
 
 void setup()
@@ -155,17 +169,17 @@ void setup()
 	tt::engine::set_standby(true);
 	Serial.println("Setup Complete!");
 
+	setup_task();
+	Serial.println("Setup Task!");
+
 	setup_estrategia();
-	// tt::serial::end();
 	Serial.println("Setup Estrategia!");
 
 	setup_luta();
 	Serial.println("Setup Luta!");
 
-	setup_task();
-	Serial.println("Setup Task!");
-
 	tt::serial::println("Começou!");
+	// tt::serial::end();
 }
 #pragma endregion "Main Setup"
 
@@ -244,12 +258,10 @@ void sensor_task(void *pvParameters)
 {
 	while (true)
 	{
-		// if (!sensor_running)
-		/
+		vTaskDelay(1);
+		if (!sensor_running)
 		{
-			//	vTaskDelay(1);
-			//	continue;
-			/
+			continue;
 		}
 
 		if (tt::receiver::signal(tt::receiver_t::end))
@@ -271,7 +283,6 @@ void sensor_task(void *pvParameters)
 		{
 			direction = right;
 		}
-		vTaskDelay(1);
 	}
 }
 #pragma endregion "Main Task"
