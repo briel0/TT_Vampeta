@@ -22,6 +22,11 @@
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
 
+#define DEBUG_SHOW_SENSOR false
+#define DEBUG_SHOW_DIRECTION false
+#define DEBUG_SHOW_ENGINE false
+#define DEBUG_ENGINE_STOP false
+
 enum direction_t
 {
 	left,

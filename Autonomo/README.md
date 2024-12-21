@@ -65,3 +65,7 @@
  2. `init()`: É o código que vai rodar antes do update
  3. `update()`: É o código que vai rodar em um loop
  4. `loop()`: É o loop geral do robô
+
+## Observação
+ 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
+ 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...

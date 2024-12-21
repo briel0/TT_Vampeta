@@ -123,6 +123,9 @@ void setup_luta()
 			}
 			break;
 		case tt::receiver_t::begin:
+			if (ready) {
+				break;
+			}
 			for (int i = 0; i < 2; i++)
 			{
 				tt::internal::set_led(true);
@@ -154,6 +157,7 @@ void setup()
 	Serial.println("Serial 115200!");
 
 	tt::internal::setup();
+	tt::internal::set_led(false);
 	Serial.println("Setup Internal!");
 
 	tt::engine::setup();
@@ -168,10 +172,6 @@ void setup()
 	tt::serial::setup(ROBO_NAME);
 	Serial.println("Setup Serial!");
 
-	tt::internal::set_led(false);
-	tt::engine::set_standby(true);
-	Serial.println("Setup Complete!");
-
 	setup_task();
 	Serial.println("Setup Task!");
 
@@ -182,14 +182,16 @@ void setup()
 	Serial.println("Setup Luta!");
 
 	tt::serial::println("Começou!");
-	// tt::serial::end();
 }
 #pragma endregion "Main Setup"
 
 #pragma region "Main Loop"
 void init()
 {
-	//tt::engine::init();
+	tt::engine::init();
+	#if DEBUG_ENGINE_STOP
+		tt::engine::set_standby(true);
+	#endif
 
 	switch (estrategia)
 	{
@@ -276,6 +278,16 @@ void sensor_task(void *pvParameters)
 		{
 			direction = right;
 		}
+
+		#if (DEBUG_SHOW_SENSOR)
+			tt::serial::printf("l:%i f:%i r:%i\n", sensor.left, sensor.front, sensor.right);
+		#endif
+		#if (DEBUG_SHOW_DIRECTION)
+			tt::serial::printf("d:%i\n", static_cast<int>(direction));
+		#endif
+		#if (DEBUG_SHOW_ENGINE)
+			tt::serial::printf("d:%i\n", static_cast<int>(direction));
+		#endif
 	}
 
 	tt::internal::set_led(true);
@@ -289,6 +301,32 @@ void sensor_task(void *pvParameters)
 #pragma region "Main Estratégias"
 void inicio_frentao()
 {
+	/*
+	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(0));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_BACK(0));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_FRONT(0), TT_ENGINE_FRONT(255));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_BACK(0), TT_ENGINE_BACK(255));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(255));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_FRONT(255));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_BACK(255));
+	vTaskDelay(4000);
+
+	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_BACK(255));
+	vTaskDelay(4000);]
+	*/
+
 	tt::engine::move(TT_ENGINE_FRONT(72), TT_ENGINE_FRONT(72));
 	vTaskDelay(8);
 
