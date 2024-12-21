@@ -102,10 +102,14 @@ void setup_estrategia()
 void setup_luta()
 {
 	bool ready = false;
-	while (!(tt::receiver::update() && ready &&
-			 tt::receiver::receiver() == tt::receiver_t::begin))
+	bool update = false;
+	do
 	{
 		vTaskDelay(1);
+		update = tt::receiver::update();
+		if (!update) {
+			continue;
+		}
 		switch (tt::receiver::receiver())
 		{
 		case tt::receiver_t::test:
@@ -137,7 +141,7 @@ void setup_luta()
 			}
 			break;
 		}
-	}
+	} while (!(ready && tt::receiver::receiver() == tt::receiver_t::begin));
 
 	tt::internal::set_led(false);
 	tt::engine::set_standby(false);
@@ -185,7 +189,7 @@ void setup()
 #pragma region "Main Loop"
 void init()
 {
-	tt::engine::init();
+	//tt::engine::init();
 
 	switch (estrategia)
 	{
