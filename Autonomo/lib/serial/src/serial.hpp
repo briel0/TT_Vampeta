@@ -1,3 +1,4 @@
+#include <BluetoothSerial.h>
 #include <cstdint>
 #include <cstddef>
 
@@ -6,7 +7,8 @@ namespace tt
 	namespace serial
 	{
 		void setup(const char *name);
-		bool is_enable();
+		BluetoothSerial serial();
+		bool enable();
 		int available();
 		void end();
 
@@ -15,8 +17,25 @@ namespace tt
 		void printf(const char *fmt, ...);
 
 		template <typename T>
-		void println(T val);
+		void println(T val)
+		{
+			if (!enable())
+			{
+				return;
+			}
+			BluetoothSerial SerialBT = serial();
+			SerialBT.println(val);
+		}
+
 		template <typename T>
-		void print(T val);
+		void print(T val)
+		{
+			if (!enable())
+			{
+				return;
+			}
+			BluetoothSerial SerialBT = serial();
+			SerialBT.print(val);
+		}
 	}
 }

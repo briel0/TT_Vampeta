@@ -22,6 +22,9 @@
     |--serial
        |- serial.cpp
        |- serial.hpp
+    |--utilitie
+       |- utilitie.cpp
+       |- utilitie.hpp
  |--src
     |- main.cpp
  ```
@@ -36,7 +39,8 @@
  3. `receiver`
  4. `sensor`
  5. `serial`
- 6. `main`
+ 6. `utilitie`
+ 7. `main`
 
 ## Engine
  1. `engine_t`: É uma estrutura que representa um motor (velocidade e direção)

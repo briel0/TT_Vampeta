@@ -4,6 +4,7 @@
 #include <receiver.hpp>
 #include <sensor.hpp>
 #include <serial.hpp>
+#include <utilitie.hpp>
 #include "main.hpp"
 
 uint8_t loop_state = LOOP_STATE_INIT;
@@ -25,7 +26,7 @@ void setup_task()
 
 void setup_estrategia()
 {
-	while (!tt::serial::is_enable())
+	while (!tt::serial::enable())
 	{
 		vTaskDelay(1);
 	}
@@ -107,7 +108,8 @@ void setup_luta()
 	{
 		vTaskDelay(1);
 		update = tt::receiver::update();
-		if (!update) {
+		if (!update)
+		{
 			continue;
 		}
 		switch (tt::receiver::receiver())
@@ -123,7 +125,8 @@ void setup_luta()
 			}
 			break;
 		case tt::receiver_t::begin:
-			if (ready) {
+			if (ready)
+			{
 				break;
 			}
 			for (int i = 0; i < 2; i++)
@@ -189,9 +192,9 @@ void setup()
 void init()
 {
 	tt::engine::init();
-	#if DEBUG_ENGINE_STOP
-		tt::engine::set_standby(true);
-	#endif
+#if DEBUG_ENGINE_STOP
+	tt::engine::set_standby(true);
+#endif
 
 	switch (estrategia)
 	{
@@ -279,15 +282,15 @@ void sensor_task(void *pvParameters)
 			direction = right;
 		}
 
-		#if (DEBUG_SHOW_SENSOR)
-			tt::serial::printf("l:%i f:%i r:%i\n", sensor.left, sensor.front, sensor.right);
-		#endif
-		#if (DEBUG_SHOW_DIRECTION)
-			tt::serial::printf("d:%i\n", static_cast<int>(direction));
-		#endif
-		#if (DEBUG_SHOW_ENGINE)
-			tt::serial::printf("d:%i\n", static_cast<int>(direction));
-		#endif
+#if (DEBUG_SHOW_SENSOR)
+		tt::serial::printf("l:%i f:%i r:%i\n", sensor.left, sensor.front, sensor.right);
+#endif
+#if (DEBUG_SHOW_DIRECTION)
+		tt::serial::printf("d:%i\n", static_cast<int>(direction));
+#endif
+#if (DEBUG_SHOW_ENGINE)
+		tt::serial::printf("d:%i\n", static_cast<int>(direction));
+#endif
 	}
 
 	tt::internal::set_led(true);

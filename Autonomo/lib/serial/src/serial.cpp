@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <BluetoothSerial.h>
 #include "serial.hpp"
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -9,18 +8,18 @@
 namespace tt::serial
 {
 	BluetoothSerial SerialBT;
-	bool enable = false;
+	bool is_enable = false;
 
 	void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
 	{
 		switch (event)
 		{
 		case ESP_SPP_SRV_OPEN_EVT:
-			enable = true;
+			is_enable = true;
 			Serial.println("SmartPhone Connected!");
 			break;
 		case ESP_SPP_CLOSE_EVT:
-			enable = false;
+			is_enable = false;
 			Serial.println("SmartPhone Desconnected!");
 			break;
 		}
@@ -32,14 +31,19 @@ namespace tt::serial
 		SerialBT.register_callback(callback);
 	}
 
-	bool is_enable()
+	BluetoothSerial serial()
 	{
-		return enable;
+		return SerialBT;
+	}
+
+	bool enable()
+	{
+		return is_enable;
 	}
 
 	int available()
 	{
-		if (!is_enable())
+		if (!enable())
 		{
 			return 0;
 		}
@@ -48,7 +52,7 @@ namespace tt::serial
 
 	void end()
 	{
-		if (!is_enable())
+		if (!enable())
 		{
 			return;
 		}
@@ -57,7 +61,7 @@ namespace tt::serial
 
 	int read()
 	{
-		if (!is_enable())
+		if (!enable())
 		{
 			return -1;
 		}
@@ -66,7 +70,7 @@ namespace tt::serial
 
 	void write(uint8_t c)
 	{
-		if (!is_enable())
+		if (!enable())
 		{
 			return;
 		}
@@ -75,7 +79,7 @@ namespace tt::serial
 
 	void printf(const char *fmt, ...)
 	{
-		if (!is_enable())
+		if (!enable())
 		{
 			return;
 		}
@@ -89,48 +93,4 @@ namespace tt::serial
 		SerialBT.print(buffer);
 		va_end(args);
 	}
-
-	template <typename T>
-	void println(T val)
-	{
-		if (!is_enable())
-		{
-			return;
-		}
-		SerialBT.println(val);
-	}
-	template void println(int16_t);
-	template void println(int32_t);
-	template void println(int8_t);
-	template void println(int64_t);
-	template void println(uint8_t);
-	template void println(uint16_t);
-	template void println(uint32_t);
-	template void println(uint64_t);
-	template void println(float);
-	template void println(double);
-	template void println(char);
-	template void println(const char *);
-
-	template <typename T>
-	void print(T val)
-	{
-		if (!is_enable())
-		{
-			return;
-		}
-		SerialBT.print(val);
-	}
-	template void print(int8_t);
-	template void print(int16_t);
-	template void print(int32_t);
-	template void print(int64_t);
-	template void print(uint8_t);
-	template void print(uint16_t);
-	template void print(uint32_t);
-	template void print(uint64_t);
-	template void print(float);
-	template void print(double);
-	template void print(char);
-	template void print(const char *);
 }

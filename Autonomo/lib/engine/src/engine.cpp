@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <utilitie.hpp>
 #include "engine.hpp"
 
 #pragma region "Engine Pinning Macros"
@@ -57,7 +58,6 @@ namespace tt::engine
 		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
 		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
 		analogWrite(pwmB, current_engine_right.speed);
-
 	}
 
 	void move(const engine_t engine_left, const engine_t engine_right)
@@ -70,21 +70,16 @@ namespace tt::engine
 		current_engine_left = engine_left;
 		uint8_t a1_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK);
 		uint8_t a2_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT);
-	
+
 		current_engine_right = engine_right;
 		uint8_t b1_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK);
 		uint8_t b2_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT);
 
-		if (engine_left.direction != engine_right.direction) {
-			uint8_t tmp;
-			
-			tmp = a1_v;
-			a1_v = a2_v;
-			a2_v = a1_v;
-
-			tmp = b1_v;
-			b1_v = b2_v;
-			b2_v = b1_v;
+		if ((engine_left.direction != engine_right.direction) &&
+			(engine_left.speed != 0 && engine_right.speed != 0))
+		{
+			utilitie::swap(a1_v, a2_v);
+			utilitie::swap(b1_v, b2_v);
 		}
 
 		digitalWrite(a1, a1_v);
