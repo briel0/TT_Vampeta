@@ -24,9 +24,9 @@ Isso executará as seguintes operações:
  - ~op3~ com o nenhum argumento
 
 *** Exemplo de Comandos
- - ~f:152~ => Frentão
- - ~f:100~ => Frentinha
- - ~c:532~ => Curvão
- - ~c:336~ => Curvinha
- - ~r:104~ => Costas
- - ~d:4096~ => Defesa
+ - ~f:152~ => *Frentão*
+ - ~f:100~ => *Frentinha*
+ - ~c:532~ => *Curvão*
+ - ~c:336~ => *Curvinha*
+ - ~r:104~ => *Costas*
+ - ~d:4096~ => *Defesa*
