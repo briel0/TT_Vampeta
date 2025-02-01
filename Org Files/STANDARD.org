@@ -23,7 +23,7 @@ Isso executará as seguintes operações:
  - ~op2~ com o argumento ~arg2~
  - ~op3~ com o nenhum argumento
 
-*** Exemplo de um Comando
+*** Exemplo de Comandos
  - ~f:152~ => Frentão
  - ~f:100~ => Frentinha
  - ~c:532~ => Curvão
