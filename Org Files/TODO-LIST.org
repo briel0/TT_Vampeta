@@ -9,5 +9,4 @@
  - Calibrar os Valores (Robo Travado)
 
 ** Investigar (ALL)
- - Quando ambos os motores giram para lados diferentes eles invertem
-os entidos...
+ - Quando ambos os motores giram para lados diferentes eles invertem os sentidos...

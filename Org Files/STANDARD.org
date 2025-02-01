@@ -19,14 +19,14 @@ No *Arruela Autonomo* existe uma linguagem de input, chamada *Input Language*
 ~op1:arg1,op2:arg2,op3~
 
 Isso executará as seguintes operações:
-~op1~ com o argumento ~arg1~
-~op2~ com o argumento ~arg2~
-~op3~ com o nenhum argumento
+ - ~op1~ com o argumento ~arg1~
+ - ~op2~ com o argumento ~arg2~
+ - ~op3~ com o nenhum argumento
 
 *** Exemplo de um Comando
-~f:152~ => Frentão
-~f:100~ => Frentinha
-~c:532~ => Curvão
-~c:336~ => Curvinha
-~r:104~ => Costas
-~d:4096~ => Defesa
+ - ~f:152~ => Frentão
+ - ~f:100~ => Frentinha
+ - ~c:532~ => Curvão
+ - ~c:336~ => Curvinha
+ - ~r:104~ => Costas
+ - ~d:4096~ => Defesa
