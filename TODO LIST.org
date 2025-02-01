@@ -1,9 +1,0 @@
-* TODO LIST
-
-** Autonomo (AUTO)
-Modulo Receiver
-Modulo Sensor
-Arquivo README
-
-** Controlado (RC)
-Calibrar os Valores
