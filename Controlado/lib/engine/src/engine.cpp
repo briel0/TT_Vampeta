@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <utilitie.hpp>
 #include "engine.hpp"
 
 #pragma region "Engine Pinning Macros"
@@ -19,7 +20,7 @@ namespace tt::engine
 {
 	engine_t current_engine_left = TT_ENGINE_DEFAULT;
 	engine_t current_engine_right = TT_ENGINE_DEFAULT;
-	bool standby_mode = false;
+	bool standby_mode = true;
 
 	void setup()
 	{
@@ -30,6 +31,7 @@ namespace tt::engine
 		pinMode(b1, OUTPUT);
 		pinMode(b2, OUTPUT);
 		pinMode(stby, OUTPUT);
+		set_standby(true);
 	}
 
 	bool get_standby()
@@ -39,19 +41,20 @@ namespace tt::engine
 
 	void set_standby(const bool mode)
 	{
-		if (standby_mode != mode)
-		{
-			standby_mode = mode;
-			digitalWrite(stby, static_cast<uint8_t>(!standby_mode));
-		}
+		standby_mode = mode;
+		digitalWrite(stby, static_cast<uint8_t>(!standby_mode));
 	}
 
 	void init()
 	{
+		set_standby(false);
+
+		current_engine_left = TT_ENGINE_DEFAULT;
 		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
 		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
 		analogWrite(pwmA, current_engine_left.speed);
 
+		current_engine_right = TT_ENGINE_DEFAULT;
 		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
 		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
 		analogWrite(pwmB, current_engine_right.speed);
@@ -59,29 +62,33 @@ namespace tt::engine
 
 	void move(const engine_t engine_left, const engine_t engine_right)
 	{
-		if (current_engine_left.direction != engine_left.direction)
+		if (current_engine_left == engine_left && current_engine_right == engine_right)
 		{
-			current_engine_left.direction = engine_left.direction;
-			digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
-			digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
-		}
-		if (current_engine_left.speed != engine_left.speed)
-		{
-			current_engine_left.speed = engine_left.speed;
-			analogWrite(pwmA, current_engine_left.speed);
+			return;
 		}
 
-		if (current_engine_right.direction != engine_right.direction)
+		current_engine_left = engine_left;
+		uint8_t a1_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK);
+		uint8_t a2_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT);
+
+		current_engine_right = engine_right;
+		uint8_t b1_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK);
+		uint8_t b2_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT);
+
+		if ((engine_left.direction != engine_right.direction) &&
+			(engine_left.speed != 0 && engine_right.speed != 0))
 		{
-			current_engine_right.direction = engine_right.direction;
-			digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
-			digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
+			utilitie::swap(a1_v, a2_v);
+			utilitie::swap(b1_v, b2_v);
 		}
-		if (current_engine_right.speed != engine_right.speed)
-		{
-			current_engine_right.speed = engine_right.speed;
-			analogWrite(pwmB, current_engine_right.speed);
-		}
+
+		digitalWrite(a1, a1_v);
+		digitalWrite(a2, a2_v);
+		analogWrite(pwmA, current_engine_left.speed);
+
+		digitalWrite(b1, b1_v);
+		digitalWrite(b2, b2_v);
+		analogWrite(pwmB, current_engine_right.speed);
 	}
 
 	void stop()

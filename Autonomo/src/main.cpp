@@ -304,32 +304,6 @@ void sensor_task(void *pvParameters)
 #pragma region "Main Estratégias"
 void inicio_frentao()
 {
-	/*
-	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(0));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_BACK(0));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_FRONT(0), TT_ENGINE_FRONT(255));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_BACK(0), TT_ENGINE_BACK(255));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(255));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_FRONT(255));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_BACK(255));
-	vTaskDelay(4000);
-
-	tt::engine::move(TT_ENGINE_BACK(255), TT_ENGINE_BACK(255));
-	vTaskDelay(4000);]
-	*/
-
 	tt::engine::move(TT_ENGINE_FRONT(72), TT_ENGINE_FRONT(72));
 	vTaskDelay(8);
 

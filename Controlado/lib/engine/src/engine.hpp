@@ -36,9 +36,13 @@ namespace tt
 			uint8_t direction;
 			uint8_t speed;
 
-			bool operator==(const engine_t &engine) const
+			bool operator == (const engine_t &engine) const
 			{
 				return (direction == engine.direction && speed == engine.speed);
+			}
+			bool operator != (const engine_t &engine) const
+			{
+				return (direction != engine.direction || speed != engine.speed);
 			}
 		};
 
