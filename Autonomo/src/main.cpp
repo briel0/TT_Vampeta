@@ -60,6 +60,7 @@ void setup_estrategia()
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVAO, "CURVÃO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVINHA, "CURVINHA");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_COSTAS, "COSTAS");
+			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_DEFESA, "DEFESA");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_LOOP, "Sem estratégia, apenas um loop");
 			break;
 
@@ -223,6 +224,11 @@ void init()
 		inicio_costas();
 		break;
 
+	case ESTRATEGIA_DEFESA:
+		tt::serial::println("DEFESA!!!");
+		inicio_defesa();
+		break;
+
 	case ESTRATEGIA_LOOP:
 		tt::serial::println("LOOP!!!");
 		break;
@@ -239,7 +245,7 @@ void update()
 	switch (estrategia)
 	{
 	default:
-		procurar_padrao(TT_ENGINE_SPEED(88));
+		procurar_padrao(TT_ENGINE_SPEED(ROTATE_SPEED));
 		break;
 	}
 }
@@ -415,6 +421,32 @@ void inicio_costas()
 	{
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(104);
+	}
+}
+
+void inicio_defesa()
+{
+	tt::engine::stop();
+	while (sensor.left + sensor.right + sensor.front <= 1)
+	{
+		vTaskDelay(1);
+		if (sensor.front)
+		{
+			tt::engine::stop();
+			continue;
+		}
+
+		if (sensor.left)
+		{
+			tt::engine::move(TT_ENGINE_BACK(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
+			continue;
+		}
+
+		if (sensor.right)
+		{
+			tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_BACK(ROTATE_SPEED));
+			continue;
+		}
 	}
 }
 

@@ -98,8 +98,8 @@ namespace tt::engine
 		digitalWrite(b1, HIGH);
 		digitalWrite(b2, HIGH);
 
-		current_engine_left = TT_ENGINE_DEFAULT;
-		current_engine_right = TT_ENGINE_DEFAULT;
+		current_engine_left = TT_ENGINE_FRONT_STOP;
+		current_engine_right = TT_ENGINE_FRONT_STOP;
 	}
 
 	void debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg)

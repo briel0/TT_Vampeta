@@ -17,7 +17,10 @@
 #define ESTRATEGIA_CURVAO 'c'
 #define ESTRATEGIA_CURVINHA 'd'
 #define ESTRATEGIA_COSTAS 'e'
+#define ESTRATEGIA_DEFESA 'f'
 #define ESTRATEGIA_LOOP 'z'
+
+#define ROTATE_SPEED 88
 
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
@@ -39,6 +42,7 @@ void inicio_frentinha();
 void inicio_curvao();
 void inicio_curvinha();
 void inicio_costas();
+void inicio_defesa();
 void procurar_padrao(uint8_t velocidade_giro);
 void sensor_task(void *pvParameters);
 void setup_task();
