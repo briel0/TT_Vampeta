@@ -27,7 +27,6 @@ Isso executará as seguintes operações:
 | cmd    | desc      |
 |--------+-----------|
 | ~f:152~  | *Frentão*   |
-| ~f:152~  | *Frentão*   |
 | ~f:100~  | *Frentinha* |
 | ~c:532~  | *Curvão*    |
 | ~c:336~  | *Curvinha*  |
