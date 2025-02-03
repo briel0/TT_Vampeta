@@ -1,5 +1,17 @@
 * Arruela Documentation
-Nesse arquivo está descrito a documentação de todos os componentes do projeto *Arruela*
+Este arquivo contém a documentação de todos os componentes do projeto *Arruela*.
 
 ** Library
+As *bibliotecas* são componentes individuais, independentes e reutilizáveis.
+A criação desses componentes busca facilitar a manutenção e melhorar a legibilidade do código.
 
+** Tabela de Bibilhotecas
+| lib        | desc |
+|------------+------|
+| controller |      |
+| engine     |      |
+| internal   |      |
+| receiver   |      |
+| sensor     |      |
+| serial     |      |
+| ultilitie  |      |
