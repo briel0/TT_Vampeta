@@ -1,0 +1,40 @@
+* Arruela Standard
+Nesse arquivo está descrito todos os padrões adotados pelo *Arruela*
+
+** Input Language
+No *Arruela Autonomo* existe uma linguagem de input, chamada *Input Language*
+
+*** Lista de Comandos
+| cmd | args       | desc      |
+|-----+------------+-----------|
+| ~f~   | ~temp~       | frente    |
+| ~c~   | ~temp~       | curva     |
+| ~r~   | ~temp~       | rotação   |
+| ~t~   | ~level:temp~ | tranquilo |
+| ~p~   | ~temp~       | parado    |
+| ~>~   |            | direita   |
+| ~<~   |            | esquerda  |
+
+*** Lista de Operações
+| op<cmd:arg...> | desc                   |
+|----------------+------------------------|
+| ~!<cmd>~         | inverte direção do ~cmd~ |
+
+*** Estrutura de um Comando
+~(cmd1:arg1,!cmd2:arg2,cmd3)~
+
+Isso executará as seguintes operações:
+ - ~cmd1~ com o argumento ~arg1~.
+ - ~cmd2~ com o argumento ~arg2~ e direção invertida.
+ - ~cmd3~ com o nenhum argumento.
+
+*** Exemplo de Códigos
+| code                | desc      |
+|---------------------+-----------|
+| ~(f:152)~             | *Frentão*   |
+| ~(f:100)~             | *Frentinha* |
+| ~(r:70,!c:392,!r:70)~ | *Curvão*    |
+| ~(r:70,!c:196,!r:70)~ | *Curvinha*  |
+| ~(r:104)~             | *Costas*    |
+| ~(t:1:4096)~          | *Pacífico*  |
+| ~(t:2:4096)~          | *Defesa*    |

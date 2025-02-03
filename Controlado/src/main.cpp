@@ -15,7 +15,7 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	tt::controller::setup("F0:24:F9:44:F8:DE");
+	tt::controller::setup("f0:24:f9:44:2a:5c");
 	tt::engine::setup();
 	tt::internal::setup();
 	Serial.println("Begin and Load Complete!");
@@ -29,7 +29,7 @@ void setup()
 #pragma region "Main Loop"
 void init()
 {
-	tt::engine::setup();
+	tt::engine::init();
 }
 
 void update()
@@ -132,7 +132,7 @@ void reset_engine()
 
 void macro_normal()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 3, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
+	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2 + 32, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;
 }
@@ -161,11 +161,11 @@ void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
 	engine_right = {direction, right_speed};
 	if (controller.l_stick_x <= -50)
 	{
-		engine_right.speed >>= 3;
+		engine_left.speed >>= 3;
 	}
 	else if (controller.l_stick_x >= 50)
 	{
-		engine_left.speed >>= 3;
+		engine_right.speed >>= 3;
 	}
 }
 

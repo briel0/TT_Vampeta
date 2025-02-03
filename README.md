@@ -1,5 +1,5 @@
 # TT_MiniSumo_Arruela (v1.0)
- Mini Sumo da Tamandutech - ARRUELA!
+ Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
  ```
@@ -22,6 +22,9 @@
     |--serial
        |- serial.cpp
        |- serial.hpp
+    |--utilitie
+       |- utilitie.cpp
+       |- utilitie.hpp
  |--src
     |- main.cpp
  ```
@@ -40,6 +43,9 @@
     |--internal
        |- internal.cpp
        |- internal.hpp
+    |--utilitie
+       |- utilitie.cpp
+       |- utilitie.hpp
  |--src
     |- main.cpp
  ```
@@ -57,3 +63,7 @@
 ## PlatformIO
  1. Site do [PlatformIO](https://platformio.org)
  2. Baixar o [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
+
+## Observação
+ 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
+ 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...

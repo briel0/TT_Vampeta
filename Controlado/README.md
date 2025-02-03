@@ -1,5 +1,5 @@
 # TT_MiniSumo_Arruela (v1.0)
- Mini Sumo da Tamandutech - ARRUELA!
+ Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
  ```
@@ -16,6 +16,9 @@
     |--internal
        |- internal.cpp
        |- internal.hpp
+    |--utilitie
+       |- utilitie.cpp
+       |- utilitie.hpp
  |--src
     |- main.cpp
  ```
@@ -93,8 +96,15 @@
  8. `void debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
  9. `void debug(const char *msg)`: Mostra as informações dos recursos internos
 
+## Utilitie
+ 1. `void swap<T>(T &a, T &b)`: Inverte o valor das variáveis `a` e `b`
+ 2. `void swap<T, N>(T (&a)[N], T (&b)[N])`: Inverte o valor das variáveis `a` e `b`
+
 ## Main
  1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
  2. `init()`: É o código que vai rodar antes do update
  3. `update()`: É o código que vai rodar em um loop
  4. `loop()`: É o loop geral do robô
+
+## Observação
+ 1. Nenhuma

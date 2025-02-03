@@ -26,7 +26,7 @@ void setup_task()
 
 void setup_estrategia()
 {
-	while (!tt::serial::enable())
+	while (!tt::serial::enabled())
 	{
 		vTaskDelay(1);
 	}
@@ -60,6 +60,7 @@ void setup_estrategia()
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVAO, "CURVÃO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVINHA, "CURVINHA");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_COSTAS, "COSTAS");
+			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_PACIFICO, "PACÍFICO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_DEFESA, "DEFESA");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_LOOP, "Sem estratégia, apenas um loop");
 			break;
@@ -224,9 +225,14 @@ void init()
 		inicio_costas();
 		break;
 
+	case ESTRATEGIA_PACIFICO:
+		tt::serial::println("PACÍFICO!!!");
+		inicio_tranquilo(1);
+		break;
+
 	case ESTRATEGIA_DEFESA:
 		tt::serial::println("DEFESA!!!");
-		inicio_defesa();
+		inicio_tranquilo(2);
 		break;
 
 	case ESTRATEGIA_LOOP:
@@ -368,7 +374,7 @@ void inicio_curvao()
 	{
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
-		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
+		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
 		vTaskDelay(392);
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
@@ -378,7 +384,7 @@ void inicio_curvao()
 	{
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
-		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
+		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
 		vTaskDelay(392);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
@@ -392,7 +398,7 @@ void inicio_curvinha()
 	{
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
-		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
+		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
 		vTaskDelay(196);
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
@@ -402,7 +408,7 @@ void inicio_curvinha()
 	{
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
-		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
+		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
 		vTaskDelay(196);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
@@ -424,10 +430,13 @@ void inicio_costas()
 	}
 }
 
-void inicio_defesa()
+void inicio_tranquilo(uint8_t level)
 {
+	tt::internal::setup_millis();
+	tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
+	vTaskDelay(16);
 	tt::engine::stop();
-	while (sensor.left + sensor.right + sensor.front <= 1)
+	while (sensor.left + sensor.right + sensor.front <= level && tt::internal::delta_millis() <= TRANQUILO_TIME)
 	{
 		vTaskDelay(1);
 		if (sensor.front)
@@ -435,18 +444,17 @@ void inicio_defesa()
 			tt::engine::stop();
 			continue;
 		}
-
 		if (sensor.left)
 		{
-			tt::engine::move(TT_ENGINE_BACK(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
+			tt::engine::move(TT_ENGINE_BACK(TRANQUILO_SPEED), TT_ENGINE_FRONT(TRANQUILO_SPEED));
 			continue;
 		}
-
 		if (sensor.right)
 		{
-			tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_BACK(ROTATE_SPEED));
+			tt::engine::move(TT_ENGINE_FRONT(TRANQUILO_SPEED), TT_ENGINE_BACK(TRANQUILO_SPEED));
 			continue;
 		}
+		tt::engine::stop();
 	}
 }
 

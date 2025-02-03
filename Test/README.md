@@ -1,2 +1,5 @@
 # Teste (v1.0)
- Mini Sumo da Tamandutech - ARRUELA!
+ Mini Sumô da Tamandutech - ARRUELA!
+
+# O que é?
+ Nessa pasta fica os códigos de testes ou de backup para futuros testes

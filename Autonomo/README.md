@@ -1,5 +1,5 @@
 # TT_MiniSumo_Arruela (v1.0)
- Mini Sumo da Tamandutech - ARRUELA!
+ Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
  ```
@@ -64,6 +64,40 @@
  8. `void debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
  9. `void debug(const char *msg)`: Mostra as informações dos recursos internos
 
+## Receiver
+ 1. `receiver_t`: É uma estrutura que representa os valores do infravermelho
+ 2. `void setup()`: Inicializa o sensor infravermelho
+ 3. `bool decode()`: Verifica se há algo a ser decodificado
+ 4. `void resume()`: Atualiza o novo valor do input 'disponível' (se ele existir)
+ 5. `uint16_t command()`: Pega o valor do input 'disponível'
+ 6. `bool update()`: Verifica se existe um novo valor e atualiza, retornando se havia algo novo ou não
+ 7. `receiver_t receiver()`: Pega o valor de `command` e converte para `receiver_t`
+ 8. `bool signal(receiver_t sig)`: Atualiza o valor e verifica se `receive` é igual a `sig`
+ 9. `void debug(char *out_buffer, const size_t out_size, sensor_t sensor, const char *msg)`: Mostra as informações do sensor infravermelho na string
+ 10. `void debug(sensor_t sensor, const char *msg)`: Mostra as informações do sensor infravermelho
+
+## Sensor
+ 1. `sensor_t`: É uma estrutura que representa os valores dos sensores
+ 2. `void setup()`: Inicializa os sensores
+ 3. `sensor_t create_snapshot()`: Captura os valores dos sensores
+ 4. `void debug(char *out_buffer, const size_t out_size, sensor_t sensor, const char *msg)`: Mostra as informações dos sensores na string
+ 5. `void debug(sensor_t sensor, const char *msg)`: Mostra as informações dos sensores
+
+## Serial
+ 1. `void setup(const char *name)`: Inicializa o Bluetooth Serial 
+ 2. `bool enabled()`: Verifica se o Bluetooth Serial está ativado
+ 3. `int available()`: Verifica se o Bluetooth Serial está disponivel
+ 4. `void end()`: Fecha o Bluetooth Serial
+ 5. `int read()`: Le um caractere do Bluetooth Serial
+ 6. `void write(uint8_t c)`: Escreve um caractere do Bluetooth Serial
+ 7. `void printf(const char *fmt, ...)`: `printf` no Bluetooth Serial
+ 8. `void println<T>(T val)`: `println` no Bluetooth Serial
+ 9. `void print<T>(T val)`: `print` no Bluetooth Serial
+
+## Utilitie
+ 1. `void swap<T>(T &a, T &b)`: Inverte o valor das variáveis `a` e `b`
+ 2. `void swap<T, N>(T (&a)[N], T (&b)[N])`: Inverte o valor das variáveis `a` e `b`
+
 ## Main
  1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
  2. `init()`: É o código que vai rodar antes do update
@@ -71,5 +105,4 @@
  4. `loop()`: É o loop geral do robô
 
 ## Observação
- 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
- 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...
+ 1. Nenhuma

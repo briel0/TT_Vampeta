@@ -1,5 +1,5 @@
 # Library (v1.0)
- Mini Sumo da Tamandutech - ARRUELA!
+ Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
  ```
@@ -21,6 +21,9 @@
  |--serial (AUTO)
     |- serial.cpp
     |- serial.hpp
+ |--utilitie (AUTO + RC)
+    |- utilitie.cpp
+    |- utilitie.hpp
  ```
 
 ## Sobre a Estrutura do Codigo

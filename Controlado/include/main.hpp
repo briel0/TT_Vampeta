@@ -4,6 +4,8 @@
 #define LOOP_STATE_INIT 0
 #define LOOP_STATE_UPDATE 1
 
+#define ROTATE_SPEED 88
+
 #pragma region "Main Signatures"
 void init();
 void update();
