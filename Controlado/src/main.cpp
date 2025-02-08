@@ -41,40 +41,68 @@ void update()
 		goto loop_reset_engine;
 	}
 
-	macro_normal();
+	modifier_normal();
 	controller = tt::controller::create_snapshot();
 
 	if (controller.triangle)
 	{
 		Serial.println("(controller.triangle)");
-		macro_careful();
+		modifier_careful();
+	}
+
+	if (controller.l1)
+	{
+		Serial.println("(controller.l1)");
+		macro_curvinha(left);
+		controller = tt::controller::create_snapshot();
+	}
+
+	if (controller.r1)
+	{
+		Serial.println("(controller.r1)");
+		macro_curvinha(right);
+		controller = tt::controller::create_snapshot();
+	}
+
+	if (controller.left)
+	{
+		Serial.println("(controller.left)");
+		macro_curvao(left);
+		controller = tt::controller::create_snapshot();
+	}
+
+	if (controller.right)
+	{
+		Serial.println("(controller.right)");
+		macro_curvao(right);
+		controller = tt::controller::create_snapshot();
 	}
 
 	if (controller.cross)
 	{
 		Serial.println("(controller.cross)");
-		macro_just_go();
+		behavior_just_go();
 		goto loop_update_engine;
 	}
 
 	if (controller.l2)
 	{
 		Serial.println("(controller.l2)");
-		macro_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value);
+		behavior_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.r2)
 	{
 		Serial.println("(controller.r2)");
-		macro_forward(TT_ENGINE_DIRECTION_FRONT, controller.r2_value);
+		behavior_forward(TT_ENGINE_DIRECTION_FRONT, controller.r2_value);
 		goto loop_update_engine;
 	}
 
 	if (controller.l_stick_x <= -50)
 	{
 		Serial.println("(controller.l_stick_x <= -50)");
-		macro_curve(TT_ENGINE_DIRECTION_BACK, TT_ENGINE_DIRECTION_FRONT);
+		behavior_curve(TT_ENGINE_DIRECTION_BACK, TT_ENGINE_DIRECTION_FRONT);
 		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
@@ -82,7 +110,7 @@ void update()
 	if (controller.l_stick_x >= 50)
 	{
 		Serial.println("(controller.l_stick_x >= 50)");
-		macro_curve(TT_ENGINE_DIRECTION_FRONT, TT_ENGINE_DIRECTION_BACK);
+		behavior_curve(TT_ENGINE_DIRECTION_FRONT, TT_ENGINE_DIRECTION_BACK);
 		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
@@ -129,29 +157,27 @@ void reset_engine()
 	engine_right = TT_ENGINE_FRONT_STOP;
 	tt::internal::setup_millis();
 }
+#pragma endregion "Main Functions"
 
-void macro_normal()
+#pragma region "Modifier Functions"
+void modifier_normal()
 {
 	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2 + 32, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;
 }
 
-void macro_careful()
+void modifier_careful()
 {
 	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
 	const uint8_t slow_base_speed = map(base_speed, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL, TT_ENGINE_SPEED_SLOW(3), TT_ENGINE_SPEED_SLOW(2));
 	engine_left.speed = slow_base_speed;
 	engine_right.speed = slow_base_speed;
 }
+#pragma endregion "Modifier Functions"
 
-void macro_just_go()
-{
-	engine_left = TT_ENGINE_FRONT_FULL;
-	engine_right = TT_ENGINE_FRONT_FULL;
-}
-
-void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
+#pragma region "Behavior Functions"
+void behavior_forward(const uint8_t direction, const uint8_t speed_modifier)
 {
 	const uint8_t left_speed = map(speed_modifier, TT_ENGINE_SPEED_STOP, TT_ENGINE_SPEED_FULL,
 								   TT_ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_left.speed));
@@ -169,9 +195,59 @@ void macro_forward(const uint8_t direction, const uint8_t speed_modifier)
 	}
 }
 
-void macro_curve(const uint8_t left_direction, const uint8_t righ_direction)
+void behavior_curve(const uint8_t left_direction, const uint8_t righ_direction)
 {
 	engine_left.direction = left_direction;
 	engine_right.direction = righ_direction;
 }
-#pragma endregion "Main Functions"
+
+void behavior_just_go()
+{
+	engine_left = TT_ENGINE_FRONT_FULL;
+	engine_right = TT_ENGINE_FRONT_FULL;
+}
+#pragma endregion "Behavior Functions"
+
+#pragma region "Macro Functions"
+void macro_curvinha(const direction_t direction) {
+	if (direction == right)
+	{
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
+		vTaskDelay(196);
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+	}
+	else
+	{
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
+		vTaskDelay(196);
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+	}
+}
+
+void macro_curvao(const direction_t direction) {
+	if (direction == right)
+	{
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(64), TT_ENGINE_FRONT(255));
+		vTaskDelay(392);
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+	}
+	else
+	{
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
+		vTaskDelay(392);
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+	}
+}
+#pragma endregion "Macro Functions"

@@ -4,11 +4,11 @@
 
 #pragma region "Engine Pinning Macros"
 #define pwmA 4
-#define a1 18
-#define a2 19
+#define a1 16
+#define a2 17
 #define pwmB 23
-#define b1 16
-#define b2 17
+#define b1 18
+#define b2 19
 #define stby 5
 #pragma endregion "Engine Pinning Macros"
 
@@ -68,26 +68,13 @@ namespace tt::engine
 		}
 
 		current_engine_left = engine_left;
-		uint8_t a1_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK);
-		uint8_t a2_v = PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT);
-
-		current_engine_right = engine_right;
-		uint8_t b1_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK);
-		uint8_t b2_v = PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT);
-
-		if ((engine_left.direction != engine_right.direction) &&
-			(engine_left.speed != 0 && engine_right.speed != 0))
-		{
-			utilitie::swap(a1_v, a2_v);
-			utilitie::swap(b1_v, b2_v);
-		}
-
-		digitalWrite(a1, a1_v);
-		digitalWrite(a2, a2_v);
+		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
 		analogWrite(pwmA, current_engine_left.speed);
 
-		digitalWrite(b1, b1_v);
-		digitalWrite(b2, b2_v);
+		current_engine_right = engine_right;
+		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
 		analogWrite(pwmB, current_engine_right.speed);
 	}
 
