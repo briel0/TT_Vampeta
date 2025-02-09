@@ -276,6 +276,10 @@ void loop()
 #pragma region "Main Task"
 void sensor_task(void *pvParameters)
 {
+	uint64_t left_shader = tt::internal::end_millis() - SHADER_TIME;
+	uint64_t front_shader = tt::internal::end_millis() - SHADER_TIME;
+	uint64_t right_shader = tt::internal::end_millis() - SHADER_TIME;
+
 	while (!tt::receiver::signal(tt::receiver_t::end))
 	{
 		vTaskDelay(1);
@@ -292,6 +296,27 @@ void sensor_task(void *pvParameters)
 		else if (sensor.right)
 		{
 			direction = right;
+		}
+
+		if (sensor.left) {
+			left_shader = tt::internal::end_millis();
+		}
+		else if (tt::internal::end_millis() - left_shader < SHADER_TIME) {
+			sensor.left = true;
+		}
+
+		if (sensor.front) {
+			front_shader = tt::internal::end_millis();
+		}
+		else if (tt::internal::end_millis() - front_shader < SHADER_TIME) {
+			sensor.front = true;
+		}
+
+		if (sensor.right) {
+			right_shader = tt::internal::end_millis();
+		}
+		else if (tt::internal::end_millis() - right_shader < SHADER_TIME) {
+			sensor.right = true;
 		}
 
 #if (DEBUG_SHOW_SENSOR)
@@ -436,7 +461,7 @@ void inicio_tranquilo(uint8_t level)
 	tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
 	vTaskDelay(16);
 	tt::engine::stop();
-	while (sensor.left + sensor.right + sensor.front <= level && tt::internal::delta_millis() <= TRANQUILO_TIME)
+	while (sensor.left + sensor.front + sensor.right <= level && tt::internal::delta_millis() <= TRANQUILO_TIME)
 	{
 		vTaskDelay(1);
 		if (sensor.front)

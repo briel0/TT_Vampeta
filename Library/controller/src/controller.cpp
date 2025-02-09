@@ -42,6 +42,9 @@ namespace tt::controller
 		controller.circle = PS4.Circle();
 		controller.triangle = PS4.Triangle();
 
+		controller.r1 = PS4.R1();
+		controller.l1 = PS4.L1();
+	
 		controller.r2 = PS4.R2();
 		controller.l2 = PS4.L2();
 
@@ -58,8 +61,8 @@ namespace tt::controller
 
 	void debug(char *out_buffer, const size_t out_size, const controller_t controller, const char *msg)
 	{
-		snprintf(out_buffer, out_size, "\"%s\" = { R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i; RStickX:%i; RStickY:%i; LStickX:%i; LStickY:%i }\n",
-				 msg, controller.r2, controller.r2_value, controller.l2, controller.l2_value,
+		snprintf(out_buffer, out_size, "\"%s\" = { R1:%i; L1:%i; R2:%i; R2_Value:%i; L2:%i; L2_Value:%i; Square:%i; Cross:%i; Circle:%i; Triangle:%i; RStickX:%i; RStickY:%i; LStickX:%i; LStickY:%i }\n",
+				 msg, controller.r1, controller.l1, controller.r2, controller.r2_value, controller.l2, controller.l2_value,
 				 controller.square, controller.cross, controller.circle, controller.triangle,
 				 controller.r_stick_x, controller.r_stick_y, controller.l_stick_x, controller.l_stick_y);
 	}
