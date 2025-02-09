@@ -6,12 +6,12 @@ As *bibliotecas* são componentes individuais, independentes e reutilizáveis.
 A criação desses componentes busca facilitar a manutenção e melhorar a legibilidade do código.
 
 ** Tabela de Bibilhotecas
-| lib        | desc |
-|------------+------|
-| controller |      |
-| engine     |      |
-| internal   |      |
-| receiver   |      |
-| sensor     |      |
-| serial     |      |
-| ultilitie  |      |
+| lib        | desc                    |
+|------------+-------------------------|
+| controller | controle de PS4         |
+| engine     | motores de tração       |
+| internal   | led, timers...          |
+| receiver   | sensor de infravermelho |
+| sensor     | sensores de distância   |
+| serial     | serial bluetooth        |
+| ultilitie  | swap, string...         |

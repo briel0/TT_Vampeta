@@ -3,6 +3,5 @@
 ** Autonomo (AUTO)
 
 ** Controlado (RC)
-
-** Investigar (ALL)
-*** ☐ Quando ambos os motores giram para lados diferentes eles invertem os sentidos...
+*** ☐ Melhorar Macros
+*** ☐ Melhorar Aceleração

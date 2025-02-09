@@ -171,6 +171,3 @@
  2. `init()`: É o código que vai rodar antes do update
  3. `update()`: É o código que vai rodar em um loop
  4. `loop()`: É o loop geral do robô
-
-## Observação
- 1. Nenhuma
