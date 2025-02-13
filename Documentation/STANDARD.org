@@ -1,10 +1,16 @@
 * Arruela Standard
 Nesse arquivo está descrito todos os padrões adotados pelo *Arruela*
 
-** Input Language
-No *Arruela Autonomo* existe uma linguagem de input, chamada *Input Language*
+** Arruela Autonomo
+No *Arruela Autonomo*
 
-*** Lista de Comandos
+*** Input System (Antigo)
+No *Arruela Autonomo (1.0)* existe um sistema de input, chamada *Input System*
+
+*** Input Language (Novo)
+No *Arruela Autonomo (2.0)* existe uma linguagem de input, chamada *Input Language*
+
+**** Lista de Comandos
 | cmd | args       | desc      |
 |-----+------------+-----------|
 | ~f~   | ~temp~       | frente    |
@@ -15,12 +21,12 @@ No *Arruela Autonomo* existe uma linguagem de input, chamada *Input Language*
 | ~>~   |            | direita   |
 | ~<~   |            | esquerda  |
 
-*** Lista de Operações
+**** Lista de Operações
 | op<cmd:arg...> | desc                   |
 |----------------+------------------------|
 | ~!<cmd>~         | inverte direção do ~cmd~ |
 
-*** Estrutura de um Comando
+**** Estrutura de um Comando
 ~(cmd1:arg1,!cmd2:arg2,cmd3)~
 
 Isso executará as seguintes operações:
@@ -28,7 +34,7 @@ Isso executará as seguintes operações:
  - ~cmd2~ com o argumento ~arg2~ e direção invertida.
  - ~cmd3~ com o nenhum argumento.
 
-*** Exemplo de Códigos
+**** Exemplo de Códigos
 | code                | desc      |
 |---------------------+-----------|
 | ~(f:152)~             | *Frentão*   |
@@ -38,3 +44,6 @@ Isso executará as seguintes operações:
 | ~(r:104)~             | *Costas*    |
 | ~(t:1:4096)~          | *Pacífico*  |
 | ~(t:2:4096)~          | *Defesa*    |
+
+** Arruela Controlado
+No *Arruela Controlado*
