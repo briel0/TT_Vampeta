@@ -1,11 +1,11 @@
 * Arruela Documentation
 Este arquivo contém a documentação de todos os componentes do projeto *Arruela*.
 
-** Library
-As *bibliotecas* são componentes individuais, independentes e reutilizáveis.
+** Arruela Libraries
+As *Bibliotecas* são componentes individuais, independentes e reutilizáveis.
 A criação desses componentes busca facilitar a manutenção e melhorar a legibilidade do código.
 
-** Tabela de Bibilhotecas
+*** Tabela de Bibilhotecas
 | lib        | desc                    |
 |------------+-------------------------|
 | controller | controle de PS4         |
@@ -15,3 +15,6 @@ A criação desses componentes busca facilitar a manutenção e melhorar a legib
 | sensor     | sensores de distância   |
 | serial     | serial bluetooth        |
 | ultilitie  | swap, string...         |
+
+** Arruela Almagama
+O *Arruela Almagama* é a junção do *Arruela Autônomo* e do *Arruela Controlado*

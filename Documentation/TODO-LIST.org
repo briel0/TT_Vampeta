@@ -3,6 +3,7 @@
 ** Autonomo (AUTO)
 *** ☐ Melhorar Aceleração
 *** ☐ Melhorar Giro
+*** ☐ Melhorar TUI / CLI
 *** ☐ Verificar Sombra
 *** ☐ Melhorar Defesa
 *** ☐ Melhorar Passifico

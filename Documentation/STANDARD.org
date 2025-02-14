@@ -1,14 +1,26 @@
 * Arruela Standard
 Nesse arquivo está descrito todos os padrões adotados pelo *Arruela*
 
-** Arruela Autonomo
-No *Arruela Autonomo*
+** Arruela Autônomo
+No *Arruela Autonomo* temos o *Bluetooth Serial* para escolher a estratégia.
+Com isso foi desenvolvido algumas interfaces entre o *Arruela Autônomo* e o *Dispositivo Móvel* Usado na hora da competição
 
 *** Input System (Antigo)
-No *Arruela Autonomo (1.0)* existe um sistema de input, chamada *Input System*
+No *Arruela Autônomo (1.0)* existe um sistema de input legado, chamada *Input System*
+
+**** Lista de Estratégias
+| code | desc      |
+|------+-----------|
+| ~a~    | *Frentão*   |
+| ~b~    | *Frentinha* |
+| ~c~    | *Curvão*    |
+| ~d~    | *Curvinha*  |
+| ~e~    | *Costas*    |
+| ~f~    | *Pacífico*  |
+| ~g~    | *Defesa*    |
 
 *** Input Language (Novo)
-No *Arruela Autonomo (2.0)* existe uma linguagem de input, chamada *Input Language*
+No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *Input Language*
 
 **** Lista de Comandos
 | cmd | args       | desc      |
@@ -46,4 +58,4 @@ Isso executará as seguintes operações:
 | ~(t:2:4096)~          | *Defesa*    |
 
 ** Arruela Controlado
-No *Arruela Controlado*
+No *Arruela Controlado* é usado um *Controle de PS4*
