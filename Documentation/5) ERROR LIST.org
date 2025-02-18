@@ -1,0 +1,8 @@
+* ERROR-LIST
+*Lista de Erros* achados no *Arruela* que foram ou não resolvidos.
+
+** Autonomo (AUTO)
+*** ☐ 
+
+** Controlado (RC)
+*** ☐ 

@@ -16,8 +16,7 @@ No *Arruela Autônomo (1.0)* existe um sistema de input legado, chamada *Input S
 | ~c~    | *Curvão*    |
 | ~d~    | *Curvinha*  |
 | ~e~    | *Costas*    |
-| ~f~    | *Pacífico*  |
-| ~g~    | *Defesa*    |
+| ~f~    | *Defesa*    |
 
 *** Input Language (Novo)
 No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *Input Language*

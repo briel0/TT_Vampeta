@@ -72,5 +72,18 @@
 # O que é?
  Nessa pasta estão todos os arquivos `.org` (org de organização, é uma extensão do [Emacs][emacs], [Emacs Org Mode][emacs-org-mode])
 
+# Arquivos
+ 1. `DOCUMENTATION.org`
+ 2. `STANDARD.org`
+ 3. `PHILOSOPHY.org`
+ 4. `TODO LIST.org`
+ 5. `ERROR LIST.org`
+
+## DOCUMENTATION.org
+## STANDARD.org
+## PHILOSOPHY.org
+## TODO LIST.org
+## ERROR LIST.org
+
 [emacs]: https://www.gnu.org/software/emacs/
 [emacs-org-mode]: https://orgmode.org

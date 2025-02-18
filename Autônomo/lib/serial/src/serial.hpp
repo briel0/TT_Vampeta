@@ -1,6 +1,10 @@
 #include <cstdint>
 #include <cstddef>
 
+#define SCAPE_STR "\033["
+#define SCAPE_CMD(x) (SCAPE_STR x)
+#define COLOR_CMD(x) (SCAPE_STR x "m")
+
 namespace tt
 {
 	namespace serial
@@ -12,8 +16,13 @@ namespace tt
 
 		int read();
 		void write(uint8_t c);
-		void printf(const char *fmt, ...);
+		void flush();
 
+		void ansi_cmd(const char *cmd);
+		void color_cmd(const char *cmd);
+		void clear();
+
+		void printf(const char *fmt, ...);
 		template <typename T>
 		void println(T val);
 		template <typename T>

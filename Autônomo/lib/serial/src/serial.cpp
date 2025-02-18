@@ -73,6 +73,42 @@ namespace tt::serial
 		SerialBT.write(c);
 	}
 
+	void flush()
+	{
+		if (!enabled())
+		{
+			return;
+		}
+		SerialBT.flush();
+	}
+
+	void ansi_cmd(const char *cmd)
+	{
+		if (!enabled())
+		{
+			return;
+		}
+		printf(SCAPE_CMD("%s"), cmd);
+	}
+
+	void color_cmd(const char *cmd)
+	{
+		if (!enabled())
+		{
+			return;
+		}
+		printf(COLOR_CMD("%s"), cmd);
+	}
+
+	void clear()
+	{
+		if (!enabled())
+		{
+			return;
+		}
+		ansi_cmd("2J");
+	}
+
 	void printf(const char *fmt, ...)
 	{
 		if (!enabled())
@@ -110,6 +146,7 @@ namespace tt::serial
 	template void println(float);
 	template void println(double);
 	template void println(char);
+	template void println(char *);
 	template void println(const char *);
 
 	template <typename T>
@@ -132,5 +169,6 @@ namespace tt::serial
 	template void print(float);
 	template void print(double);
 	template void print(char);
+	template void print(char *);
 	template void print(const char *);
 }

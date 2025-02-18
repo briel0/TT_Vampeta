@@ -27,12 +27,12 @@ void setup()
 #pragma endregion "Main Setup"
 
 #pragma region "Main Loop"
-void init()
+void __init__()
 {
 	tt::engine::init();
 }
 
-void update()
+void __update__()
 {
 	tt::internal::set_led(true);
 	if (tt::controller::disconnected())
@@ -41,13 +41,16 @@ void update()
 		goto loop_reset_engine;
 	}
 
-	modifier_normal();
 	controller = tt::controller::create_snapshot();
 
 	if (controller.triangle)
 	{
 		Serial.println("(controller.triangle)");
 		modifier_careful();
+	}
+	else
+	{
+		modifier_normal();
 	}
 
 	if (controller.l1)
@@ -99,19 +102,17 @@ void update()
 		goto loop_update_engine;
 	}
 
-	if (controller.l_stick_x <= -50)
+	if (controller.l_stick_x <= -STICK_TRIGGER)
 	{
-		Serial.println("(controller.l_stick_x <= -50)");
+		Serial.println("(controller.l_stick_x <= -STICK_TRIGGER)");
 		behavior_curve(TT_ENGINE_DIRECTION_BACK, TT_ENGINE_DIRECTION_FRONT);
-		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
 
-	if (controller.l_stick_x >= 50)
+	if (controller.l_stick_x >= STICK_TRIGGER)
 	{
-		Serial.println("(controller.l_stick_x >= 50)");
+		Serial.println("(controller.l_stick_x >= STICK_TRIGGER)");
 		behavior_curve(TT_ENGINE_DIRECTION_FRONT, TT_ENGINE_DIRECTION_BACK);
-		tt::internal::setup_millis();
 		goto loop_update_engine;
 	}
 
@@ -127,11 +128,11 @@ void loop()
 	switch (loop_state)
 	{
 	case LOOP_STATE_INIT:
-		init();
+		__init__();
 		loop_state = LOOP_STATE_UPDATE;
 		break;
 	case LOOP_STATE_UPDATE:
-		update();
+		__update__();
 		break;
 	default:
 		break;
@@ -162,17 +163,20 @@ void reset_engine()
 #pragma region "Modifier Functions"
 void modifier_normal()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2 + 32, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
+	const uint8_t min_v = TT_ENGINE_SPEED_SLOW(2);
+	const uint8_t max_v = TT_ENGINE_SPEED_FULL;
+	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN((tt::internal::delta_millis() / 3) * 2 + min_v, min_v, max_v));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;
 }
 
 void modifier_careful()
 {
-	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN(tt::internal::delta_millis() / 2, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL));
-	const uint8_t slow_base_speed = map(base_speed, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_FULL, TT_ENGINE_SPEED_SLOW(3), TT_ENGINE_SPEED_SLOW(2));
-	engine_left.speed = slow_base_speed;
-	engine_right.speed = slow_base_speed;
+	const uint8_t min_v = TT_ENGINE_SPEED_SLOW(2);
+	const uint8_t max_v = TT_ENGINE_SPEED_SLOW(1);
+	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN((tt::internal::delta_millis() / 3) * 2 + min_v, min_v, max_v));
+	engine_left.speed = base_speed;
+	engine_right.speed = base_speed;
 }
 #pragma endregion "Modifier Functions"
 
@@ -185,11 +189,11 @@ void behavior_forward(const uint8_t direction, const uint8_t speed_modifier)
 									TT_ENGINE_SPEED_STOP, static_cast<uint8_t>(engine_right.speed));
 	engine_left = {direction, left_speed};
 	engine_right = {direction, right_speed};
-	if (controller.l_stick_x <= -50)
+	if (controller.l_stick_x <= -STICK_TRIGGER)
 	{
 		engine_left.speed >>= 3;
 	}
-	else if (controller.l_stick_x >= 50)
+	else if (controller.l_stick_x >= STICK_TRIGGER)
 	{
 		engine_right.speed >>= 3;
 	}
@@ -197,6 +201,8 @@ void behavior_forward(const uint8_t direction, const uint8_t speed_modifier)
 
 void behavior_curve(const uint8_t left_direction, const uint8_t righ_direction)
 {
+	engine_left.speed = TT_INTERNAL_BETWEEN(engine_left.speed >> 1, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_SLOW(1));
+	engine_left.speed = TT_INTERNAL_BETWEEN(engine_left.speed >> 1, TT_ENGINE_SPEED_SLOW(2), TT_ENGINE_SPEED_SLOW(1));
 	engine_left.direction = left_direction;
 	engine_right.direction = righ_direction;
 }

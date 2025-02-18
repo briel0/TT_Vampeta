@@ -3,6 +3,7 @@
 
 #define ROBO_NAME "Arruela"
 #define STRLN(x) x "\n"
+#define BUFFER_SIZE 512
 
 #define CHARACTER_IS_LOWER_CASE(x) (x >= 'a' && x <= 'z')
 #define CHARACTER_IS_UPPER_CASE(x) (x >= 'A' && x <= 'Z')
@@ -12,22 +13,23 @@
 #define COMMAND_SETUP '0'
 #define COMMAND_LEFT '<'
 #define COMMAND_RIGHT '>'
+#define TEST_SENSOR 'S'
+#define TEST_ENGINE 'E'
 #define ESTRATEGIA_FRENTAO 'a'
 #define ESTRATEGIA_FRENTINHA 'b'
 #define ESTRATEGIA_CURVAO 'c'
 #define ESTRATEGIA_CURVINHA 'd'
 #define ESTRATEGIA_COSTAS 'e'
-#define ESTRATEGIA_PACIFICO 'f'
-#define ESTRATEGIA_DEFESA 'g'
+#define ESTRATEGIA_DEFESA 'f'
 #define ESTRATEGIA_LOOP 'z'
 
-#define ROTATE_SPEED 88
-#define TRANQUILO_SPEED (ROTATE_SPEED - 8)
-#define TRANQUILO_TIME 4096
-#define SHADER_TIME 8
+#define ROTATE_SPEED 96
+#define DEFESA_SPEED (ROTATE_SPEED - 8)
+#define TESTE_REPEAT 512
 
-#define LOOP_STATE_INIT 0
-#define LOOP_STATE_UPDATE 1
+#define LOOP_STATE_SETUP 0
+#define LOOP_STATE_INIT 1
+#define LOOP_STATE_UPDATE 2
 
 #define DEBUG_SHOW_SENSOR false
 #define DEBUG_SHOW_DIRECTION false
@@ -46,10 +48,13 @@ void inicio_frentinha();
 void inicio_curvao();
 void inicio_curvinha();
 void inicio_costas();
-void inicio_tranquilo(uint8_t level);
+void inicio_defesa();
 void procurar_padrao(uint8_t velocidade_giro);
+void test_sensor();
+void test_engine();
 void sensor_task(void *pvParameters);
 void setup_task();
+void setup_connect();
 void setup_estrategia();
 void setup_luta();
 void init();

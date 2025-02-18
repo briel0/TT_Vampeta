@@ -1,0 +1,2 @@
+* Arruela Philosophy
+Este arquivo contém a filosofia do projeto *Arruela*.
