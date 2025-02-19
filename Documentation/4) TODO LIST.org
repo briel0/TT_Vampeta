@@ -8,5 +8,8 @@
 
 ** Controlado (RC)
 *** ☐ Melhorar as Macros <v1.0>
-*** ☐ Criar novas Macros <v1.0>
+*** ☐ Criar Curvão->Curvinha <v1.0>
+*** ☐ Criar Curvão->!Curvão <v1.0>
+*** ☐ Criar Break Macro <v1.0>
+*** ☐ Adicionar funcionalidade pro Right Stick <v1.0>
 *** ☐ Pensar em algo pro *Arruela Controlado (v2.0)* <v2.0>
