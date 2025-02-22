@@ -2,14 +2,14 @@
 *Lista de Tarefas* pra fazer do *Arruela*
 
 ** Autonomo (AUTO)
-*** ☐ Criar Ataque Tranquilo <v1.0>
-*** ☐ Criar Sombra Plus (Estudar a Possibilidade) <v1.0>
-*** ☐ Criar *Input Language* <v2.0>
+*** TODO Criar Ataque Tranquilo <v1.0>
+*** TODO Criar Sombra Plus (Estudar a Possibilidade) <v1.0>
+*** TODO Criar *Input Language* <v2.0>
 
 ** Controlado (RC)
-*** ☐ Melhorar as Macros <v1.0>
-*** ☐ Criar Curvão->Curvinha <v1.0>
-*** ☐ Criar Curvão->!Curvão <v1.0>
-*** ☐ Criar Break Macro <v1.0>
-*** ☐ Adicionar funcionalidade pro Right Stick <v1.0>
-*** ☐ Pensar em algo pro *Arruela Controlado (v2.0)* <v2.0>
+*** TODO Melhorar as Macros <v1.0>
+*** TODO Criar Curvão->Curvinha <v1.0>
+*** TODO Criar Curvão->!Curvão <v1.0>
+*** TODO Criar Break Macro <v1.0>
+*** TODO Adicionar funcionalidade pro Right Stick <v1.0>
+*** TODO Pensar em algo pro *Arruela Controlado (v2.0)* <v2.0>
