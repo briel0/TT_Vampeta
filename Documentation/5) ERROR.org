@@ -2,7 +2,7 @@
 *Lista de Erros* achados no *Arruela* que foram ou não resolvidos.
 
 ** Autonomo (AUTO)
-*** TODO 
+*** TODO None
 
 ** Controlado (RC)
-*** TODO 
+*** TODO None

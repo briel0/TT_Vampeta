@@ -73,17 +73,17 @@
  Nessa pasta estão todos os arquivos `.org` (org de organização, é uma extensão do [Emacs][emacs], [Emacs Org Mode][emacs-org-mode])
 
 # Arquivos
- 1. `DOCUMENTATION.org`
- 2. `STANDARD.org`
- 3. `PHILOSOPHY.org`
- 4. `TODO LIST.org`
- 5. `ERROR LIST.org`
+ 1. `DOC.org`
+ 2. `STD.org`
+ 3. `PHY.org`
+ 4. `TODO.org`
+ 5. `ERROR.org`
 
-## DOCUMENTATION.org
-## STANDARD.org
-## PHILOSOPHY.org
-## TODO LIST.org
-## ERROR LIST.org
+## DOCUMENTATION (DOC.org)
+## STANDARD (STD.org)
+## PHILOSOPHY (PHY.org)
+## TODO LIST (TODO.org)
+## ERROR LIST (ERROR.org)
 
 [emacs]: https://www.gnu.org/software/emacs/
 [emacs-org-mode]: https://orgmode.org
