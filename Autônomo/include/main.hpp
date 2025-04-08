@@ -25,11 +25,16 @@
 
 #define ROTATE_SPEED 96
 #define DEFESA_SPEED (ROTATE_SPEED - 8)
+#define DEFESA_TRIGGER 0
+#define DEFESA_QUOTA 1024
 #define TESTE_REPEAT 512
 
 #define LOOP_STATE_SETUP 0
 #define LOOP_STATE_INIT 1
 #define LOOP_STATE_UPDATE 2
+
+#define SENSOR_USAGE_NONE 0
+#define SENSOR_USAGE_ALL 1
 
 #define DEBUG_SHOW_SENSOR false
 #define DEBUG_SHOW_DIRECTION false
@@ -48,7 +53,7 @@ void inicio_frentinha();
 void inicio_curvao();
 void inicio_curvinha();
 void inicio_costas();
-void inicio_defesa();
+void inicio_defesa(int trigger, const int quota);
 void procurar_padrao(uint8_t velocidade_giro);
 void test_sensor();
 void test_engine();

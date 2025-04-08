@@ -89,6 +89,9 @@
  |--serial (AUTO)
     |- serial.cpp
     |- serial.hpp
+ |--storage  (AUTO)
+    |- storage.cpp
+    |- storage.hpp
  |--utilitie (AUTO + RC)
     |- utilitie.cpp
     |- utilitie.hpp

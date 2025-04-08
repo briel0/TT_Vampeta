@@ -8,6 +8,7 @@
 #include "main.hpp"
 
 uint8_t loop_state = LOOP_STATE_SETUP;
+uint8_t sensor_usage = SENSOR_USAGE_NONE;
 
 char bluetooth_input_char = ESTRATEGIA_LOOP;
 char estrategia = bluetooth_input_char;
@@ -20,7 +21,7 @@ void setup_task()
 {
 	TaskHandle_t SensorTask;
 	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
-	vTaskDelay(500);
+	vTaskDelay(512);
 }
 
 void setup_connect()
@@ -29,7 +30,7 @@ void setup_connect()
 	{
 		vTaskDelay(1);
 	}
-	
+
 	tt::serial::printf(STRLN("LIGOUUUU"));
 	tt::serial::printf(STRLN("Digite '%c' para Mostrar os Comandos Disponíveis!"), COMMAND_HELP);
 }
@@ -295,11 +296,13 @@ void __init__()
 
 	case ESTRATEGIA_DEFESA:
 		tt::serial::printf(STRLN("DEFESA!!!"));
-		inicio_defesa();
+		sensor_usage = SENSOR_USAGE_ALL;
+		inicio_defesa(DEFESA_TRIGGER, DEFESA_QUOTA);
 		break;
 
 	case ESTRATEGIA_LOOP:
 		tt::serial::printf(STRLN("LOOP!!!"));
+		sensor_usage = SENSOR_USAGE_ALL;
 		break;
 
 	default:
@@ -326,6 +329,7 @@ void loop()
 	case LOOP_STATE_INIT:
 		__init__();
 		loop_state = LOOP_STATE_UPDATE;
+		sensor_usage = SENSOR_USAGE_ALL;
 		break;
 	case LOOP_STATE_UPDATE:
 		__update__();
@@ -343,12 +347,17 @@ void sensor_task(void *pvParameters)
 	while (!tt::receiver::signal(tt::receiver_t::end))
 	{
 		vTaskDelay(1);
+		if (loop_state == LOOP_STATE_SETUP)
+		{
+			continue;
+		}
+
 		sensor = tt::sensor::create_snapshot();
-		if (sensor.left)
+		if (sensor.left && sensor_usage == SENSOR_USAGE_ALL)
 		{
 			direction = left;
 		}
-		else if (sensor.right)
+		else if (sensor.right && sensor_usage == SENSOR_USAGE_ALL)
 		{
 			direction = right;
 		}
@@ -501,20 +510,21 @@ void inicio_costas()
 	}
 }
 
-void inicio_defesa()
+void inicio_defesa(int trigger, const int quota)
 {
 	tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
 	vTaskDelay(16);
 	tt::engine::stop();
-	while (sensor.left + sensor.front + sensor.right <= 2)
+	while (trigger < quota)
 	{
 		vTaskDelay(1);
-		if (sensor.left)
+		trigger += (sensor.left + sensor.front + sensor.right == 3);
+		if (sensor.left && sensor.left + sensor.front + sensor.right <= 2)
 		{
 			tt::engine::move(TT_ENGINE_BACK(DEFESA_SPEED), TT_ENGINE_FRONT(DEFESA_SPEED));
 			continue;
 		}
-		if (sensor.right)
+		if (sensor.right && sensor.left + sensor.front + sensor.right <= 2)
 		{
 			tt::engine::move(TT_ENGINE_FRONT(DEFESA_SPEED), TT_ENGINE_BACK(DEFESA_SPEED));
 			continue;
@@ -529,33 +539,37 @@ void procurar_padrao(uint8_t velocidade_giro)
 	if (sensor.front)
 	{
 		tt::engine::stop();
-		tt::engine::move(TT_ENGINE_FRONT_SLOW(1), TT_ENGINE_FRONT_SLOW(1));
-		vTaskDelay(16);
-		for (uint8_t i = TT_ENGINE_SPEED_SLOW(2); i < TT_ENGINE_SPEED_FULL && sensor.front; i += 6)
+		for (uint8_t i = TT_ENGINE_SPEED_SLOW(2); i < TT_ENGINE_SPEED_FULL && sensor.front; i += 1)
 		{
 			uint8_t left_v = TT_ENGINE_SPEED(i);
 			uint8_t right_v = TT_ENGINE_SPEED(i);
-			if (sensor.left + sensor.front + sensor.right < 3) {
-				if (sensor.left) {
-					left_v >>= 4;
+			if (sensor.left + sensor.front + sensor.right < 3)
+			{
+				if (sensor.left)
+				{
+					left_v >>= 6;
 				}
-				else if (sensor.right) {
-					right_v >>= 4;
+				else if (sensor.right)
+				{
+					right_v >>= 6;
 				}
 			}
 			tt::engine::move(TT_ENGINE_FRONT(left_v), TT_ENGINE_FRONT(right_v));
-			vTaskDelay(4);
+			vTaskDelay(1);
 		}
 		while (sensor.front)
 		{
 			uint8_t left_v = TT_ENGINE_SPEED_FULL;
 			uint8_t right_v = TT_ENGINE_SPEED_FULL;
-			if (sensor.left + sensor.front + sensor.right < 3) {
-				if (sensor.left) {
-					left_v >>= 4;
+			if (sensor.left + sensor.front + sensor.right < 3)
+			{
+				if (sensor.left)
+				{
+					left_v >>= 6;
 				}
-				else if (sensor.right) {
-					right_v >>= 4;
+				else if (sensor.right)
+				{
+					right_v >>= 6;
 				}
 			}
 			tt::engine::move(TT_ENGINE_FRONT(left_v), TT_ENGINE_FRONT(right_v));
