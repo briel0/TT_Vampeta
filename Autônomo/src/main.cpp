@@ -539,7 +539,7 @@ void procurar_padrao(uint8_t velocidade_giro)
 	if (sensor.front)
 	{
 		tt::engine::stop();
-		for (uint8_t i = TT_ENGINE_SPEED_SLOW(2); i < TT_ENGINE_SPEED_FULL && sensor.front; i += 1)
+		for (uint8_t i = TT_ENGINE_SPEED_SLOW(2); i < TT_ENGINE_SPEED_FULL && sensor.front; i += 2)
 		{
 			uint8_t left_v = TT_ENGINE_SPEED(i);
 			uint8_t right_v = TT_ENGINE_SPEED(i);
