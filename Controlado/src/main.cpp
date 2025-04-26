@@ -8,6 +8,8 @@ uint8_t loop_state = LOOP_STATE_INIT;
 tt::engine_t engine_left = TT_ENGINE_DEFAULT;
 tt::engine_t engine_right = TT_ENGINE_DEFAULT;
 tt::controller_t controller;
+uint8_t rc_state = RC_STATE_CAREFUL;
+bool triangle = false;
 
 #pragma region "Main Setup"
 void setup()
@@ -15,13 +17,13 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Serial 115200!");
 
-	tt::controller::setup("f0:24:f9:44:2a:5c");
-	tt::engine::setup();
 	tt::internal::setup();
+	tt::controller::setup(tt::internal::mac_address());
+	tt::engine::setup();
 	Serial.println("Begin and Load Complete!");
 
-	tt::engine::set_standby(false);
 	tt::internal::set_led(false);
+	tt::engine::set_standby(false);
 	Serial.println("Setup Complete!");
 }
 #pragma endregion "Main Setup"
@@ -43,14 +45,46 @@ void __update__()
 
 	controller = tt::controller::create_snapshot();
 
+	switch (rc_state)
+	{
+	case RC_STATE_CAREFUL:
+		modifier_careful();
+		break;
+	
+	case RC_STATE_NORMAL:
+		modifier_normal();
+		break;
+
+	default:
+		modifier_careful();
+		break;
+	}
+
 	if (controller.triangle)
 	{
 		Serial.println("(controller.triangle)");
-		modifier_careful();
+		if (!triangle)
+		{
+			switch (rc_state)
+			{
+			case RC_STATE_CAREFUL:
+				rc_state = RC_STATE_NORMAL;
+				break;
+			
+			case RC_STATE_NORMAL:
+				rc_state = RC_STATE_CAREFUL;
+				break;
+		
+			default:
+				rc_state = RC_STATE_CAREFUL;
+				break;
+			}
+		}
+		triangle = true;
 	}
 	else
 	{
-		modifier_normal();
+		triangle = false;
 	}
 
 	if (controller.l1)
@@ -172,8 +206,8 @@ void modifier_normal()
 
 void modifier_careful()
 {
-	const uint8_t min_v = TT_ENGINE_SPEED_SLOW(2);
-	const uint8_t max_v = TT_ENGINE_SPEED_SLOW(1);
+	const uint8_t min_v = TT_ENGINE_SPEED_SLOW(3) + TT_ENGINE_SPEED_SLOW(4);
+	const uint8_t max_v = TT_ENGINE_SPEED_SLOW(2) + TT_ENGINE_SPEED_SLOW(3);
 	const uint8_t base_speed = static_cast<uint8_t>(TT_INTERNAL_BETWEEN((tt::internal::delta_millis() / 3) * 2 + min_v, min_v, max_v));
 	engine_left.speed = base_speed;
 	engine_right.speed = base_speed;

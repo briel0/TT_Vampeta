@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <WiFi.h>
 #include "internal.hpp"
 
 #pragma region "Internal Pinning Macros"
@@ -7,6 +8,7 @@
 
 namespace tt::internal
 {
+	char wifi_mac_address[32] = {};
 	uint64_t internal_millis = 0;
 	bool led_mode = false;
 
@@ -14,6 +16,7 @@ namespace tt::internal
 	{
 		pinMode(led, OUTPUT);
 		internal_millis = end_millis();
+		WiFi.macAddress().toCharArray(wifi_mac_address, sizeof(wifi_mac_address));
 	}
 
 	bool get_led()
@@ -48,6 +51,11 @@ namespace tt::internal
 	uint64_t delta_millis()
 	{
 		return end_millis() - begin_millis();
+	}
+
+	const char *mac_address()
+	{
+		return wifi_mac_address;
 	}
 
 	void debug(char *out_buffer, const size_t out_size, const char *msg)

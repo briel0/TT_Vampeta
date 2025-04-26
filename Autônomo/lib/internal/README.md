@@ -17,5 +17,6 @@
  5. `uint64_t begin_millis()`: Retorna o tempo inicial
  6. `uint64_t end_millis()`: Retorna o tempo final (o tempo atual)
  7. `uint64_t delta_millis()`: Retorna a diferença entre o tempo final e o inicial
- 8. `void debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
- 9. `void debug(const char *msg)`: Mostra as informações dos recursos internos
+ 8. `const char *mac_address()`: Retorna o WiFi Mac Address
+ 9. `void debug(char *out_buffer, const size_t out_size, const char *msg)`: Mostra as informações dos recursos internos na string
+ 10. `void debug(const char *msg)`: Mostra as informações dos recursos internos

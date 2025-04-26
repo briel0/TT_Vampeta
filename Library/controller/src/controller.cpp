@@ -44,7 +44,7 @@ namespace tt::controller
 
 		controller.r1 = PS4.R1();
 		controller.l1 = PS4.L1();
-	
+
 		controller.r2 = PS4.R2();
 		controller.l2 = PS4.L2();
 

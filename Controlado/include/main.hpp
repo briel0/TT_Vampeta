@@ -5,6 +5,9 @@
 #define LOOP_STATE_UPDATE 1
 #define STICK_TRIGGER 48
 
+#define RC_STATE_CAREFUL 0
+#define RC_STATE_NORMAL 1
+
 enum direction_t
 {
 	left,
