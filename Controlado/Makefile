@@ -1,8 +1,8 @@
 build:
-	platformio run
+	~/.platformio/penv/bin/platformio run
 
 upload:
-	platformio run --target upload
+	~/.platformio/penv/bin/platformio run --target upload
 
 clean:
-	platformio run --target clean
+	~/.platformio/penv/bin/platformio run --target clean
