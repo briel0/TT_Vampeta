@@ -50,7 +50,7 @@ void __update__()
 	case RC_STATE_CAREFUL:
 		modifier_careful();
 		break;
-	
+
 	case RC_STATE_NORMAL:
 		modifier_normal();
 		break;
@@ -70,11 +70,11 @@ void __update__()
 			case RC_STATE_CAREFUL:
 				rc_state = RC_STATE_NORMAL;
 				break;
-			
+
 			case RC_STATE_NORMAL:
 				rc_state = RC_STATE_CAREFUL;
 				break;
-		
+
 			default:
 				rc_state = RC_STATE_CAREFUL;
 				break;
@@ -125,7 +125,7 @@ void __update__()
 	if (controller.l2)
 	{
 		Serial.println("(controller.l2)");
-		behavior_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value);
+		behavior_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value * 0.9);
 		goto loop_update_engine;
 	}
 
