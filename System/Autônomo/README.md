@@ -1,4 +1,4 @@
-# TT_MiniSumo_Arruela (ARRUELA) [v1.0]
+# Autônomo (AUTO) [v1.0]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```
@@ -100,45 +100,17 @@
     |- main.cpp
  ```
 
- ```
- Controlado (RC)
- |--include
-    |- main.hpp
- |--lib
-    |--controller
-       |- controller.cpp
-       |- controller.hpp
-    |--engine
-       |- engine.cpp
-       |- engine.hpp
-    |--internal
-       |- internal.cpp
-       |- internal.hpp
-    |--utilitie
-       |- utilitie.cpp
-       |- utilitie.hpp
- |--src
-    |- main.cpp
- ```
+## Sobre a Estrutura do Código
+ Esse código é uma experiência de criar uma nova organização que tem como objetivo facilitar a manutenção.
 
-## Sobre a Estrutura do Codigo
- Esse código é uma experiência de criar uma nova organização que tem como principio facilitar a manutenção.
+# Código
+ O código é separado em três principais áreas:
+ 1. `source`
+ 2. `include`
+ 3. `lib`
 
-# Configuração de Ambiente
- Para o __Arruela__ __v1.0__ usamos apenas o __PlatformIO__ com o __VS CODE__, migramos o __Controlado (RC)__ do __Arduino IDE__ para o __PlatformIO__ na verção __v1.0__
-
-## Visual Studio Code
- 1. Baixe o [VS Code](https://code.visualstudio.com/)
- 2. [Documentação do VS Code](https://code.visualstudio.com/docs)
-
-## PlatformIO
- 1. Site do [PlatformIO](https://platformio.org)
- 2. Baixar o [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
-
-## ESP32 SDK
- 1. [Multiprocessamento no ESP32](https://embarcados.com.br/serie/multiprocessamento-no-esp32/)
- 2. [ESP32 API Reference](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/)
- 
-## Observação
- 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
- 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...
+## Main
+ 1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
+ 2. `__init__()`: É o código que vai rodar antes do update
+ 3. `__update__()`: É o código que vai rodar em um loop
+ 4. `loop()`: É o loop geral do robô

@@ -1,4 +1,4 @@
-# TT_MiniSumo_Arruela (ARRUELA) [v1.0]
+# Library (LIB) [v1.0]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```
@@ -71,54 +71,30 @@
 
 ## Pastas e Arquivos
  ```
- Autonomo (AUTO)
- |--include
-    |- main.hpp
- |--lib
-    |--engine
-       |- engine.cpp
-       |- engine.hpp
-    |--internal
-       |- internal.cpp
-       |- internal.hpp
-    |--receiver
-       |- receiver.cpp
-       |- receiver.hpp
-    |--sensor
-       |- sensor.cpp
-       |- sensor.hpp
-    |--serial
-       |- serial.cpp
-       |- serial.hpp
-    |--storage
-       |- storage.cpp
-       |- storage.hpp
-    |--utilitie
-       |- utilitie.cpp
-       |- utilitie.hpp
- |--src
-    |- main.cpp
- ```
-
- ```
- Controlado (RC)
- |--include
-    |- main.hpp
- |--lib
-    |--controller
-       |- controller.cpp
-       |- controller.hpp
-    |--engine
-       |- engine.cpp
-       |- engine.hpp
-    |--internal
-       |- internal.cpp
-       |- internal.hpp
-    |--utilitie
-       |- utilitie.cpp
-       |- utilitie.hpp
- |--src
-    |- main.cpp
+ |--controller (RC)
+    |- controller.cpp
+    |- controller.hpp
+ |--engine (AUTO + RC)
+    |- engine.cpp
+    |- engine.hpp
+ |--internal (AUTO + RC)
+    |- internal.cpp
+    |- internal.hpp
+ |--receiver (AUTO)
+    |- receiver.cpp
+    |- receiver.hpp
+ |--sensor (AUTO)
+    |- sensor.cpp
+    |- sensor.hpp
+ |--serial (AUTO)
+    |- serial.cpp
+    |- serial.hpp
+ |--storage  (AUTO)
+    |- storage.cpp
+    |- storage.hpp
+ |--utilitie (AUTO + RC)
+    |- utilitie.cpp
+    |- utilitie.hpp
  ```
 
 ## Sobre a Estrutura do Codigo
@@ -126,19 +102,3 @@
 
 # Configuração de Ambiente
  Para o __Arruela__ __v1.0__ usamos apenas o __PlatformIO__ com o __VS CODE__, migramos o __Controlado (RC)__ do __Arduino IDE__ para o __PlatformIO__ na verção __v1.0__
-
-## Visual Studio Code
- 1. Baixe o [VS Code](https://code.visualstudio.com/)
- 2. [Documentação do VS Code](https://code.visualstudio.com/docs)
-
-## PlatformIO
- 1. Site do [PlatformIO](https://platformio.org)
- 2. Baixar o [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
-
-## ESP32 SDK
- 1. [Multiprocessamento no ESP32](https://embarcados.com.br/serie/multiprocessamento-no-esp32/)
- 2. [ESP32 API Reference](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/)
- 
-## Observação
- 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
- 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...

@@ -1,4 +1,4 @@
-# TT_MiniSumo_Arruela (ARRUELA) [v1.0]
+# Controlado (RC) [v1.0]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```
@@ -71,36 +71,6 @@
 
 ## Pastas e Arquivos
  ```
- Autonomo (AUTO)
- |--include
-    |- main.hpp
- |--lib
-    |--engine
-       |- engine.cpp
-       |- engine.hpp
-    |--internal
-       |- internal.cpp
-       |- internal.hpp
-    |--receiver
-       |- receiver.cpp
-       |- receiver.hpp
-    |--sensor
-       |- sensor.cpp
-       |- sensor.hpp
-    |--serial
-       |- serial.cpp
-       |- serial.hpp
-    |--storage
-       |- storage.cpp
-       |- storage.hpp
-    |--utilitie
-       |- utilitie.cpp
-       |- utilitie.hpp
- |--src
-    |- main.cpp
- ```
-
- ```
  Controlado (RC)
  |--include
     |- main.hpp
@@ -121,24 +91,49 @@
     |- main.cpp
  ```
 
-## Sobre a Estrutura do Codigo
- Esse código é uma experiência de criar uma nova organização que tem como principio facilitar a manutenção.
+## Sobre a Estrutura do Código
+ Esse código é uma experiência de criar uma nova organização que tem como objetivo facilitar a manutenção.
 
-# Configuração de Ambiente
- Para o __Arruela__ __v1.0__ usamos apenas o __PlatformIO__ com o __VS CODE__, migramos o __Controlado (RC)__ do __Arduino IDE__ para o __PlatformIO__ na verção __v1.0__
+# Emparelhando o controlador PS4 com o ESP32:
+[Controller Pairing Guide](https://github.com/darthcloud/BlueRetro/wiki/Controller-pairing-guide)
 
-## Visual Studio Code
- 1. Baixe o [VS Code](https://code.visualstudio.com/)
- 2. [Documentação do VS Code](https://code.visualstudio.com/docs)
+## Alterar/Pegar o MAC Address do Controle PS4
+ Quando um controlador PS4 é 'emparelhado' com um console PS4, significa apenas que ele armazenou o endereço MAC Bluetooth do console, que é o único dispositivo ao qual o controlador se conectará. Normalmente, esse emparelhamento acontece quando você conecta o controlador ao console PS4 usando um cabo USB e pressiona o botão PS. Isso inicia a gravação do endereço MAC do console no controlador.
 
-## PlatformIO
- 1. Site do [PlatformIO](https://platformio.org)
- 2. Baixar o [PlatformIO IDE for VSCode](https://platformio.org/install/ide?install=vscode)
+ Portanto, se você deseja conectar seu controlador PS4 ao ESP32, você precisa descobrir qual é o endereço MAC Bluetooth do seu console PS4 e definir o endereço do ESP32 para ele ou alterar o endereço MAC armazenado no controlador PS4.
 
-## ESP32 SDK
- 1. [Multiprocessamento no ESP32](https://embarcados.com.br/serie/multiprocessamento-no-esp32/)
- 2. [ESP32 API Reference](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/)
- 
-## Observação
- 1. Usar o `tt::serial::end()` causa um BUG que faz com que o robô não ande (provávelmente erro com relação à memória ou task)
- 2. Quando `direction1 != direction2`, as direções de ambos os robôs invertem, sla o pq...
+ Seja qual for o caminho escolhido, você pode querer uma ferramenta para ler e/ou gravar o endereço MAC atualmente emparelhado do controlador PS4. Você pode tentar usar [sixaxispairer](https://github.com/user-none/sixaxispairer) ou [SixaxisPairTool](https://sixaxispairtool.en.lo4d.com/windows) para essa finalidade.
+
+## Pegar o MAC Address do ESP32
+ [ESP32: Erase Flash Memory (Factory Reset)](https://randomnerdtutorials.com/esp32-erase-flash-memory/)
+ [esptool.py](https://github.com/espressif/esptool)
+
+ Existem alguns bugs no ESP32 que se resolvem limpando a memória flash com `erase_flash`, e algumas informações aparecem ao fazer isso, como o MAC Address. Porém, existe a opção para pegar as informações de segurança do ESP com `get_security_info`, que mostra o MAC Address do ESP32 sem limpar a memória flash.
+
+ Instalar esptool
+ ```
+ pip install setuptools
+ pip install esptool
+ ```
+
+ Limpar a Memória Flash
+ ```
+ python -m esptool --chip esp32 erase_flash
+ ```
+
+ Pegar o MAC Address
+ ```
+ python -m esptool --chip esp32 get_security_info
+ ```
+
+# Código
+ O código é separado em três principais áreas:
+ 1. `source`
+ 2. `include`
+ 3. `lib`
+
+## Main
+ 1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
+ 2. `__init__()`: É o código que vai rodar antes do update
+ 3. `__update__()`: É o código que vai rodar em um loop
+ 4. `loop()`: É o loop geral do robô
