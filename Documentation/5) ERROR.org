@@ -1,8 +1,14 @@
 * ERROR-LIST
 *Lista de Erros* achados no *Arruela* que foram ou não resolvidos.
 
-** Autonomo (AUTO)
+** System (SYS)
+*** TODO None
+
+** Autônomo (AUTO)
 *** TODO None
 
 ** Controlado (RC)
+*** TODO None
+
+** Depurador (DB)
 *** TODO None

@@ -80,10 +80,19 @@
  5. `ERROR.org`
 
 ## DOCUMENTATION (DOC.org)
+ __Documentações__ do __Projeto Arruela__
+
 ## STANDARD (STD.org)
+ __Padrões__ do __Projeto Arruela__
+
 ## PHILOSOPHY (PHY.org)
+ __Filosofias__ do __Projeto Arruela__
+
 ## TODO LIST (TODO.org)
+ __Listas TODO__ do __Projeto Arruela__
+
 ## ERROR LIST (ERROR.org)
+ __Listas de Erros__ do __Projeto Arruela__
 
 [emacs]: https://www.gnu.org/software/emacs/
 [emacs-org-mode]: https://orgmode.org

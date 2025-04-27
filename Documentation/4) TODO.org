@@ -1,15 +1,19 @@
 * TODO-LIST
 *Lista de Tarefas* pra fazer do *Arruela*
 
-** Autonomo (AUTO)
-*** TODO Criar Ataque Tranquilo <v1.0>
-*** TODO Criar Sombra Plus (Estudar a Possibilidade) <v1.0>
-*** TODO Criar *Input Language* <v2.0>
+** System (SYS)
+*** TODO Melhorar o main.cpp / main.hpp
+*** TODO Criar Storage [v1.0]
+*** TODO Criar Kernel + Bootloader [v1.1]
+
+** Autônomo (AUTO)
+*** TODO Criar Ataque Tranquilo [v1.0]
+*** TODO Criar Input Language [v1.2]
 
 ** Controlado (RC)
-*** TODO Melhorar as Macros <v1.0>
-*** TODO Criar Curvão->Curvinha <v1.0>
-*** TODO Criar Curvão->!Curvão <v1.0>
-*** TODO Criar Break Macro <v1.0>
-*** TODO Adicionar funcionalidade pro Right Stick <v1.0>
-*** TODO Pensar em algo pro *Arruela Controlado (v2.0)* <v2.0>
+*** TODO Criar novas Macros [v1.0]
+*** TODO Criar Break Macro [v1.0]
+*** TODO Criar Giro Preciso para o Right Stick [v1.0]
+
+** Depurador (DB)
+*** TODO Criar Depurador [v1.0]

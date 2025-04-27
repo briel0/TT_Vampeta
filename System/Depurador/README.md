@@ -69,5 +69,48 @@
                                        ....::::------::::....
  ```
 
-# O que é?
- Nessa pasta fica os códigos de testes ou de backup para futuros testes
+## Pastas e Arquivos
+ ```
+ Depurador (DB)
+ |--include
+    |- main.hpp
+ |--lib
+    |--engine
+       |- engine.cpp
+       |- engine.hpp
+    |--internal
+       |- internal.cpp
+       |- internal.hpp
+    |--receiver
+       |- receiver.cpp
+       |- receiver.hpp
+    |--sensor
+       |- sensor.cpp
+       |- sensor.hpp
+    |--serial
+       |- serial.cpp
+       |- serial.hpp
+    |--storage
+       |- storage.cpp
+       |- storage.hpp
+    |--utilitie
+       |- utilitie.cpp
+       |- utilitie.hpp
+ |--src
+    |- main.cpp
+ ```
+
+## Sobre a Estrutura do Código
+ Esse código é uma experiência de criar uma nova organização que tem como objetivo facilitar a manutenção.
+
+# Código
+ O código é separado em três principais áreas:
+ 1. `source`
+ 2. `include`
+ 3. `lib`
+
+## Main
+ 1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
+ 2. `__init__()`: É o código que vai rodar antes do update
+ 3. `__update__()`: É o código que vai rodar em um loop
+ 4. `loop()`: É o loop geral do robô
