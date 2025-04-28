@@ -22,6 +22,9 @@ O *Arruela Autônomo*
 ** Arruela Controlado
 O *Arruela Controlado*
 
+** Arruela Depurador
+O *Arruela Depurador*
+
 ** Arruela Almagama
 O *Arruela Almagama* é a junção do *Arruela Autônomo* e do *Arruela Controlado*
 Ele tem a função de unificar todo o código do *Arruela* em um unico "projeto".
