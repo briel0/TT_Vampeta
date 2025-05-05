@@ -10,12 +10,14 @@ namespace tt::internal
 {
 	char wifi_mac_address[32] = {};
 	uint64_t internal_millis = 0;
+	uint64_t internal_micros = 0;
 	bool led_mode = false;
 
 	void setup()
 	{
 		pinMode(led, OUTPUT);
-		internal_millis = end_millis();
+		setup_millis();
+		setup_micros();
 		WiFi.macAddress().toCharArray(wifi_mac_address, sizeof(wifi_mac_address));
 	}
 
@@ -51,6 +53,26 @@ namespace tt::internal
 	uint64_t delta_millis()
 	{
 		return end_millis() - begin_millis();
+	}
+
+	void setup_micros()
+	{
+		internal_micros = end_micros();
+	}
+
+	uint64_t begin_micros()
+	{
+		return internal_micros;
+	}
+
+	uint64_t end_micros()
+	{
+		return micros();
+	}
+
+	uint64_t delta_micros()
+	{
+		return end_micros() - begin_micros();
 	}
 
 	const char *mac_address()

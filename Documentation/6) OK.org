@@ -1,5 +1,5 @@
-* ERROR-LIST
-*Lista de Erros* achados no *Arruela* que foram ou não resolvidos.
+* OK-LIST
+*Lista de Soluções* de erros achados no *Arruela* que foram resolvidos.
 
 ** System (SYS)
 *** TODO None

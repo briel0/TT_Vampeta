@@ -1,2 +1,19 @@
 * Arruela Philosophy
 Este arquivo contém a filosofia do projeto *Arruela*.
+
+** Modularização
+O *Arruela* é um projeto extremamente modularizado (*Libraries*, *Bootloader*, *Kernels*...).
+Isto porque ter um projeto modularizado facilita a masterização do código do *Arruela*.
+O que facilita a manutenção, a inovação e a otimização atual do código do *Arruela*.
+
+** Manutenção
+O *Arruela* é um projeto de facíl manutenção, isso porque ele é modularizado.
+
+** Inivação
+O *Arruela* é um projeto de facíl inivação, isso porque ele é modularizado.
+
+** Otimização
+O *Arruela* é um projeto de facíl otimização, isso porque ele é modularizado.
+
+** Masterização
+O *Arruela* é um projeto de facíl masterização, isso porque ele é modularizado.

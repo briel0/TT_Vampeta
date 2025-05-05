@@ -4,27 +4,39 @@
 #include <internal.hpp>
 #include "main.hpp"
 
+#pragma region "Main State Data"
 uint8_t loop_state = LOOP_STATE_INIT;
+#pragma endregion "Main State Data"
+
+#pragma region "Main Engine Data"
 tt::engine_t engine_left = TT_ENGINE_DEFAULT;
 tt::engine_t engine_right = TT_ENGINE_DEFAULT;
+#pragma endregion "Main Engine Data"
+
+#pragma region "Main Controller Data"
 tt::controller_t controller;
 uint8_t rc_state = RC_STATE_CAREFUL;
 bool triangle = false;
+#pragma endregion "Main Controller Data"
 
-#pragma region "Main Setup"
+#pragma region "Main Data"
 void setup()
 {
 	Serial.begin(115200);
-	Serial.println("Serial 115200!");
+	Serial.printf(STRLN("Serial 115200!"));
 
 	tt::internal::setup();
-	tt::controller::setup(tt::internal::mac_address());
-	tt::engine::setup();
-	Serial.println("Begin and Load Complete!");
-
 	tt::internal::set_led(false);
+	Serial.printf(STRLN("Setup Internal!"));
+	Serial.printf(STRLN("Mac Address: %s"), tt::internal::mac_address());
+	vTaskDelay(512);
+
+	tt::controller::setup(tt::internal::mac_address());
+	Serial.printf(STRLN("Setup Controller!"));
+
+	tt::engine::setup();
 	tt::engine::set_standby(false);
-	Serial.println("Setup Complete!");
+	Serial.printf(STRLN("Setup Engine!"));
 }
 #pragma endregion "Main Setup"
 
@@ -36,11 +48,12 @@ void __init__()
 
 void __update__()
 {
+_restart_update:
 	tt::internal::set_led(true);
 	if (tt::controller::disconnected())
 	{
 		tt::internal::set_led(false);
-		goto loop_reset_engine;
+		goto _loop_reset_engine;
 	}
 
 	controller = tt::controller::create_snapshot();
@@ -62,7 +75,7 @@ void __update__()
 
 	if (controller.triangle)
 	{
-		Serial.println("(controller.triangle)");
+		Serial.printf(STRLN("(controller.triangle)"));
 		if (!triangle)
 		{
 			switch (rc_state)
@@ -89,71 +102,85 @@ void __update__()
 
 	if (controller.l1)
 	{
-		Serial.println("(controller.l1)");
-		macro_curvinha(left);
-		controller = tt::controller::create_snapshot();
+		Serial.printf(STRLN("(controller.l1)"));
+		macro_ladinho(left);
+		goto _restart_update;
 	}
 
 	if (controller.r1)
 	{
-		Serial.println("(controller.r1)");
+		Serial.printf(STRLN("(controller.r1)"));
+		macro_ladinho(right);
+		goto _restart_update;
+	}
+
+	if (controller.square)
+	{
+		Serial.printf(STRLN("(controller.square)"));
+		macro_curvinha(left);
+		goto _restart_update;
+	}
+
+	if (controller.circle)
+	{
+		Serial.printf(STRLN("(controller.circle)"));
 		macro_curvinha(right);
-		controller = tt::controller::create_snapshot();
+		goto _restart_update;
 	}
 
 	if (controller.left)
 	{
-		Serial.println("(controller.left)");
+		Serial.printf(STRLN("(controller.left)"));
 		macro_curvao(left);
-		controller = tt::controller::create_snapshot();
+		goto _restart_update;
 	}
 
 	if (controller.right)
 	{
-		Serial.println("(controller.right)");
+		Serial.printf(STRLN("(controller.right)"));
 		macro_curvao(right);
-		controller = tt::controller::create_snapshot();
+		goto _restart_update;
 	}
 
 	if (controller.cross)
 	{
-		Serial.println("(controller.cross)");
+		Serial.printf(STRLN("(controller.cross)"));
 		behavior_just_go();
-		goto loop_update_engine;
+		goto _loop_update_engine;
 	}
 
 	if (controller.l2)
 	{
-		Serial.println("(controller.l2)");
+		Serial.printf(STRLN("(controller.l2)"));
 		behavior_forward(TT_ENGINE_DIRECTION_BACK, controller.l2_value * 0.9);
-		goto loop_update_engine;
+		goto _loop_update_engine;
 	}
 
 	if (controller.r2)
 	{
-		Serial.println("(controller.r2)");
+		Serial.printf(STRLN("(controller.r2)"));
 		behavior_forward(TT_ENGINE_DIRECTION_FRONT, controller.r2_value);
-		goto loop_update_engine;
+		goto _loop_update_engine;
 	}
 
 	if (controller.l_stick_x <= -STICK_TRIGGER)
 	{
-		Serial.println("(controller.l_stick_x <= -STICK_TRIGGER)");
+		Serial.printf(STRLN("(controller.l_stick_x <= -STICK_TRIGGER)"));
 		behavior_curve(TT_ENGINE_DIRECTION_BACK, TT_ENGINE_DIRECTION_FRONT);
-		goto loop_update_engine;
+		goto _loop_update_engine;
 	}
 
 	if (controller.l_stick_x >= STICK_TRIGGER)
 	{
-		Serial.println("(controller.l_stick_x >= STICK_TRIGGER)");
+		Serial.printf(STRLN("(controller.l_stick_x >= STICK_TRIGGER)"));
 		behavior_curve(TT_ENGINE_DIRECTION_FRONT, TT_ENGINE_DIRECTION_BACK);
-		goto loop_update_engine;
+		goto _loop_update_engine;
 	}
 
-loop_reset_engine:
+_loop_reset_engine:
 	reset_engine();
 
-loop_update_engine:
+_loop_update_engine:
 	update_engine();
 }
 
@@ -286,6 +313,27 @@ void macro_curvao(const direction_t direction) {
 		vTaskDelay(70);
 		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(64));
 		vTaskDelay(392);
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+	}
+}
+
+void macro_ladinho(const direction_t direction) {
+	if (direction == right)
+	{
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(24), TT_ENGINE_FRONT(255));
+		vTaskDelay(224);
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+	}
+	else
+	{
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT(255), TT_ENGINE_FRONT(24));
+		vTaskDelay(224);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
 	}

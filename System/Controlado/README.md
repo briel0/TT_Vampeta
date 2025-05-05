@@ -108,7 +108,7 @@
  [ESP32: Erase Flash Memory (Factory Reset)](https://randomnerdtutorials.com/esp32-erase-flash-memory/)
  [esptool.py](https://github.com/espressif/esptool)
 
- Existem alguns bugs no ESP32 que se resolvem limpando a memória flash com `erase_flash`, e algumas informações aparecem ao fazer isso, como o MAC Address. Porém, existe a opção para pegar as informações de segurança do ESP com `get_security_info`, que mostra o MAC Address do ESP32 sem limpar a memória flash.
+ Existem alguns bugs no ESP32 que se resolvem limpando a memória flash com `erase_flash`, e algumas informações aparecem ao fazer isso, como o MAC Address.
 
  Instalar esptool
  ```
@@ -121,6 +121,8 @@
  python -m esptool --chip esp32 erase_flash
  ```
 
+## Pegar o MAC Address do ESP32
+ Porém, existe a opção para pegar as informações de segurança do ESP com `get_security_info`, que mostra o MAC Address do ESP32 sem limpar a memória flash.
  Pegar o MAC Address
  ```
  python -m esptool --chip esp32 get_security_info
@@ -134,6 +136,6 @@
 
 ## Main
  1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
- 2. `__init__()`: É o código que vai rodar antes do update
- 3. `__update__()`: É o código que vai rodar em um loop
- 4. `loop()`: É o loop geral do robô
+ 2. `loop()`: É o loop geral do robô, serve para propósito geral
+ 3. `__init__()`: É o código que roda unicamente antes do update
+ 4. `__update__()`: É o código que roda em um loop eterno

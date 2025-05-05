@@ -46,6 +46,24 @@ namespace tt::serial
 		return SerialBT.available();
 	}
 
+	void wait()
+	{
+		if (!enabled())
+		{
+			return;
+		}
+
+		while (!available())
+		{
+			vTaskDelay(1);
+		}
+	}
+
+	void erase()
+	{
+		SerialBT.readStringUntil('\n');
+	}
+
 	void end()
 	{
 		if (!enabled())
@@ -126,6 +144,31 @@ namespace tt::serial
 		va_end(args);
 	}
 
+	void scanf(const char *fmt, ...)
+	{
+		if (!enabled())
+		{
+			return;
+		}
+
+		String in = SerialBT.readStringUntil('\n');
+		va_list args;
+
+		va_start(args, fmt);
+		vsscanf(in.c_str(), fmt, args);
+		va_end(args);
+	}
+
+	String input()
+	{
+		if (!enabled())
+		{
+			return String("");
+		}
+
+		return SerialBT.readStringUntil('\n');
+	}
+
 	template <typename T>
 	void println(T val)
 	{
@@ -135,19 +178,22 @@ namespace tt::serial
 		}
 		SerialBT.println(val);
 	}
+	template void println(int8_t);
 	template void println(int16_t);
 	template void println(int32_t);
-	template void println(int8_t);
 	template void println(int64_t);
 	template void println(uint8_t);
 	template void println(uint16_t);
 	template void println(uint32_t);
 	template void println(uint64_t);
+	template void println(long);
+	template void println(unsigned long);
 	template void println(float);
 	template void println(double);
 	template void println(char);
 	template void println(char *);
 	template void println(const char *);
+	template void println(String);
 
 	template <typename T>
 	void print(T val)
@@ -166,9 +212,12 @@ namespace tt::serial
 	template void print(uint16_t);
 	template void print(uint32_t);
 	template void print(uint64_t);
+	template void print(long);
+	template void print(unsigned long);
 	template void print(float);
 	template void print(double);
 	template void print(char);
 	template void print(char *);
 	template void print(const char *);
+	template void print(String);
 }

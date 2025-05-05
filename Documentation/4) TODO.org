@@ -2,18 +2,17 @@
 *Lista de Tarefas* pra fazer do *Arruela*
 
 ** System (SYS)
-*** TODO Melhorar o main.cpp / main.hpp
-*** TODO Criar Storage [v1.0]
-*** TODO Criar Kernel + Bootloader [v1.1]
+*** TODO Criar Kernel + Bootloader [v2.0]
 
 ** Autônomo (AUTO)
-*** TODO Criar Ataque Tranquilo [v1.0]
-*** TODO Criar Input Language [v1.2]
+*** TODO Criar Input Language [v1.1]
 
 ** Controlado (RC)
-*** TODO Criar novas Macros [v1.0]
-*** TODO Criar Break Macro [v1.0]
-*** TODO Criar Giro Preciso para o Right Stick [v1.0]
+*** TODO Frentão Acelerado no UP [v1.1]
+*** TODO Escapar do Ataque no DOWN [v1.1]
+*** TODO Usar o Right Stick para definir a direção do DOWN [v1.1]
+*** TODO Criar Break Macro [v1.1]
 
 ** Depurador (DB)
-*** TODO Criar Depurador [v1.0]
+*** TODO Permitir Criar Sequências de Comandos [v1.1]
+** TODO Permitir Editar um Valor Isolado do Comando [v1.1]

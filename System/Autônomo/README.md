@@ -103,6 +103,23 @@
 ## Sobre a Estrutura do Código
  Esse código é uma experiência de criar uma nova organização que tem como objetivo facilitar a manutenção.
 
+## Pegar o MAC Address do ESP32
+ [ESP32: Erase Flash Memory (Factory Reset)](https://randomnerdtutorials.com/esp32-erase-flash-memory/)
+ [esptool.py](https://github.com/espressif/esptool)
+
+ Existem alguns bugs no ESP32 que se resolvem limpando a memória flash com `erase_flash`, e algumas informações aparecem ao fazer isso, como o MAC Address.
+
+ Instalar esptool
+ ```
+ pip install setuptools
+ pip install esptool
+ ```
+
+ Limpar a Memória Flash
+ ```
+ python -m esptool --chip esp32 erase_flash
+ ```
+
 # Código
  O código é separado em três principais áreas:
  1. `source`
@@ -111,6 +128,6 @@
 
 ## Main
  1. `setup()`: Primeira parte do código que roda ao ligar o robô, serve para configurar
- 2. `__init__()`: É o código que vai rodar antes do update
- 3. `__update__()`: É o código que vai rodar em um loop
- 4. `loop()`: É o loop geral do robô
+ 2. `loop()`: É o loop geral do robô, serve para propósito geral
+ 3. `__init__()`: É o código que roda unicamente antes do update
+ 4. `__update__()`: É o código que roda em um loop eterno

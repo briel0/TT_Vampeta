@@ -77,7 +77,8 @@
  2. `STD.org`
  3. `PHY.org`
  4. `TODO.org`
- 5. `ERROR.org`
+ 5. `ERR.org`
+ 6. `OK.org`
 
 ## DOCUMENTATION (DOC.org)
  __Documentações__ do __Projeto Arruela__
@@ -91,8 +92,11 @@
 ## TODO LIST (TODO.org)
  __Listas TODO__ do __Projeto Arruela__
 
-## ERROR LIST (ERROR.org)
+## ERROR LIST (ERR.org)
  __Listas de Erros__ do __Projeto Arruela__
 
+## OK LIST (OK.org)
+ __Listas de Soluções__ do __Projeto Arruela__
+
 [emacs]: https://www.gnu.org/software/emacs/
-[emacs-org-mode]: https://orgmode.org
+[emacs-org-mode]: https://orgmode.

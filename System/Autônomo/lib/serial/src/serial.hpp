@@ -12,6 +12,8 @@ namespace tt
 		void setup(const char *name);
 		bool enabled();
 		int available();
+		void wait();
+		void erase();
 		void end();
 
 		int read();
@@ -23,6 +25,9 @@ namespace tt
 		void clear();
 
 		void printf(const char *fmt, ...);
+		void scanf(const char *fmt, ...);
+		String input();
+
 		template <typename T>
 		void println(T val);
 		template <typename T>

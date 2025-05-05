@@ -1,0 +1,24 @@
+#!/usr/bin/sh
+
+if [ "$1" = "" ]; then
+	echo "options: [ build | upload | clean | monitor | erase | help ]"
+	exit 1
+fi
+
+if [ "$1" = "build" ]; then
+	~/.platformio/penv/bin/platformio run
+elif [ "$1" = "upload" ]; then
+	~/.platformio/penv/bin/platformio run --target upload
+elif [ "$1" = "clean" ]; then
+	~/.platformio/penv/bin/platformio run --target clean
+elif [ "$1" = "monitor" ]; then
+	~/.platformio/penv/bin/platformio device monitor
+elif [ "$1" = "erase" ]; then
+	python -m esptool --chip esp32 erase_flash
+elif [ "$1" = "help" ]; then
+	echo "options: [ build | upload | clean | monitor | erase | help ]"
+	exit 0
+else
+	echo "options: [ build | upload | clean | monitor | erase | help ]"
+	exit 1
+fi

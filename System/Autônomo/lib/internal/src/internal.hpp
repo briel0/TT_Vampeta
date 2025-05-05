@@ -16,6 +16,10 @@ namespace tt
 		uint64_t begin_millis();
 		uint64_t end_millis();
 		uint64_t delta_millis();
+		void setup_micros();
+		uint64_t begin_micros();
+		uint64_t end_micros();
+		uint64_t delta_micros();
 		const char *mac_address();
 		void debug(char *out_buffer, const size_t out_size, const char *msg);
 		void debug(const char *msg);

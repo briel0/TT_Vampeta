@@ -3,7 +3,7 @@ Nesse arquivo está descrito todos os padrões adotados pelo *Arruela*
 
 ** Arruela Autônomo
 No *Arruela Autonomo* temos o *Bluetooth Serial* para escolher a estratégia.
-Com isso foi desenvolvido algumas interfaces entre o *Arruela Autônomo* e o *Dispositivo Móvel* Usado na hora da competição
+Com isso foi desenvolvido algumas interfaces entre o *Arruela Autônomo* e o *Dispositivo Móvel* usado na hora da competição.
 
 *** Input System (Antigo)
 No *Arruela Autônomo (1.0)* existe um sistema de input legado, chamada *Input System*
@@ -15,46 +15,69 @@ No *Arruela Autônomo (1.0)* existe um sistema de input legado, chamada *Input S
 | ~b~    | *Frentinha* |
 | ~c~    | *Curvão*    |
 | ~d~    | *Curvinha*  |
-| ~e~    | *Costas*    |
-| ~f~    | *Defesa*    |
+| ~e~    | *Ladinho*   |
+| ~f~    | *Costas*    |
+| ~g~    | *Defesa*    |
+| ~h~    | *Preciso*   |
+| ~i~    | *Tranquilo* |
 
 *** Input Language (Novo)
 No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *Input Language*
 
-**** Lista de Comandos
-| cmd | args       | desc      |
-|-----+------------+-----------|
-| ~f~   | ~temp~       | frente    |
-| ~c~   | ~temp~       | curva     |
-| ~r~   | ~temp~       | rotação   |
-| ~t~   | ~level:temp~ | tranquilo |
-| ~p~   | ~temp~       | parado    |
-| ~>~   |            | direita   |
-| ~<~   |            | esquerda  |
+**** Listas de Comandos
+| cmd | args | desc    |
+|-----+------+---------|
+| ~f~   | ~tmp~  | frente  |
+| ~c~   | ~tmp~  | curva   |
+| ~r~   | ~tmp~  | rotação |
+| ~p~   | ~tmp~  | parado  |
+
+| cmd | args        | desc    |
+|-----+-------------+---------|
+| ~F~   | ~inc:dly:tmp~ | frente  |
+| ~C~   | ~eni:ene:tmp~ | curva   |
+| ~R~   | ~spd:tmp~     | rotação |
+| ~P~   | ~tmp~         | parado  |
+
+| cmd | args        | desc     |
+|-----+-------------+----------|
+| ~_~   | ~enl:enr:tmp~ | scratch  |
+| ~>~   |             | direita  |
+| ~<~   |             | esquerda |
 
 **** Lista de Operações
 | op<cmd:arg...> | desc                   |
 |----------------+------------------------|
 | ~!<cmd>~         | inverte direção do ~cmd~ |
+| ~?<cmd>~         | inverte direção do ~cmd~ |
+| ~*<cmd>~         | inverte direção do ~cmd~ |
 
 **** Estrutura de um Comando
-~(cmd1:arg1,!cmd2:arg2,cmd3)~
+~(cmd1,cmd2:arg1,!cmd3:arg3,?cmd4:arg4,*cmd5:arg5)~
 
 Isso executará as seguintes operações:
- - ~cmd1~ com o argumento ~arg1~.
- - ~cmd2~ com o argumento ~arg2~ e direção invertida.
- - ~cmd3~ com o nenhum argumento.
+ - ~cmd1~ com o nenhum argumento.
+ - ~cmd2~ com o argumento ~arg2~.
+ - ~cmd3~ com o argumento ~arg3~ e direção invertida.
+ - ~cmd4~ com o argumento ~arg4~ se a flag de ~cmd4~ estiver habilitada.
+ - ~cmd5~ com o argumento ~arg5~ até trigger de ~cmd5~ for chamado.
 
 **** Exemplo de Códigos
 | code                | desc      |
 |---------------------+-----------|
-| ~(f:152)~             | *Frentão*   |
-| ~(f:100)~             | *Frentinha* |
+| ~(f:160)~             | *Frentão*   |
+| ~(f:104)~             | *Frentinha* |
 | ~(r:70,!c:392,!r:70)~ | *Curvão*    |
 | ~(r:70,!c:196,!r:70)~ | *Curvinha*  |
 | ~(r:104)~             | *Costas*    |
-| ~(t:1:4096)~          | *Pacífico*  |
-| ~(t:2:4096)~          | *Defesa*    |
 
 ** Arruela Controlado
-No *Arruela Controlado* é usado um *Controle de PS4*
+No *Arruela Controlado* é usado um *Controle de PS4* como dispositivo RC.
+Com isso foi desenvolvido algumas interfaces entre o *Arruela Controlado* e o *Dispositivo RC* usado na hora da competição.
+Nessa interfaces temos *Modificadores*, *Comportamentos* e *Macros*.
+
+*** Modificadores
+
+*** Comportamentos
+
+*** Macros

@@ -7,14 +7,21 @@
 #include <utilitie.hpp>
 #include "main.hpp"
 
+#pragma region "Main State Data"
 uint8_t loop_state = LOOP_STATE_SETUP;
 uint8_t sensor_usage = SENSOR_USAGE_NONE;
+#pragma endregion "Main State Data"
 
+#pragma region "Main Input Data"
 char bluetooth_input_char = ESTRATEGIA_LOOP;
 char estrategia = bluetooth_input_char;
+#pragma endregion "Main Input Data"
 
-direction_t direction = right;
+#pragma region "Main Sensor Data"
+direction_t direction_init = right;
+direction_t direction_update = right;
 tt::sensor_t sensor;
+#pragma endregion "Main Sensor Data"
 
 #pragma region "Main Setup"
 void setup_task()
@@ -37,12 +44,19 @@ void setup_connect()
 
 void setup_estrategia()
 {
+	bluetooth_input_char = ESTRATEGIA_LOOP;
+	estrategia = bluetooth_input_char;
+
 	while (bluetooth_input_char != COMMAND_SETUP)
 	{
 		vTaskDelay(1);
 		if (tt::serial::available())
 		{
 			bluetooth_input_char = tt::serial::read();
+		}
+		else
+		{
+			continue;
 		}
 
 		switch (bluetooth_input_char)
@@ -74,20 +88,23 @@ void setup_estrategia()
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_FRENTINHA, "FRENTINHA");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVAO, "CURVÃO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_CURVINHA, "CURVINHA");
+			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_LADINHO, "LADINHO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_COSTAS, "COSTAS");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_DEFESA, "DEFESA");
+			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_PRECISO, "PRECISO");
+			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_TRANQUILO, "TRANQUILO");
 			tt::serial::printf(STRLN("\"%c\" -> \"%s\""), ESTRATEGIA_LOOP, "É apenas um loop");
 			break;
 
 		case COMMAND_LEFT:
-			direction = left;
+			direction_init = left;
 			tt::serial::printf(STRLN("+---------+----------+"));
 			tt::serial::printf(STRLN("| Direção | Esquerda |"));
 			tt::serial::printf(STRLN("+---------+----------+"));
 			break;
 
 		case COMMAND_RIGHT:
-			direction = right;
+			direction_init = right;
 			tt::serial::printf(STRLN("+---------+---------+"));
 			tt::serial::printf(STRLN("| Direção | Direita |"));
 			tt::serial::printf(STRLN("+---------+---------+"));
@@ -96,7 +113,7 @@ void setup_estrategia()
 		case COMMAND_CHECK:
 			tt::serial::printf(STRLN("+------------+----------+"));
 			tt::serial::printf(STRLN("| Estratégia | %c        |"), estrategia);
-			tt::serial::printf(STRLN("| Direção    | %s |"), (direction == right ? "direita " : "esquerda"));
+			tt::serial::printf(STRLN("| Direção    | %s |"), (direction_init == right ? "direita " : "esquerda"));
 			tt::serial::printf(STRLN("+------------+----------+"));
 			break;
 
@@ -145,6 +162,12 @@ void setup_estrategia()
 					tt::serial::printf(STRLN("+------------+-------------+"));
 					break;
 
+				case ESTRATEGIA_LADINHO:
+					tt::serial::printf(STRLN("+------------+------------+"));
+					tt::serial::printf(STRLN("| Estratégia | LADINHO!!! |"));
+					tt::serial::printf(STRLN("+------------+------------+"));
+					break;
+
 				case ESTRATEGIA_COSTAS:
 					tt::serial::printf(STRLN("+------------+-----------+"));
 					tt::serial::printf(STRLN("| Estratégia | COSTAS!!! |"));
@@ -155,6 +178,18 @@ void setup_estrategia()
 					tt::serial::printf(STRLN("+------------+-----------+"));
 					tt::serial::printf(STRLN("| Estratégia | DEFESA!!! |"));
 					tt::serial::printf(STRLN("+------------+-----------+"));
+					break;
+
+				case ESTRATEGIA_PRECISO:
+					tt::serial::printf(STRLN("+------------+------------+"));
+					tt::serial::printf(STRLN("| Estratégia | PRECISO!!! |"));
+					tt::serial::printf(STRLN("+------------+------------+"));
+					break;
+
+				case ESTRATEGIA_TRANQUILO:
+					tt::serial::printf(STRLN("+------------+--------------+"));
+					tt::serial::printf(STRLN("| Estratégia | TRANQUILO!!! |"));
+					tt::serial::printf(STRLN("+------------+--------------+"));
 					break;
 
 				default:
@@ -185,9 +220,9 @@ void setup_luta()
 			for (int i = 0; i < 3; i++)
 			{
 				tt::internal::set_led(true);
-				vTaskDelay(50);
+				vTaskDelay(48);
 				tt::internal::set_led(false);
-				vTaskDelay(50);
+				vTaskDelay(48);
 			}
 			break;
 		case tt::receiver_t::begin:
@@ -198,18 +233,18 @@ void setup_luta()
 			for (int i = 0; i < 2; i++)
 			{
 				tt::internal::set_led(true);
-				vTaskDelay(100);
+				vTaskDelay(96);
 				tt::internal::set_led(false);
-				vTaskDelay(100);
+				vTaskDelay(96);
 			}
 			break;
 		case tt::receiver_t::end:
 			for (int i = 0; i < 2; i++)
 			{
 				tt::internal::set_led(true);
-				vTaskDelay(150);
+				vTaskDelay(144);
 				tt::internal::set_led(false);
-				vTaskDelay(150);
+				vTaskDelay(144);
 			}
 			break;
 		}
@@ -227,6 +262,8 @@ void setup()
 	tt::internal::setup();
 	tt::internal::set_led(false);
 	Serial.printf(STRLN("Setup Internal!"));
+	Serial.printf(STRLN("Mac Address: %s"), tt::internal::mac_address());
+	vTaskDelay(512);
 
 	tt::engine::setup();
 	Serial.printf(STRLN("Setup Engine!"));
@@ -251,11 +288,11 @@ void setup()
 #pragma endregion "Main Setup"
 
 #pragma region "Main Loop"
-int cc = 0;
 void __init__()
 {
 	tt::engine::init();
-#if DEBUG_ENGINE_STOP
+
+#if __DEBUG_ENGINE_STOP__
 	tt::engine::set_standby(true);
 #endif
 
@@ -265,6 +302,7 @@ void __init__()
 	setup_luta();
 	Serial.printf(STRLN("Setup Luta!"));
 
+	sensor_usage = SENSOR_USAGE_ALL;
 	tt::serial::printf(STRLN("Começou!"));
 
 	switch (estrategia)
@@ -289,6 +327,11 @@ void __init__()
 		inicio_curvinha();
 		break;
 
+	case ESTRATEGIA_LADINHO:
+		tt::serial::printf(STRLN("CURVINHAA!!!"));
+		inicio_ladinho();
+		break;
+
 	case ESTRATEGIA_COSTAS:
 		tt::serial::printf(STRLN("COSTAS!!!"));
 		inicio_costas();
@@ -296,13 +339,21 @@ void __init__()
 
 	case ESTRATEGIA_DEFESA:
 		tt::serial::printf(STRLN("DEFESA!!!"));
-		sensor_usage = SENSOR_USAGE_ALL;
 		inicio_defesa(DEFESA_TRIGGER, DEFESA_QUOTA);
+		break;
+
+	case ESTRATEGIA_PRECISO:
+		tt::serial::printf(STRLN("PRECISO!!!"));
+		inicio_preciso(PRECISO_TRIGGER, PRECISO_QUOTA);
+		break;
+
+	case ESTRATEGIA_TRANQUILO:
+		tt::serial::printf(STRLN("TRANQUILO!!!"));
+		inicio_tranquilo(TRANQUILO_TRIGGER, TRANQUILO_QUOTA);
 		break;
 
 	case ESTRATEGIA_LOOP:
 		tt::serial::printf(STRLN("LOOP!!!"));
-		sensor_usage = SENSOR_USAGE_ALL;
 		break;
 
 	default:
@@ -317,7 +368,7 @@ void __update__()
 	switch (estrategia)
 	{
 	default:
-		procurar_padrao(TT_ENGINE_SPEED(ROTATE_SPEED));
+		procura_padrao(TT_ENGINE_SPEED(ROTATE_SPEED));
 		break;
 	}
 }
@@ -347,29 +398,25 @@ void sensor_task(void *pvParameters)
 	while (!tt::receiver::signal(tt::receiver_t::end))
 	{
 		vTaskDelay(1);
-		if (loop_state == LOOP_STATE_SETUP)
-		{
-			continue;
-		}
 
 		sensor = tt::sensor::create_snapshot();
 		if (sensor.left && sensor_usage == SENSOR_USAGE_ALL)
 		{
-			direction = left;
+			direction_update = left;
 		}
 		else if (sensor.right && sensor_usage == SENSOR_USAGE_ALL)
 		{
-			direction = right;
+			direction_update = right;
 		}
 
-#if (DEBUG_SHOW_SENSOR)
+#if (__DEBUG_SHOW_SENSOR__)
 		tt::serial::printf(STRLN("l:%i f:%i r:%i"), sensor.left, sensor.front, sensor.right);
 #endif
-#if (DEBUG_SHOW_DIRECTION)
-		tt::serial::printf(STRLN("d:%i"), static_cast<int>(direction));
+#if (__DEBUG_SHOW_DIRECTION__)
+		tt::serial::printf(STRLN("d:%i"), static_cast<int>(direction_update));
 #endif
-#if (DEBUG_SHOW_ENGINE)
-		tt::serial::printf(STRLN("d:%i"), static_cast<int>(direction));
+#if (__DEBUG_SHOW_ENGINE__)
+		tt::serial::printf(STRLN("d:%i"), static_cast<int>(direction_update));
 #endif
 	}
 
@@ -381,7 +428,7 @@ void sensor_task(void *pvParameters)
 }
 #pragma endregion "Main Task"
 
-#pragma region "Main Estratégias"
+#pragma region "Main Inicio Estratégias"
 void inicio_frentao()
 {
 	tt::engine::move(TT_ENGINE_FRONT(48), TT_ENGINE_FRONT(48));
@@ -450,55 +497,79 @@ void inicio_frentinha()
 
 void inicio_curvao()
 {
-	if (direction == right)
+	if (direction_init == right)
 	{
+		direction_update = left;
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
 		tt::engine::move(TT_ENGINE_FRONT_SLOW(2), TT_ENGINE_FRONT_FULL);
 		vTaskDelay(392);
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
-		direction = left;
 	}
 	else
 	{
+		direction_update = right;
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_FRONT_SLOW(2));
 		vTaskDelay(392);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
-		direction = right;
 	}
 }
 
 void inicio_curvinha()
 {
-	if (direction == right)
+	if (direction_init == right)
 	{
+		direction_update = left;
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
 		tt::engine::move(TT_ENGINE_FRONT_SLOW(2), TT_ENGINE_FRONT_FULL);
 		vTaskDelay(196);
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
-		direction = left;
 	}
 	else
 	{
+		direction_update = right;
 		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
 		vTaskDelay(70);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_FRONT_SLOW(2));
 		vTaskDelay(196);
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(70);
-		direction = right;
+	}
+}
+
+void inicio_ladinho()
+{
+	if (direction_init == right)
+	{
+		direction_update = left;
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT_SLOW(3), TT_ENGINE_FRONT_FULL);
+		vTaskDelay(196);
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+	}
+	else
+	{
+		direction_update = right;
+		tt::engine::move(TT_ENGINE_BACK_FULL, TT_ENGINE_FRONT_FULL);
+		vTaskDelay(70);
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_FRONT_SLOW(3));
+		vTaskDelay(196);
+		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
+		vTaskDelay(70);
 	}
 }
 
 void inicio_costas()
 {
-	if (direction == right)
+	if (direction_init == right)
 	{
 		tt::engine::move(TT_ENGINE_FRONT_FULL, TT_ENGINE_BACK_FULL);
 		vTaskDelay(104);
@@ -512,7 +583,7 @@ void inicio_costas()
 
 void inicio_defesa(int trigger, const int quota)
 {
-	tt::engine::move(TT_ENGINE_FRONT(ROTATE_SPEED), TT_ENGINE_FRONT(ROTATE_SPEED));
+	tt::engine::move(TT_ENGINE_FRONT_SLOW(1), TT_ENGINE_FRONT_SLOW(1));
 	vTaskDelay(16);
 	tt::engine::stop();
 	while (trigger < quota)
@@ -531,10 +602,59 @@ void inicio_defesa(int trigger, const int quota)
 		}
 		tt::engine::move(TT_ENGINE_FRONT_SLOW(4), TT_ENGINE_FRONT_SLOW(4));
 	}
-	vTaskDelay(64);
+	vTaskDelay(24);
 }
 
-void procurar_padrao(uint8_t velocidade_giro)
+void inicio_preciso(int trigger, const int quota)
+{
+	tt::engine::move(TT_ENGINE_FRONT_SLOW(1), TT_ENGINE_FRONT_SLOW(1));
+	vTaskDelay(16);
+	tt::engine::stop();
+	while (trigger < quota)
+	{
+		vTaskDelay(1);
+		trigger += (sensor.left + sensor.front + sensor.right == 3);
+		if (sensor.left && sensor.left + sensor.front + sensor.right <= 2)
+		{
+			tt::engine::move(TT_ENGINE_BACK(DEFESA_SPEED), TT_ENGINE_FRONT(DEFESA_SPEED));
+			continue;
+		}
+		if (sensor.right && sensor.left + sensor.front + sensor.right <= 2)
+		{
+			tt::engine::move(TT_ENGINE_FRONT(DEFESA_SPEED), TT_ENGINE_BACK(DEFESA_SPEED));
+			continue;
+		}
+		tt::engine::move(TT_ENGINE_FRONT_SLOW(2), TT_ENGINE_FRONT_SLOW(2));
+	}
+}
+
+void inicio_tranquilo(int trigger, const int quota)
+{
+	tt::engine::move(TT_ENGINE_FRONT_SLOW(1), TT_ENGINE_FRONT_SLOW(1));
+	vTaskDelay(16);
+	tt::engine::stop();
+	while (trigger < quota)
+	{
+		vTaskDelay(1);
+		trigger += (sensor.left + sensor.front + sensor.right == 3);
+		if (sensor.left && sensor.left + sensor.front + sensor.right <= 2)
+		{
+			tt::engine::move(TT_ENGINE_BACK(DEFESA_SPEED), TT_ENGINE_FRONT(DEFESA_SPEED));
+			continue;
+		}
+		if (sensor.right && sensor.left + sensor.front + sensor.right <= 2)
+		{
+			tt::engine::move(TT_ENGINE_FRONT(DEFESA_SPEED), TT_ENGINE_BACK(DEFESA_SPEED));
+			continue;
+		}
+		tt::engine::move(TT_ENGINE_FRONT_SLOW(1), TT_ENGINE_FRONT_SLOW(1));
+	}
+	inicio_curvinha();
+}
+#pragma endregion "Main Inicio Estratégias"
+
+#pragma region "Main Procura Estratégias"
+void procura_padrao(uint8_t velocidade_giro)
 {
 	if (sensor.front)
 	{
@@ -576,16 +696,16 @@ void procurar_padrao(uint8_t velocidade_giro)
 			vTaskDelay(1);
 		}
 	}
-	if (sensor.left || direction == left)
+	if (sensor.left || direction_update == left)
 	{
 		tt::engine::move(TT_ENGINE_BACK(velocidade_giro), TT_ENGINE_FRONT(velocidade_giro));
 	}
-	else if (sensor.right || direction == right)
+	else if (sensor.right || direction_update == right)
 	{
 		tt::engine::move(TT_ENGINE_FRONT(velocidade_giro), TT_ENGINE_BACK(velocidade_giro));
 	}
 }
-#pragma endregion "Main Estratégias"
+#pragma endregion "Main Procura Estratégias"
 
 #pragma region "Main Testes"
 void test_sensor()
