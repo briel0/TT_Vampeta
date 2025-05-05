@@ -1,4 +1,4 @@
-# Library (LIB) [v1.0]
+# Library (LIB) [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```

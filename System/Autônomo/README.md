@@ -1,4 +1,4 @@
-# Autônomo (AUTO) [v1.0]
+# Autônomo (AUTO) [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```

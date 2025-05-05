@@ -1,4 +1,4 @@
-# TT_MiniSumo_Arruela (ARRUELA) [v1.0]
+# TT_MiniSumo_Arruela (ARRUELA) [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```

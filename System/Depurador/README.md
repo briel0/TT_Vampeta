@@ -1,4 +1,4 @@
-# Depurador (DB) [v1.0]
+# Depurador (DB) [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```

@@ -1,4 +1,4 @@
-# Receiver [v1.0]
+# Receiver [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos

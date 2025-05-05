@@ -1,4 +1,4 @@
-# Storage [v1.0]
+# Storage [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos

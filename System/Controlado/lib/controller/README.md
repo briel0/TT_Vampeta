@@ -1,4 +1,4 @@
-# Controller [v1.0]
+# Controller [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos

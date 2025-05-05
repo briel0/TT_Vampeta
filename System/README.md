@@ -1,4 +1,4 @@
-# System (SYS) [v1.0]
+# System (SYS) [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
  ```

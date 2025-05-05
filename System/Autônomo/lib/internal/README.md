@@ -1,4 +1,4 @@
-# Internal [v1.0]
+# Internal [v1.1]
  Mini Sumô da Tamandutech - ARRUELA!
 
 ## Pastas e Arquivos
