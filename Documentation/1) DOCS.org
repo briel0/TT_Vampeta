@@ -16,6 +16,7 @@ A criação desses componentes busca facilitar a manutenção e melhorar a legib
 | serial     | serial bluetooth        |
 | storage    | gerenciar arquivos      |
 | ultilitie  | swap, string...         |
+|            |                         |
 
 ** Arruela Systems
 Os *Sistemas* são módulos independentes que definem o comportamento do *Arruela*

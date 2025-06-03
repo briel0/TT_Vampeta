@@ -6,6 +6,18 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Receiver Pinning Macros"
 #define IR 13
 #pragma endregion "Receiver Pinning Macros"
@@ -91,9 +103,8 @@ namespace tt::receiver
 
 	void debug(receiver_t receiver, const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, receiver, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, receiver, msg);
 		Serial.print(buffer);
 	}
 }

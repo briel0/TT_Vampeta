@@ -2,6 +2,18 @@
 #include <utilitie.hpp>
 #include "engine.hpp"
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Engine Pinning Macros"
 #define pwmA 4
 #define a1 16
@@ -96,9 +108,8 @@ namespace tt::engine
 
 	void debug(engine_t engine, const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, engine, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, engine, msg);
 		Serial.print(buffer);
 	}
 }

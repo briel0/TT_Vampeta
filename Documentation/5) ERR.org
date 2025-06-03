@@ -1,16 +1,16 @@
 * ERROR-LIST
 *Lista de Erros* achados no *Arruela* que não foram resolvidos.
 
-** System (SYS)
-*** TODO Storage don't Begin (Error 1)
-*** TODO Eletrônica Exposta!
-*** TODO Pintar o Arruela de Preto!
+* System (SYS)
+** TODO Storage don't Begin (Error 1)
+** TODO Eletrônica Exposta!
+** TODO Pintar o Arruela de Preto!
 
-** Autônomo (AUTO)
-*** TODO Sensor não vê Preto!
+* Autônomo (AUTO)
+** TODO Sensor não vê Preto!
 
-** Controlado (RC)
-*** TODO Treinar MAIS BRENNO!!!
+* Controlado (RC)
+** TODO Treinar MAIS BRENNO!!!
 
-** Depurador (DB)
-*** TODO None
+* Depurador (DB)
+** TODO None

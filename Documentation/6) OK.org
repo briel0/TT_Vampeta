@@ -1,14 +1,14 @@
 * OK-LIST
 *Lista de Soluções* de erros achados no *Arruela* que foram resolvidos.
 
-** System (SYS)
-*** TODO None
+* System (SYS)
+** TODO None
 
-** Autônomo (AUTO)
-*** TODO None
+* Autônomo (AUTO)
+** TODO None
 
-** Controlado (RC)
-*** TODO None
+* Controlado (RC)
+** TODO None
 
-** Depurador (DB)
-*** TODO None
+* Depurador (DB)
+** TODO None

@@ -27,7 +27,7 @@ tt::sensor_t sensor;
 void setup_task()
 {
 	TaskHandle_t SensorTask;
-	xTaskCreatePinnedToCore(sensor_task, "SensorTask", 256 * 16, nullptr, 16, &SensorTask, PRO_CPU_NUM);
+	xTaskCreatePinnedToCore(sensor_task, "SensorTask", STACK_SIZE, nullptr, 16, &SensorTask, PRO_CPU_NUM);
 	vTaskDelay(512);
 }
 

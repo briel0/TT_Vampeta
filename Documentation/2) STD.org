@@ -20,6 +20,7 @@ No *Arruela Autônomo (1.0)* existe um sistema de input legado, chamada *Input S
 | ~g~    | *Defesa*    |
 | ~h~    | *Preciso*   |
 | ~i~    | *Tranquilo* |
+|      |           |
 
 *** Input Language (Novo)
 No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *Input Language*
@@ -31,6 +32,7 @@ No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *I
 | ~c~   | ~tmp~  | curva   |
 | ~r~   | ~tmp~  | rotação |
 | ~p~   | ~tmp~  | parado  |
+|     |      |         |
 
 | cmd | args        | desc    |
 |-----+-------------+---------|
@@ -38,12 +40,14 @@ No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *I
 | ~C~   | ~eni:ene:tmp~ | curva   |
 | ~R~   | ~spd:tmp~     | rotação |
 | ~P~   | ~tmp~         | parado  |
+|     |             |         |
 
 | cmd | args        | desc     |
 |-----+-------------+----------|
 | ~_~   | ~enl:enr:tmp~ | scratch  |
 | ~>~   |             | direita  |
 | ~<~   |             | esquerda |
+|     |             |          |
 
 **** Lista de Operações
 | op<cmd:arg...> | desc                   |
@@ -51,6 +55,7 @@ No *Arruela Autônomo (2.0)* foi desenvolvido uma linguagem de input, chamada *I
 | ~!<cmd>~         | inverte direção do ~cmd~ |
 | ~?<cmd>~         | inverte direção do ~cmd~ |
 | ~*<cmd>~         | inverte direção do ~cmd~ |
+|                |                        |
 
 **** Estrutura de um Comando
 ~(cmd1,cmd2:arg1,!cmd3:arg3,?cmd4:arg4,*cmd5:arg5)~
@@ -70,6 +75,7 @@ Isso executará as seguintes operações:
 | ~(r:70,!c:392,!r:70)~ | *Curvão*    |
 | ~(r:70,!c:196,!r:70)~ | *Curvinha*  |
 | ~(r:104)~             | *Costas*    |
+|                     |           |
 
 ** Arruela Controlado
 No *Arruela Controlado* é usado um *Controle de PS4* como dispositivo RC.

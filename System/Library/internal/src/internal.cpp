@@ -2,6 +2,18 @@
 #include <WiFi.h>
 #include "internal.hpp"
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Internal Pinning Macros"
 #define led 2
 #pragma endregion "Internal Pinning Macros"
@@ -88,9 +100,8 @@ namespace tt::internal
 
 	void debug(const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, msg);
 		Serial.print(buffer);
 	}
 }

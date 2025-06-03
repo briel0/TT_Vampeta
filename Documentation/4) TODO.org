@@ -1,18 +1,19 @@
 * TODO-LIST
 *Lista de Tarefas* pra fazer do *Arruela*
 
-** System (SYS)
-*** TODO Criar Kernel + Bootloader [v2.0]
+* System (SYS)
+** TODO Improve #define System [v1.1]
+** TODO Criar Kernel + Bootloader [v2.0]
 
-** Autônomo (AUTO)
-*** TODO Criar Input Language [v1.1]
+* Autônomo (AUTO)
+** TODO Criar Input Language [v1.1]
 
-** Controlado (RC)
-*** TODO Frentão Acelerado no UP [v1.1]
-*** TODO Escapar do Ataque no DOWN [v1.1]
-*** TODO Usar o Right Stick para definir a direção do DOWN [v1.1]
-*** TODO Criar Break Macro [v1.1]
+* Controlado (RC)
+** TODO Frentão Acelerado no UP [v1.1]
+** TODO Escapar do Ataque no DOWN [v1.1]
+** TODO Usar o Right Stick para definir a direção do DOWN [v1.1]
+** TODO Criar Break Macro [v1.1]
 
-** Depurador (DB)
-*** TODO Permitir Criar Sequências de Comandos [v1.1]
+* Depurador (DB)
+** TODO Permitir Criar Sequências de Comandos [v1.1]
 ** TODO Permitir Editar um Valor Isolado do Comando [v1.1]
