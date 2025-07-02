@@ -130,7 +130,7 @@
 ## Git & GitHub
  1. Site do [GitHub Desktop](https://github.com/apps/desktop)
  2. Site do [GitHub CLI](https://cli.github.com/)
- 3. Site do [Git](https://git-scm.com/downloads)
+ 3. Site do [Git](https://git-scm.com)
 
  ```cmd
  winget install GitHub.GitHubDesktop
