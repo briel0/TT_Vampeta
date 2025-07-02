@@ -190,7 +190,7 @@
  ```
 
 ## Pair Tools
- 1. Site do [SixPairTool](https://sixaxispairtool.en.lo4d.com/windows)
+ 1. Site do [SixaxisPairTool](https://sixaxispairtool.en.lo4d.com/windows)
  ```cmd
  ```
 
