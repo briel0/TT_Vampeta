@@ -2,7 +2,6 @@
 *Lista de Tarefas* pra fazer do *Arruela*
 
 * System (SYS)
-** TODO Improve #define System [v1.1]
 ** TODO Criar Kernel + Bootloader [v2.0]
 
 * Autônomo (AUTO)

@@ -2,14 +2,40 @@
 #include <utilitie.hpp>
 #include "engine.hpp"
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Engine Pinning Macros"
-#define pwmA 4
-#define a1 16
-#define a2 17
-#define pwmB 23
-#define b1 18
-#define b2 19
-#define stby 5
+#ifndef PWM_A
+#define PWM_A 4
+#endif
+#ifndef A_1
+#define A_1 16
+#endif
+#ifndef A_2
+#define A_2 17
+#endif
+#ifndef PWM_B
+#define PWM_B 23
+#endif
+#ifndef B_1
+#define B_1 18
+#endif
+#ifndef B_2
+#define B_2 19
+#endif
+#ifndef STBY
+#define STBY 5
+#endif
 #pragma endregion "Engine Pinning Macros"
 
 #pragma region "Engine Macros"
@@ -24,13 +50,13 @@ namespace tt::engine
 
 	void setup()
 	{
-		pinMode(pwmA, OUTPUT);
-		pinMode(a1, OUTPUT);
-		pinMode(a2, OUTPUT);
-		pinMode(pwmB, OUTPUT);
-		pinMode(b1, OUTPUT);
-		pinMode(b2, OUTPUT);
-		pinMode(stby, OUTPUT);
+		pinMode(PWM_A, OUTPUT);
+		pinMode(A_1, OUTPUT);
+		pinMode(A_2, OUTPUT);
+		pinMode(PWM_B, OUTPUT);
+		pinMode(B_1, OUTPUT);
+		pinMode(B_2, OUTPUT);
+		pinMode(STBY, OUTPUT);
 		set_standby(true);
 	}
 
@@ -42,7 +68,7 @@ namespace tt::engine
 	void set_standby(const bool mode)
 	{
 		standby_mode = mode;
-		digitalWrite(stby, static_cast<uint8_t>(!standby_mode));
+		digitalWrite(STBY, static_cast<uint8_t>(!standby_mode));
 	}
 
 	void init()
@@ -50,14 +76,14 @@ namespace tt::engine
 		set_standby(false);
 
 		current_engine_left = TT_ENGINE_DEFAULT;
-		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
-		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
-		analogWrite(pwmA, current_engine_left.speed);
+		digitalWrite(A_1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(A_2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(PWM_A, current_engine_left.speed);
 
 		current_engine_right = TT_ENGINE_DEFAULT;
-		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
-		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
-		analogWrite(pwmB, current_engine_right.speed);
+		digitalWrite(B_1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(B_2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(PWM_B, current_engine_right.speed);
 	}
 
 	void move(const engine_t engine_left, const engine_t engine_right)
@@ -68,22 +94,22 @@ namespace tt::engine
 		}
 
 		current_engine_left = engine_left;
-		digitalWrite(a1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
-		digitalWrite(a2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
-		analogWrite(pwmA, current_engine_left.speed);
+		digitalWrite(A_1, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(A_2, PIN_BOOL(current_engine_left.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(PWM_A, current_engine_left.speed);
 
 		current_engine_right = engine_right;
-		digitalWrite(b1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
-		digitalWrite(b2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
-		analogWrite(pwmB, current_engine_right.speed);
+		digitalWrite(B_1, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_BACK));
+		digitalWrite(B_2, PIN_BOOL(current_engine_right.direction == TT_ENGINE_DIRECTION_FRONT));
+		analogWrite(PWM_B, current_engine_right.speed);
 	}
 
 	void stop()
 	{
-		digitalWrite(a1, HIGH);
-		digitalWrite(a2, HIGH);
-		digitalWrite(b1, HIGH);
-		digitalWrite(b2, HIGH);
+		digitalWrite(A_1, HIGH);
+		digitalWrite(A_2, HIGH);
+		digitalWrite(B_1, HIGH);
+		digitalWrite(B_2, HIGH);
 
 		current_engine_left = TT_ENGINE_FRONT_STOP;
 		current_engine_right = TT_ENGINE_FRONT_STOP;
@@ -96,9 +122,8 @@ namespace tt::engine
 
 	void debug(engine_t engine, const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, engine, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, engine, msg);
 		Serial.print(buffer);
 	}
 }

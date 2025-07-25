@@ -16,26 +16,32 @@
 #pragma endregion "Size Data Defines"
 
 #pragma region "Sensor Pinning Macros"
-#define sensor_front 39
-#define sensor_right 36
-#define sensor_left 34
+#ifndef SENSOR_FRONT
+#define SENSOR_FRONT 39
+#endif
+#ifndef SENSOR_RIGHT
+#define SENSOR_RIGHT 36
+#endif
+#ifndef SENSOR_LEFT
+#define SENSOR_LEFT 34
+#endif
 #pragma endregion "Sensor Pinning Macros"
 
 namespace tt::sensor
 {
 	void setup()
 	{
-		pinMode(sensor_left, INPUT);
-		pinMode(sensor_front, INPUT);
-		pinMode(sensor_right, INPUT);
+		pinMode(SENSOR_LEFT, INPUT);
+		pinMode(SENSOR_FRONT, INPUT);
+		pinMode(SENSOR_RIGHT, INPUT);
 	}
 
 	sensor_t create_snapshot()
 	{
 		sensor_t sensor;
-		sensor.left = digitalRead(sensor_left);
-		sensor.front = digitalRead(sensor_front);
-		sensor.right = digitalRead(sensor_right);
+		sensor.left = digitalRead(SENSOR_LEFT);
+		sensor.front = digitalRead(SENSOR_FRONT);
+		sensor.right = digitalRead(SENSOR_RIGHT);
 		return sensor;
 	}
 

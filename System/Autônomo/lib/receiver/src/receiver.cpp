@@ -19,7 +19,9 @@
 #pragma endregion "Size Data Defines"
 
 #pragma region "Receiver Pinning Macros"
+#ifndef IR
 #define IR 13
+#endif
 #pragma endregion "Receiver Pinning Macros"
 
 namespace tt::receiver

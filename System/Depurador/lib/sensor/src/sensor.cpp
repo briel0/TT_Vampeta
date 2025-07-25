@@ -3,27 +3,39 @@
 #include "engine.hpp"
 #include "internal.hpp"
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Sensor Pinning Macros"
-#define sensor_front 39
-#define sensor_right 36
-#define sensor_left 34
+#define SENSOR_FRONT 39
+#define SENSOR_RIGHT 36
+#define SENSOR_LEFT 34
 #pragma endregion "Sensor Pinning Macros"
 
 namespace tt::sensor
 {
 	void setup()
 	{
-		pinMode(sensor_left, INPUT);
-		pinMode(sensor_front, INPUT);
-		pinMode(sensor_right, INPUT);
+		pinMode(SENSOR_LEFT, INPUT);
+		pinMode(SENSOR_FRONT, INPUT);
+		pinMode(SENSOR_RIGHT, INPUT);
 	}
 
 	sensor_t create_snapshot()
 	{
 		sensor_t sensor;
-		sensor.left = digitalRead(sensor_left);
-		sensor.front = digitalRead(sensor_front);
-		sensor.right = digitalRead(sensor_right);
+		sensor.left = digitalRead(SENSOR_LEFT);
+		sensor.front = digitalRead(SENSOR_FRONT);
+		sensor.right = digitalRead(SENSOR_RIGHT);
 		return sensor;
 	}
 
@@ -34,9 +46,8 @@ namespace tt::sensor
 
 	void debug(sensor_t sensor, const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, sensor, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, sensor, msg);
 		Serial.print(buffer);
 	}
 }

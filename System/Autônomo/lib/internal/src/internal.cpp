@@ -15,7 +15,9 @@
 #pragma endregion "Size Data Defines"
 
 #pragma region "Internal Pinning Macros"
-#define led 2
+#ifndef LED
+#define LED 2
+#endif
 #pragma endregion "Internal Pinning Macros"
 
 namespace tt::internal
@@ -27,7 +29,7 @@ namespace tt::internal
 
 	void setup()
 	{
-		pinMode(led, OUTPUT);
+		pinMode(LED, OUTPUT);
 		setup_millis();
 		setup_micros();
 		WiFi.macAddress().toCharArray(wifi_mac_address, sizeof(wifi_mac_address));
@@ -43,7 +45,7 @@ namespace tt::internal
 		if (led_mode != mode)
 		{
 			led_mode = mode;
-			digitalWrite(led, static_cast<uint8_t>(led_mode));
+			digitalWrite(LED, static_cast<uint8_t>(led_mode));
 		}
 	}
 

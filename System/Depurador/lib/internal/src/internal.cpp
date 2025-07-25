@@ -2,8 +2,22 @@
 #include <WiFi.h>
 #include "internal.hpp"
 
+#pragma region "Size Data Defines"
+#ifndef BYTE_SIZE
+#define BYTE_SIZE 256
+#endif
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE (BYTE_SIZE * 2)
+#endif
+#ifndef STACK_SIZE
+#define STACK_SIZE (BYTE_SIZE * 16)
+#endif
+#pragma endregion "Size Data Defines"
+
 #pragma region "Internal Pinning Macros"
-#define led 2
+#ifndef LED
+#define LED 2
+#endif
 #pragma endregion "Internal Pinning Macros"
 
 namespace tt::internal
@@ -15,7 +29,7 @@ namespace tt::internal
 
 	void setup()
 	{
-		pinMode(led, OUTPUT);
+		pinMode(LED, OUTPUT);
 		setup_millis();
 		setup_micros();
 		WiFi.macAddress().toCharArray(wifi_mac_address, sizeof(wifi_mac_address));
@@ -31,7 +45,7 @@ namespace tt::internal
 		if (led_mode != mode)
 		{
 			led_mode = mode;
-			digitalWrite(led, static_cast<uint8_t>(led_mode));
+			digitalWrite(LED, static_cast<uint8_t>(led_mode));
 		}
 	}
 
@@ -88,9 +102,8 @@ namespace tt::internal
 
 	void debug(const char *msg)
 	{
-		const size_t buffer_len = 512;
-		char buffer[buffer_len];
-		debug(buffer, buffer_len, msg);
+		char buffer[BUFFER_SIZE];
+		debug(buffer, BUFFER_SIZE, msg);
 		Serial.print(buffer);
 	}
 }
