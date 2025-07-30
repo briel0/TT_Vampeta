@@ -48,4 +48,4 @@
  Arquivos ORG que documentam o __Projeto Vampeta__ 
 
 ## System
- São os projetos __PlatformIO__ do ____
+ São os projetos __PlatformIO__ do __Vampeta__
