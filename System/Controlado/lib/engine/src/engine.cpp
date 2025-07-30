@@ -2,7 +2,6 @@
 #include <utilitie.hpp>
 #include "engine.hpp"
 
-#pragma region "Size Data Defines"
 #ifndef BYTE_SIZE
 #define BYTE_SIZE 256
 #endif
@@ -12,9 +11,7 @@
 #ifndef STACK_SIZE
 #define STACK_SIZE (BYTE_SIZE * 16)
 #endif
-#pragma endregion "Size Data Defines"
 
-#pragma region "Engine Pinning Macros"
 #ifndef PWM_A
 #define PWM_A 4
 #endif
@@ -36,11 +33,8 @@
 #ifndef STBY
 #define STBY 5
 #endif
-#pragma endregion "Engine Pinning Macros"
 
-#pragma region "Engine Macros"
 #define PIN_BOOL(x) ((HIGH) * (x) + (LOW) * !(x))
-#pragma endregion "Engine Macros"
 
 namespace tt::engine
 {
