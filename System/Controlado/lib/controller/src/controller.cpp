@@ -4,20 +4,20 @@
 #include <ps4_int.h>
 #include "controller.hpp"
 
-#pragma region "Size Data Defines"
 #ifndef BYTE_SIZE
 #define BYTE_SIZE 256
 #endif
+
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE (BYTE_SIZE * 2)
 #endif
+
 #ifndef STACK_SIZE
 #define STACK_SIZE (BYTE_SIZE * 16)
 #endif
-#pragma endregion "Size Data Defines"
 
-namespace tt::controller
-{
+namespace tt::controller{
+	
 	bool connected = false;
 
 	void setup(const char *mac)
