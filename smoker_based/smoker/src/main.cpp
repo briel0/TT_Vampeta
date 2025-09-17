@@ -35,6 +35,10 @@ void setup(){
     pinMode(JSUMO_F_PIN, INPUT);
     pinMode(JSUMO_E_PIN, INPUT);
     pinMode(JSUMO_D_PIN, INPUT);
+
+    pinMode(PAU_NEG_PIN, OUTPUT);
+    pinMode(PAU_POS_PIN, OUTPUT);
+
 }
 
 #pragma endregion
