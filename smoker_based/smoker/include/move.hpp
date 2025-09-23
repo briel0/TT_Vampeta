@@ -169,12 +169,9 @@ void moverMotores(int velocidadeEsquerdaMotor, int velocidadeDireitaMotor) {
     static int ultimaVD = 0;
 
     // So notifica a processarMovimento se a velocidade realmente mudou
-    if (velocidadeEsquerdaMotor != ultimaVE || 
-        velocidadeDireitaMotor != ultimaVD) {
-        
+    if(velocidadeEsquerdaMotor != ultimaVE || velocidadeDireitaMotor != ultimaVD){  
         novaVE = velocidadeEsquerdaMotor;
         novaVD = velocidadeDireitaMotor;
-
         processarMovimento(novaVE, novaVD);
     }
 

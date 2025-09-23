@@ -23,9 +23,6 @@ void setup(){
     Serial.begin(115200); // Comunicacao serial com baudrate 115200
 
     pinMode(TRANSISTOR_SENSOR_PIN, OUTPUT);
-    pinMode(SENSOR_IR_F, INPUT);
-    pinMode(SENSOR_IR_E, INPUT);
-    pinMode(SENSOR_IR_D, INPUT);
     directWriteHigh(TRANSISTOR_SENSOR_PIN); // Transistor e JSumos ligados
 
     pinMode(LED_PIN, OUTPUT);

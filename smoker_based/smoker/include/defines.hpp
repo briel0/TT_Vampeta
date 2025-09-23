@@ -158,9 +158,9 @@ Definicao de pinos e configuracoes
 #define JSUMO_F_PIN 34 //  AUTO | JSumo frontal ESP32 IO23
 #define JSUMO_E_PIN 36 //  AUTO | JSumo esquerdo ESP32 IO22
 
-#define SENSOR_IR_D 4  //  AUTO | Sensor IR direito ESP32 IO4
-#define SENSOR_IR_F 5  //  AUTO | Sensor IR frontal ESP32 IO5
-#define SENSOR_IR_E 23 //  AUTO | Sensor IR esquerdo ESP32 IO23
+//#define SENSOR_IR_D 4  //  AUTO | Sensor IR direito ESP32 IO4
+//#define SENSOR_IR_F 5  //  AUTO | Sensor IR frontal ESP32 IO5
+//#define SENSOR_IR_E 23 //  AUTO | Sensor IR esquerdo ESP32 IO23
 
 #pragma endregion
 

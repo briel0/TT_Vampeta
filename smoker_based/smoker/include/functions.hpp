@@ -114,29 +114,25 @@ void setupLeds() {
     FastLED.show();
 }
 
-// Define todos os 5 LEDs com seus respectivos valores RGB
-void setLeds(
-    uint8_t r0, uint8_t g0, uint8_t b0,
-    uint8_t r1, uint8_t g1, uint8_t b1,
-    uint8_t r2, uint8_t g2, uint8_t b2,
-    uint8_t r3, uint8_t g3, uint8_t b3,
-    uint8_t r4, uint8_t g4, uint8_t b4
-) {
-    leds[0] = CRGB(r0, g0, b0);
-    leds[1] = CRGB(r1, g1, b1);
-    leds[2] = CRGB(r2, g2, b2);
-    leds[3] = CRGB(r3, g3, b3);
-    leds[4] = CRGB(r4, g4, b4);
+// Define todos os n LEDs com seus respectivos valores CRGB
+void setLeds(const CRGB colors[], int n) {
+    for (int i = 0; i < n; i++) {
+        leds[i] = colors[i];
+    }
     FastLED.show();
 }
 
 // Modo para quando enxerga o robo adversario
-void AnnihilationModeLeds() {
-    setLeds(200, 0, 0,                // LED 1
-            200, 0, 0,                // LED 2
-            200, 0, 0,                // LED 3
-            200, 0, 0,                // LED 4
-            200, 0, 0);               // LED 5
+void AnnihilationModeLeds(){
+    CRGB cores[5] = {
+        CRGB(200, 0, 0),
+        CRGB(200, 0, 0),
+        CRGB(200, 0, 0),
+        CRGB(200, 0, 0),
+        CRGB(200, 0, 0)
+    };
+
+    setLeds(cores, 5);
 }
 
 // Apaga todos os LEDs

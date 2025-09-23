@@ -1,21 +1,14 @@
-//===============================================================================================//
-//=====================================//INCLUDES E DEFINES//====================================//
-//===============================================================================================//
-
-#pragma region INCLUDES
-
 //#ifndef RC_MODE_H
 //#define RC_MODE_H 
 
 #include <PS4Controller.h> // Biblioteca do controle do PS4
-
 #include <defines.hpp>   // Definicoes globais
 #include <functions.hpp> // Funcoes auxiliares
 #include <move.hpp>      // Funcoes de movivmentacao de motores
 
-#define coefAtenuacao 1.8 // Atenuacao da velocidade em curvas (deve ser FLOAT)
-#define coefReverse 0.9   // Coeficiente para balancear a re (deve ser FLOAT)
-#define limiteCurva 127.0 // Velocidade limite em curvas puras (deve ser FLOAT)
+constexpr float coefAtenuacao = 1.8; // Atenuacao da velocidade em curvas (deve ser FLOAT)
+constexpr float coefReverse = 0.9;   // Coeficiente para balancear a re (deve ser FLOAT)
+constexpr float limiteCurva = 127.0; // Velocidade limite em curvas puras (deve ser FLOAT)
 
 volatile bool switchCxV = false;  // Switch definido para controlar MACRO usado
 volatile bool velLimitada = true; // Switch definido pra limitar a velocidade do motor
@@ -24,40 +17,25 @@ volatile int r2 = 0;              // Valor do gatilho direito do PS4 (R2)
 volatile int l2 = 0;              // Valor do gatilho esquerdo do PS4 (L2)
 volatile int direcao = 0;         // Valor do direcional esquerdo do PS4 em X (LStickX)
 
-#pragma endregion
-
-//===============================================================================================//
-//===========================================//SETUP//===========================================//
-//===============================================================================================//
-
-#pragma region SETUP
-
-/*
-!INFO | Ultimos MAC Addresses conhecidos dos robos
------------------------------------
-SMOKER: 3c:8a:1f:ad:d7:b8
-ARRUELA: o Frigo faz gracinha pra pegar o MAC, nem ele sabe o do Arruela
-BRIGA: 5c:01:3b:73:fc:54
-FUEGO: 78:1c:3c:f6:24:70
-FUEGUITO: 3c:8a:1f:ad:87:0c
-RESSACA:
-SHENLONG:
-TSUNAMI: a0:b7:65:0f:7c:e0
-VAMPETA:
-*/
+const char macAdress[][18] = {
+    "3c:8a:1f:ad:d7:b8", //smoker (0)
+    "5c:01:3b:73:fc:54", //briga (1)
+    "78:1c:3c:f6:24:70", //fuego (2)
+    "3c:8a:1f:ad:87:0c", //fueguito (3)
+    "a0:b7:65:0f:7c:e0" //tsunami (4)
+};
 
 void modoRC(){
 
-    // Tenta conectar ao controle PS4 e debuga conexao pelo Serial Monitor
-    if(PS4.begin("78:1c:3c:f6:24:70")){
-        Serial.println("Bluetooth inicializado, aguardando controle...");
+    CRGB cores[5] = {
+        CRGB(0, 200, 0), CRGB(0, 200, 0), CRGB(0, 200, 0),CRGB(0, 200, 0), CRGB(0, 200, 0)
+    };
 
-        while (!PS4.isConnected()){
-            setLeds(0, 200, 0,  // LED 1
-                    0, 200, 0,  // LED 2
-                    0, 200, 0,  // LED 3
-                    0, 200, 0,  // LED 4
-                    0, 200, 0); // LED 5
+    // Tenta conectar ao controle PS4 e debuga conexao pelo Serial Monitor
+    if(PS4.begin(macAdress[2])){
+        Serial.println("Bluetooth inicializado, aguardando controle...");
+        while(!PS4.isConnected()){
+            setLeds(cores, 5);
             Serial.println("Aguardando conexao...");
             vTaskDelay(pdMS_TO_TICKS(500)); // Pequeno atraso
             clearLeds();
@@ -66,24 +44,20 @@ void modoRC(){
 
     Serial.println("Controle conectado!");
     PS4.setLed(0, 200, 0); // Define a cor do LED para verde
-    setLeds(0, 200, 0,     // LED 1
-            0, 200, 0,     // LED 2
-            0, 200, 0,     // LED 3
-            0, 200, 0,     // LED 4
-            0, 200, 0);    // LED 5
+    setLeds(cores, 5);
 
     while (PS4.isConnected()){
 
         int velocidadeEsquerda = 0; // Velocidade do motor esquerdo
         int velocidadeDireita = 0;  // Velocidade do motor direito
 
-        if (PS4.Cross()){
+        if(PS4.Cross()){
             moverMotores(255, 255);
-            continue;
-
+            //continue
+            //por que nao tem delay aqui?
         }
-        else if (PS4.Square()){
-            
+        else if(PS4.Square()){
+
             vTaskDelay(pdMS_TO_TICKS(50));
 
             if(pauErguido){
@@ -96,33 +70,19 @@ void modoRC(){
             movePau(pauErguido);
             pauErguido ^= 1;
             vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras
-
         }
-        else if (PS4.Circle() && !switchCxV){
+        if(PS4.Circle()){ //troca modo de alguma coisa
             vTaskDelay(pdMS_TO_TICKS(50));
-            switchCxV = true;
+            switchCxV ^= 1; //inverte
             vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras
         }
-        else if (PS4.Circle())
-        {
-            vTaskDelay(pdMS_TO_TICKS(50));
-            switchCxV = false;
-            vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras
-
-#pragma endregion
-
-            //==============================//Limitador da potencia dos motores//============================//
-
 #pragma region LIMITADOR
-        }
-        else if (PS4.Triangle() && !velLimitada)
-        {
+        else if(PS4.Triangle() && !velLimitada){
             velLimitada = true;
             limiteVelocidade = 180;         // Define o limite reduzido
             vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras
         }
-        else if (PS4.Triangle())
-        {
+        else if (PS4.Triangle()){
             velLimitada = false;
             limiteVelocidade = 255;         // Restaura o limite maximo
             vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras

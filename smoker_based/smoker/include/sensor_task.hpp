@@ -78,9 +78,9 @@ bool IRAM_ATTR readSensors(void *arg) {
         portEXIT_CRITICAL_ISR(&sensorMux);          // Sai da secao critica
     } else {
         portENTER_CRITICAL_ISR(&sensorMux);         // Entra em secao critica
-        valueJsumoF = (GPIO.in >> SENSOR_IR_F) & 0x1;
-        valueJsumoD = (GPIO.in >> SENSOR_IR_D) & 0x1;
-        valueJsumoE = (GPIO.in >> SENSOR_IR_E) & 0x1;
+        //valueJsumoF = (GPIO.in >> SENSOR_IR_F) & 0x1;
+        //valueJsumoD = (GPIO.in >> SENSOR_IR_D) & 0x1;
+        //valueJsumoE = (GPIO.in >> SENSOR_IR_E) & 0x1;
         portEXIT_CRITICAL_ISR(&sensorMux);          // Sai da secao critica
     }
 
