@@ -1,0 +1,30 @@
+🔹 Compilar e rodar
+
+pio run → compila o projeto.
+pio run -t upload → compila e faz upload pro ESP32.
+pio run -t nobuild -t upload → faz upload sem recompilar (só usa o último build).
+
+🔹 Monitor serial
+
+pio device monitor → abre o serial monitor.
+pio device monitor -b 115200 → abre no baudrate 115200.
+pio device list → lista as portas seriais disponíveis.
+
+🔹 Limpar
+
+pio run -t clean → limpa os arquivos de compilação (build).
+pio run -t erase ou pio run -t erase_flash → apaga a memória flash do ESP32.
+
+🔹 Targets úteis
+
+pio run -t buildfs → cria o sistema de arquivos (SPIFFS/LittleFS).
+pio run -t uploadfs → envia o sistema de arquivos pra flash.
+pio run -t uploadfs -t nobuild → manda só o FS sem rebuild.
+
+🔹 Outros
+
+pio update → atualiza todos os pacotes, libs e plataformas.
+pio upgrade → atualiza o próprio PlatformIO.
+pio project init → inicializa um projeto novo.
+pio project init --board esp32dev → inicializa projeto já configurado pro ESP32 DevKit.
+pio project config → abre/edita configuração.

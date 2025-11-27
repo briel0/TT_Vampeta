@@ -13,10 +13,6 @@ tt::controller_t controller;
 uint8_t rc_state = RC_STATE_CAREFUL;
 bool triangle = false;
 
-/*
-comentários provisórios para fins de compreensão inicial
-*/
-
 void setup(){
 
 	Serial.begin(115200);

@@ -27,34 +27,30 @@
 #define TT_ENGINE_BACK(x) {TT_ENGINE_DIRECTION_BACK, TT_ENGINE_SPEED(x)}
 #pragma endregion "Engine Macros"
 
-namespace tt
-{
-	namespace engine
-	{
-		struct engine_t
-		{
-			uint8_t direction;
-			uint8_t speed;
+namespace tt {
+namespace engine {
+struct engine_t {
+  uint8_t direction;
+  uint8_t speed;
 
-			bool operator == (const engine_t &engine) const
-			{
-				return (direction == engine.direction && speed == engine.speed);
-			}
-			bool operator != (const engine_t &engine) const
-			{
-				return (direction != engine.direction || speed != engine.speed);
-			}
-		};
+  bool operator==(const engine_t &engine) const {
+    return (direction == engine.direction && speed == engine.speed);
+  }
+  bool operator!=(const engine_t &engine) const {
+    return (direction != engine.direction || speed != engine.speed);
+  }
+};
 
-		void setup();
-		bool get_standby();
-		void set_standby(const bool mode);
-		void init();
-		void move(const engine_t engine_left, const engine_t engine_right);
-		void stop();
-		void debug(char *out_buffer, const size_t out_size, engine_t engine, const char *msg);
-		void debug(engine_t engine, const char *msg);
-	}
+void setup();
+bool get_standby();
+void set_standby(const bool mode);
+void init();
+void move(const engine_t engine_left, const engine_t engine_right);
+void stop();
+void debug(char *out_buffer, const size_t out_size, engine_t engine,
+           const char *msg);
+void debug(engine_t engine, const char *msg);
+} // namespace engine
 
-	typedef engine::engine_t engine_t;
-}
+typedef engine::engine_t engine_t;
+} // namespace tt

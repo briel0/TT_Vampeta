@@ -28,14 +28,16 @@ const char macAdress[][18] = {
 void modoRC(){
 
     CRGB cores[5] = {
-        CRGB(0, 200, 0), CRGB(0, 200, 0), CRGB(0, 200, 0),CRGB(0, 200, 0), CRGB(0, 200, 0)
+        CRGB(0, 200, 0), CRGB(0, 200, 0), CRGB(0, 200, 0), CRGB(0, 200, 0), CRGB(0, 200, 0)
     };
 
     // Tenta conectar ao controle PS4 e debuga conexao pelo Serial Monitor
-    if(PS4.begin(macAdress[2])){
+    if(PS4.begin("3c:8a:1f:ad:d7:b8")){
         Serial.println("Bluetooth inicializado, aguardando controle...");
         while(!PS4.isConnected()){
+
             setLeds(cores, 5);
+
             Serial.println("Aguardando conexao...");
             vTaskDelay(pdMS_TO_TICKS(500)); // Pequeno atraso
             clearLeds();
@@ -68,8 +70,8 @@ void modoRC(){
             }
 
             movePau(pauErguido);
-            pauErguido ^= 1;
-            vTaskDelay(pdMS_TO_TICKS(200)); // Evita multiplas leituras
+            pauErguido = (pauErguido ? false : true);
+            vTaskDelay(pdMS_TO_TICKS(8000)); // Evita multiplas leituras
         }
         if(PS4.Circle()){ //troca modo de alguma coisa
             vTaskDelay(pdMS_TO_TICKS(50));
