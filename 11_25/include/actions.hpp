@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <math.h>
-#include <enum.hpp>
+#include <types.hpp>
 #include "move.hpp"
 
 constexpr int STICK_TRIGGER = 10;
@@ -123,7 +123,7 @@ void frente_padrao(int steer, int r2, int l2, double turnfactor){
     }
 
     int velocidadeEsquerda = forward + turn;
-    int velocidadeDireita   = forward - turn;
+    int velocidadeDireita = forward - turn;
 
     set_move(velocidadeEsquerda, velocidadeDireita);
 }

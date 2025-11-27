@@ -26,6 +26,8 @@ void loop(){
         int l2 = PS4.L2Value();
         steer *= -1;
 
+        //ocasionais macros
+
         if(r2 > 10 || l2 > 10){
             frente_padrao(steer, r2, l2, turnfactor);
         }
